@@ -58,9 +58,9 @@ $('#page1').live('pageinit', function() {
     });
     
     
-	var w = 300;
-	var h = 300;
-	var margin = 10;
+	var w = 600;
+	var h = 600;
+	var margin = 20;
 	var jobList = ['administrator',
     'artist',
     'doctor',
@@ -301,7 +301,7 @@ function reQuery(d) {
 //Class for one single selection    
 function QuerySets(domain, query, selection, newClass, groupMode, relationMin, relationMax, legend, contourMode, contourOn) {
     
-    this.domain = domain; //domain can be 'user', 'word' or 'business'
+    this.domain = domain; //domain can be 'user' or 'movie'
     this.query =query; 
     this.selection =selection;
     this.assignedClass= newClass;
@@ -488,11 +488,10 @@ SelectionStatesSpace.prototype = {
     var numLevelForContour = 10;
 	var movieStarHue = 45;
     var userStarHue = 45;
-    var maxStarRadius = 5;
-    var minStarRadius = 1;
+    var maxStarRadius = 10;
+    var minStarRadius = 2;
     var fillMovieScale = d3.scale.pow(4).range(["white", "black"]);
     var fillUserScale = d3.scale.pow(4).range(["white", "black"]);
-    var fillWordScale = d3.scale.pow(4).range(["white", "black"]);
     var bandwidth = 1;
     
     
@@ -688,7 +687,23 @@ SelectionStatesSpace.prototype = {
 							
 						
 						}
-			
+						if (selectionStatesMovie.isSelected(d) === false) {
+                             //Here this star is newly selected 
+                             //So Add to the Selection
+                             
+                             if( isGroupSelectionMode ) {
+                                 //Group mode:  Add to the current selection
+                                 
+                             } else {
+                                 //Individual mode: Add to the new selection
+                                 
+                                 for (var count = 0; count < userLength; count++) {
+            
+                                     if (ratings[count][i] >= PSmin && ratings[count][i] <= PSmax) {
+                
+                                        tempGalaxy.push(userData[count]);
+                                     }
+                                 }
                                  
                                  var newClass = selectionStatesMovie.newClass(); 
                                  var newQuery = [d];
@@ -696,22 +711,24 @@ SelectionStatesSpace.prototype = {
                                  
                                  var tempQuerySet = new QuerySets('movie',newQuery, tempGalaxy, newClass,'single', PSmin, PSmax, textLegend, $('input[name=contourMode]:checked').val(),isContourOn);
                                  
-                                 if (selectionStates.isMember(tempQuerySet) ) {
-                                        
-                                         //Here this star is already selected
-                                         //So remove it 
-                                                        
-                                        selectionStatesMovie.removeEntity(d);
-                                         
-                                 } 
-                                 
                                  selectionStatesMovie.add(tempQuerySet);
                                  
                                  x.domain(xDomainExtent);
                                  y.domain(yDomainExtent);
                                 
+                             }
                             
-                           
+            
+                        } else {
+                            
+                            //Here this star is already selected
+                            //So remove it 
+                            
+                            
+                                selectionStatesMovie.removeEntity(d);
+    
+                                            
+                        }
                         
                         updateDisplay('user',selectionStatesMovie); 
 
@@ -907,199 +924,6 @@ SelectionStatesSpace.prototype = {
 		});
 
 	})
-	
-	
-	   //Scale variable for user space
-    var xDomainExtentWord = [0,1];
-    var yDomainExtentWord = [0,1];
-    
-    var xValueWord = function (d) {
-        return xScaleWord(+d.X);
-    }
- 
-    var yValueWord = function (d) {
-        return yScaleWord(+d.Y);
-    }   
-
-	
-	var xScaleWord = d3.scale.linear().range([margin, w-margin]);
-    var yScaleWord = d3.scale.linear().range([h-margin,margin]);
-    
-    var rWordScale = d3.scale.linear().range([minStarRadius, maxStarRadius]);
-    
-    
-    var xAxisWord = d3.svg.axis()
-                        .scale(xScaleWord)
-                        .orient("bottom")
-                        .ticks(5);
-                        
-    var yAxisWord = d3.svg.axis()
-                        .scale(yScaleWord)
-                        .orient("left")
-                        .ticks(5);
-                        
-    var zoomWord = d3.behavior.zoom()
-                        .x(xScaleWord)
-                        .y(yScaleWord)
-                        .on("zoom", zoomedWord);
-                        
-    var svgWord = d3.select("#wordCanvas")
-                    .append("svg")
-                        .attr("height", h)
-                        .attr("viewBox", "0 0 " + w + " " +h)
-                        .attr("title", "Word Space")
-                        .style("border", "1px solid silver")
-                        .attr("transform", "translate(" + margin + "," + margin + ")")
-                    .append("svg:g");
-                    
-    var clip = svgWord.append("defs")
-                        .append("svg:clipPath")
-                        .attr("id","wordClip")
-                        .append("svg:rect")
-                        .attr("id","clip-rect")
-                        .attr("x",margin)
-                        .attr("y",margin)
-                        .attr("width",w-2*margin)
-                        .attr("height",h-2*margin);
-                        
-    var svgWordBody = svgWord.append("g")
-                            .attr("clip-path","url(#wordClip)")
-                            .call(zoomWord);
-                            
-    var rect = svgWordBody.append("svg:rect")
-                            .attr("width",w-margin)
-                            .attr("height",h-margin)
-                            .attr("fill","white");
-                            
-    
-     var svgWordContourGroup = svgWordBody.append("svg:g").attr('class','wordContourGroup');
-     
-    var svgWordSelectionGroup = svgWordBody.append("svg:g").attr('class', 'wordSelectionSVGGroup');
-
-    var svgWordGroup = svgWordBody.append("svg:g").attr('class', 'wordSVGGroup');
-
-
-
-    svgWord.append("svg:g")
-            .attr("class","x axis")
-            .attr("transform","translate(0," + (h-margin) + ")")
-            .call(xAxisWord);
-            
-    svgWord.append("svg:g")
-            .attr("class","y axis")
-            .attr("transform","translate(" + margin + ",0)")
-            .call(yAxisWord);
-    
-    d3.csv("data/wordSpaceNoNormal.csv", function(wordCSV) {
-
-        wordData = wordCSV;
-        
-        //Set up Scales after reading data
-        
-        rWordScale.domain(d3.extent(wordData, function(d){ return +d.numReview; }));
-        fillWordScale.domain(d3.extent(wordData, function(d){ return +d.avgReview; }));
-        
-
-        svgWordGroup.selectAll("circle")
-                    .data(wordCSV, function(d) {
-                        return +d.num;
-                    })
-                    .enter()
-                    .append("svg:circle")
-                    .classed("wordCircle", true)
-                    .classed("star", true)
-                    .attr("cx", xValueWord)
-                    .attr("cy", yValueWord)
-                    .attr("r", function(d) {
-            //  console.log((d.numReview*5)*(d.numReview*10));
-                        return rWordScale(+d.numReview);
-
-                    })
-                    .attr("fill", function(d) {
-                            
-                        return fillWordScale(+d.avgReview);
-                    })
-                    .on('click', function(d, i) {
-
-                        var tempGalaxy = [];
-
-                        if(isMovieSelected === true) {
-                        
-                            
-                            isMovieSelected = false;
-                            clearSelection();
-                        
-                        }
-                        if (selectionStatesWord.isSelected(d) === false) {
-                             //Here this star is newly selected 
-                             //So Add to the Selection
-                             
-                             if( isGroupSelectionMode ) {
-                                 //Group mode:  Add to the current selection
-                                 
-                             } else {
-                                 //Individual mode: Add to the new selection
-                                 
-                                 for (var count = 0; count < movieLength; count++) {
-            
-                                     if (ratings[i][count] >= PSmin && ratings[i][count] <= PSmax) {
-                
-                                        tempGalaxy.push(movieData[count]);
-                                     }
-                                 }
-                                 
-                                 var newClass = selectionStatesWord.newClass(); 
-                                 var newQuery = [d];
-                                 var textLegend = d.age + ", " + d.sex + ", " + d.job + " (Ratings " + PSmin + "-" + PSmax + ") " + $('input[name=contourMode]:checked').val();
-                                 
-                                 var tempQuerySet = new QuerySets('word',newQuery, tempGalaxy, newClass,'single', PSmin, PSmax, textLegend,$('input[name=contourMode]:checked').val(),isContourOn);
-                                 
-                                 selectionStatesWord.add(tempQuerySet);
-                                 
-                                 xScaleWord.domain(xDomainExtentWord);
-                                 yScaleWord.domain(yDomainExtentWord);
-                                
-                                
-                                 
-                                 
-                               
-                             }
-                            
-            
-                        } else {
-                            
-                            //Here this star is already selected
-                            //So remove it 
-                            
-                            
-                                selectionStatesWord.removeEntity(d);
-    
-                                            
-                        }
-                        
-                        updateDisplay('movie',selectionStatesUser); 
-
-
-                    });
-                    
-                                                        
-        
-       
-
-        $('.wordCircle').tipsy({
-            gravity : 'w',
-            html : true,
-            fade : true,
-            delayOut : 1000,
-            title : function() {
-                var d = this.__data__;
-                return d.age + ', ' + d.sex + ', ' + d.job;
-            }
-        });
-
-    })
-    
-    
 	function zoomedMovie() {
 // 
 		svgMovieContourGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
@@ -1120,16 +944,6 @@ SelectionStatesSpace.prototype = {
 		svgUser.select(".y.axis").call(yAxisUser);
 	}
 
-
-    function zoomedWord() {
-// 
-        svgWordContourGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
-        svgWordSelectionGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
-        svgWordGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
-        
-        svgWord.select(".x.axis").call(xAxisWord);
-        svgWord.select(".y.axis").call(yAxisWord);
-    }
 
 	function clearSelection() {
 

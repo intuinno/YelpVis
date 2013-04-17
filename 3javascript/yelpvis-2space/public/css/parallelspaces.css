@@ -1,0 +1,122 @@
+div#movieCanvas {
+	width:40%;
+	
+	margin:0;
+	padding-bottom:1%
+	
+}
+div#userCanvas {
+	display:inline-block;
+	width:40%;
+	margin:0px 0px 0px 30px;
+	padding: 0;
+	
+}
+div#legend {
+	display:inline-block;
+	padding: 0px 0px 0px 0px;
+	margin:0;
+	background-color:white;
+	width:200px;
+}
+
+div#movieTitle {
+	display:inline;
+	margin:0px 10px 0px 100px;
+}
+
+div.smallLeft {
+	margin:10px 60px 10px 0px;
+}
+
+
+div.smallRight {
+	margin:10px 0px 10px 60px;
+}
+
+div.searchBox {
+	display: inline-block;
+	margin:0;
+	padding:0;
+	width:200px;
+	
+}
+
+div.smallRightTogether {
+	float:right;
+	margin:10px 0px 10px 60px;
+}
+
+div.smallCenterTogether {
+	float:right;
+	margin:0px auto;
+}
+
+div.SpaceTitle {
+	height:65px;
+}
+#states { fill: none; stroke: #555555; stroke-width: 0.5px; }
+
+
+.selectedCircle {
+
+	opacity: 0.5;
+	stroke-width: 5;
+	stroke-opacity: 0.5;
+}
+
+svg .star {
+
+	
+	stroke-width: 5;
+	stroke-opacity: 0.5;
+	opacity:0.5;
+}
+
+svg {
+	font: 10px sans-serif;
+	padding: 10px;
+	width: 90%;
+}
+
+.axis 
+.frame {
+	shape-rendering: crispEdges;
+}
+
+.axis path,
+.axis line {
+	fill:none;
+	stroke: black;
+	shape-rendering: crispEdges;
+}
+.axis line {
+	stroke: #ddd;
+}
+
+.axis path {
+	fill: none;
+	stroke:black;
+	
+}
+
+.frame {
+	fill: none;
+	strole: #aaa;
+}
+
+.extent {
+	fill:#000;
+	fill-opacity: .125;
+	stroke: #fff;
+}
+
+
+path {
+	opacity: 0.5;
+	stroke:black;
+}
+
+.deok {
+        margin: 10px 60px 10px 60px;
+    }
