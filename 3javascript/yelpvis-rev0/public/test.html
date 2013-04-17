@@ -1,0 +1,223 @@
+
+          <div class="ui-grid-a">
+              <div class="ui-block-a">
+                  <h2 class="deok">
+                      Contour Plot Configuration
+                  </h2>
+                  <div id="denMode" data-role="collapsible-set" data-theme="a" data-content-theme="b"
+                  class="deok">
+                      <div data-role="collapsible" data-collapsed="false">
+                          <h3>
+                              On/Off
+                          </h3>
+                          <div class="ui-grid-a">
+                              <div class="ui-block-a">
+                                  <div>
+                                      <p>
+                                          <b>
+                                              Shows Contour plot based on Kernel Densitity Estimation(KDE)
+                                          </b>
+                                      </p>
+                                  </div>
+                              </div>
+                              <div class="ui-block-b">
+                                  <div data-role="fieldcontain" id="contourON" class="deok">
+                                      <fieldset data-role="controlgroup">
+                                          <label for="contourON">
+                                          </label>
+                                          <select name="toggleswitch9" id="contourON" data-theme="" data-role="slider">
+                                              <option value="off">
+                                                  Off
+                                              </option>
+                                              <option value="on">
+                                                  On
+                                              </option>
+                                          </select>
+                                      </fieldset>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div data-role="collapsible">
+                          <h3>
+                              Density Mode
+                          </h3>
+                          <div>
+                              <p>
+                                  <b>
+                                      Density mode shows the density of the selected entities. &nbsp;The Ampitude
+                                      mode considers ratings information, so that the higher ratings the entities
+                                      have, the higher the contour will be.&nbsp;
+                                  </b>
+                              </p>
+                          </div>
+                          <div data-role="fieldcontain">
+                              <fieldset data-role="controlgroup" data-type="horizontal">
+                                  <legend>
+                                  </legend>
+                                  <input id="radio3" name="" value="den" type="radio">
+                                  <label for="radio3">
+                                      Density
+                                  </label>
+                                  <input id="radio4" name="" value="amp" type="radio">
+                                  <label for="radio4">
+                                      Amplitude
+                                  </label>
+                              </fieldset>
+                          </div>
+                      </div>
+                      <div data-role="collapsible">
+                          <h3>
+                              Bandwidth
+                          </h3>
+                          <div>
+                              <p>
+                                  <b>
+                                      Bandwidth determines how smooth the contour will be. &nbsp;Higher bandwidth
+                                      obscures most of the structure of data, while lower bandwidth undersmoothes
+                                      it.&nbsp;
+                                  </b>
+                              </p>
+                          </div>
+                          <div class="ui-grid-a">
+                              <div class="ui-block-a">
+                                  <div>
+                                      <p>
+                                          <b>
+                                              Use optimal bandwidth
+                                          </b>
+                                      </p>
+                                      <p>
+                                          <b>
+                                              (Not yet implemented)
+                                          </b>
+                                      </p>
+                                  </div>
+                              </div>
+                              <div class="ui-block-b">
+                                  <div data-role="fieldcontain">
+                                      <fieldset data-role="controlgroup">
+                                          <label for="toggleswitch10">
+                                          </label>
+                                          <select name="toggleswitch10" id="toggleswitch10" data-theme="" data-role="slider">
+                                              <option value="off">
+                                                  Off
+                                              </option>
+                                              <option value="on">
+                                                  On
+                                              </option>
+                                          </select>
+                                      </fieldset>
+                                  </div>
+                              </div>
+                          </div>
+                          <div data-role="fieldcontain" id="bandwidth" class="deok">
+                              <fieldset data-role="controlgroup">
+                                  <label for="bandwidth">
+                                      Value
+                                  </label>
+                                  <input id="bandwidth" type="range" name="slider" value="50" min="0" max="100"
+                                  data-highlight="false" data-track-theme="b">
+                              </fieldset>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="ui-block-b">
+                  <h2 class="deok">
+                      Selection Configuration
+                  </h2>
+                  <div data-role="collapsible-set" data-theme="a" data-content-theme="b"
+                  class="deok">
+                      <div data-role="collapsible" data-collapsed="false">
+                          <h3>
+                              On/Off
+                          </h3>
+                          <div class="ui-grid-a">
+                              <div class="ui-block-a">
+                                  <div>
+                                      <p>
+                                          <b>
+                                              Shows selection halo for the items that matched selection criteria.
+                                          </b>
+                                      </p>
+                                  </div>
+                              </div>
+                              <div class="ui-block-b">
+                                  <div data-role="fieldcontain" id="selectionON" class="deok">
+                                      <fieldset data-role="controlgroup">
+                                          <label for="selectionON">
+                                          </label>
+                                          <select name="toggleswitch11" id="selectionON" data-theme="" data-role="slider">
+                                              <option value="off">
+                                                  Off
+                                              </option>
+                                              <option value="on">
+                                                  On
+                                              </option>
+                                          </select>
+                                      </fieldset>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div data-role="collapsible">
+                          <h3>
+                              Selection Criteria
+                          </h3>
+                          <div>
+                              <p>
+                                  <b>
+                                      Select the Ratings range you want to see with the selection.&nbsp;
+                                  </b>
+                              </p>
+                              <p>
+                                  <b>
+                                      <br>
+                                  </b>
+                              </p>
+                          </div>
+                          <div data-role="fieldcontain">
+                              <fieldset data-role="controlgroup">
+                                  <label for="slider5">
+                                      Value
+                                  </label>
+                                  <input type="range" name="slider" value="50" min="0" max="100" data-highlight="false">
+                              </fieldset>
+                          </div>
+                      </div>
+                      <div data-role="collapsible">
+                          <h3>
+                              Group Mode
+                          </h3>
+                          <div>
+                              <p>
+                                  <b>
+                                      When in Group mode, selecting new entity will add to the collection. &nbsp;The
+                                      selection criteria will be applied either logical OR or logical And.
+                                  </b>
+                              </p>
+                          </div>
+                          <div id="groupMode" data-role="fieldcontain">
+                              <fieldset data-role="controlgroup" data-type="horizontal">
+                                  <legend>
+                                  </legend>
+                                  <input id="radio7" name="" value="ind" type="radio">
+                                  <label for="radio7">
+                                      Individual
+                                  </label>
+                                  <input id="radio8" name="" value="groupOR" type="radio">
+                                  <label for="radio8">
+                                      Group OR
+                                  </label>
+                                  <input id="radio9" name="" value="groupAND" type="radio">
+                                  <label for="radio9">
+                                      Group AND
+                                  </label>
+                              </fieldset>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          
