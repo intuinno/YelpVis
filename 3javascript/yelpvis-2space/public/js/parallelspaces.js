@@ -61,27 +61,7 @@ $('#page1').live('pageinit', function() {
 	var w = 450;
 	var h = 450;
 	var margin = 20;
-	var jobList = ['administrator',
-    'artist',
-    'doctor',
-    'educator',
-    'engineer',
-    'entertainment',
-    'executive',
-    'healthcare',
-    'homemaker',
-    'lawyer',
-    'librarian',
-    'marketing',
-    'none',
-    'other',
-    'programmer',
-    'retired',
-    'salesman',
-    'scientist',
-    'student',
-    'technician',
-    'writer'];
+	var categoryList = ['Mexican','Vegetarian', 'Breakfast & Brunch', 'American', 'Asian', 'Italian', 'Hotels & Travel','Arts & Entertainment', 'Nightlife','etc'];
     
 
  function updateDisplay(space, selectionState) {
@@ -516,6 +496,9 @@ SelectionStatesSpace.prototype = {
 	
 	var movieTitle = [];
 	var movieTitleOrig = [];
+	
+	var businessTitle = [];
+    var businessTitleOrig = [];
 
 	var ordinalColor = d3.scale.category10();
 
@@ -534,7 +517,8 @@ SelectionStatesSpace.prototype = {
 
    
 	//variables for Geo mapping
-	var proj = d3.geo.albersUsa();
+	var proj = d3.geo.albers();
+	               //.center([33.390792,-112.012504]);
 	var path = d3.geo.path().projection(proj);
 	var wasLocation = false;
 	var wasYAxisUser, wasYValueUser,wasYScaleUser; 
@@ -630,7 +614,7 @@ SelectionStatesSpace.prototype = {
 			.attr("transform","translate(" + margin + ",0)")
 			.call(yAxis);
 
-	d3.csv("data/ratings.csv", function(ratingsCSV) {
+	d3.csv("data/business_word.csv", function(ratingsCSV) {
 
 		ratings = ratingsCSV;
 		userLength = ratings.length;
@@ -644,7 +628,7 @@ SelectionStatesSpace.prototype = {
 
 	})
 
-	d3.csv("data/movieSpaceNoNormal.csv", function(movieCSV) {
+	d3.csv("data/word.csv", function(movieCSV) {
 
 		movieData = movieCSV;
 		
@@ -742,7 +726,7 @@ SelectionStatesSpace.prototype = {
 			delayOut : 1000,
 			title : function() {
 				var d = this.__data__, c = d.title;
-				return '<a href="' + d.url + '" target="_blank ">' + c + '</a>';
+				return  c  ;
 			}
 		});
 
@@ -816,7 +800,7 @@ SelectionStatesSpace.prototype = {
 			.attr("transform","translate(" + margin + ",0)")
 			.call(yAxisUser);
 	
-	d3.csv("data/userSpaceNoNormal.csv", function(userCSV) {
+	d3.csv("data/business.csv", function(userCSV) {
 
 		userData = userCSV;
 		
@@ -825,6 +809,12 @@ SelectionStatesSpace.prototype = {
 		rUserScale.domain(d3.extent(userData, function(d){ return +d.numReview; }));
 		fillUserScale.domain(d3.extent(userData, function(d){ return +d.avgReview; }));
 		
+
+        for (var count = 0; count < userData.length; count++) {
+
+            businessTitle[count] = userData[count].name;
+            businessTitleOrig[count] = userData[count].name;
+        }
 
 		svgUserGroup.selectAll("circle")
 					.data(userCSV, function(d) {
@@ -876,7 +866,7 @@ SelectionStatesSpace.prototype = {
 			                     
 			                     var newClass = selectionStatesUser.newClass(); 
 			                     var newQuery = [d];
-			                     var textLegend = d.age + ", " + d.sex + ", " + d.job + " (Ratings " + PSmin + "-" + PSmax + ") " + $('input[name=contourMode]:checked').val();
+			                     var textLegend = d.name + " (" + d.category + ") " + " (Ratings " + PSmin + "-" + PSmax + ") " + $('input[name=contourMode]:checked').val();
 			                     
 			                     var tempQuerySet = new QuerySets('user',newQuery, tempGalaxy, newClass,'single', PSmin, PSmax, textLegend,$('input[name=contourMode]:checked').val(),isContourOn);
                                  
@@ -919,7 +909,7 @@ SelectionStatesSpace.prototype = {
 			delayOut : 1000,
 			title : function() {
 				var d = this.__data__;
-				return d.age + ', ' + d.sex + ', ' + d.job;
+				return d.name;
 			}
 		});
 
@@ -1141,33 +1131,62 @@ SelectionStatesSpace.prototype = {
 
 
 
+	
 	$(function() {
 
-		$("#searchMovie").autocomplete({
-			source : movieTitle,
-			target : $('#suggestions'),
+        $("#searchWord").autocomplete({
+            source : movieTitle,
+            target : $('#suggestions'),
 
-			minLength : 1,
-			matchFromStart : false,
+            minLength : 1,
+            matchFromStart : false,
 
-			callback : function(e) {
+            callback : function(e) {
 
-				var $a = $(e.currentTarget);
-				$('#searchMovie').val($a.text());
-				$('#searchMovie').autocomplete('clear');
-				
-				var index = movieTitleOrig.indexOf($a.text());
+                var $a = $(e.currentTarget);
+                $('#searchWord').val($a.text());
+                $('#searchWord').autocomplete('clear');
+                
+                var index = movieTitleOrig.indexOf($a.text());
 
                 var selection = svgMovieGroup.selectAll("circle");
                 
                 var targetObject = selection.filter(function (d,i) { return i === index ? this:null;});
 
-				targetObject.on("click")(movieData[index],index);
+                targetObject.on("click")(movieData[index],index);
 
-			}
-		});
-	});
+            }
+        });
+    });
 	
+	    $(function() {
+
+        $("#searchBusiness").autocomplete({
+            source : businessTitle,
+            target : $('#suggestionsBusiness'),
+
+            minLength : 1,
+            matchFromStart : false,
+
+            callback : function(e) {
+
+                var $a = $(e.currentTarget);
+                $('#searchBusiness').val($a.text());
+                $('#searchBusiness').autocomplete('clear');
+                
+                var index = businessTitleOrig.indexOf($a.text());
+
+                var selection = svgUserGroup.selectAll("circle");
+                
+                var targetObject = selection.filter(function (d,i) { return i === index ? this:null;});
+
+                targetObject.on("click")(userData[index],index);
+
+            }
+        });
+    });
+    
+    
 	$('#movieXAxisMenu').on('change', function() {
 		
 		var $this = $(this),
@@ -1210,20 +1229,41 @@ SelectionStatesSpace.prototype = {
 										
 					break;
 															
-				case 'relDate':
-				
-					var timeFormat = d3.time.format("%e-%b-%Y");
-					
-					xDomainExtent = d3.extent(movieData, function(d){ return timeFormat.parse(d.date); });
-										
-					x = d3.time.scale().range([margin, w - margin]);
-					
-					xValue = function (d) {
-						return x((timeFormat.parse(d.date)));
-					}
-												
-					break;
-					
+				case 'useful':
+                    
+                    x = d3.scale.linear().range([margin, w - margin]);
+                
+                    xDomainExtent = d3.extent(movieData, function(d){return +d.useful_count;});
+                                                            
+                    xValue = function (d) {
+                        return x(+d.useful_count);
+                    }
+                                        
+                    break;
+                        
+                 case 'cool':
+                    
+                    x = d3.scale.linear().range([margin, w - margin]);
+                
+                    xDomainExtent = d3.extent(movieData, function(d){return +d.cool_count;});
+                                                            
+                    xValue = function (d) {
+                        return x(+d.cool_count);
+                    }
+                                        
+                    break;
+                    
+                 case 'funny':
+                    
+                    x = d3.scale.linear().range([margin, w - margin]);
+                
+                    xDomainExtent = d3.extent(movieData, function(d){return +d.funny_count;});
+                                                            
+                    xValue = function (d) {
+                        return x(+d.funny_count);
+                    }
+                                        
+                    break;
 					
 			}
 			
@@ -1302,20 +1342,43 @@ SelectionStatesSpace.prototype = {
 					}
 										
 					break;
-															
-				case 'relDate':
-				
-					var timeFormat = d3.time.format("%e-%b-%Y");
 					
-					yDomainExtent = d3.extent(movieData, function(d){ return timeFormat.parse(d.date); });
-										
-					y = d3.time.scale().range([ h - margin, margin]);
-					
-					yValue = function (d) {
-						return y((timeFormat.parse(d.date)));
-					}
-												
-					break;
+			     case 'cool':
+                
+                    y = d3.scale.linear().range([ h - margin, margin]);
+
+                    yDomainExtent = d3.extent(movieData, function(d){return +d.cool_count;});
+                                                            
+                    yValue = function (d) {
+                        return y(+d.cool_count);
+                    }
+                                        
+                    break;										
+			
+			     case 'funny':
+                
+                    y = d3.scale.linear().range([ h - margin, margin]);
+
+                    yDomainExtent = d3.extent(movieData, function(d){return +d.funny_count;});
+                                                            
+                    yValue = function (d) {
+                        return y(+d.funny_count);
+                    }
+                                        
+                    break;
+                    
+                 case 'useful':
+                
+                    y = d3.scale.linear().range([ h - margin, margin]);
+
+                    yDomainExtent = d3.extent(movieData, function(d){return +d.useful_count;});
+                                                            
+                    yValue = function (d) {
+                        return y(+d.useful_count);
+                    }
+                                        
+                    break;
+                    
 					
 					
 			}
@@ -1367,8 +1430,8 @@ SelectionStatesSpace.prototype = {
 		
 				var locationGroup = svgUserSelectionGroup.append("g").attr("id","states");
 		          
-		          proj.translate([310,250]);
-		          proj.scale(600);
+		          proj.translate([8300,-2300]);
+		          proj.scale(40000);
 		
 				d3.select("#states").selectAll("path")
 						.data(myStates.features)
@@ -1459,41 +1522,17 @@ SelectionStatesSpace.prototype = {
 					
 					break;
 															
-				case 'age':
+		
+		
 					
-					xScaleUser = d3.scale.linear().range([margin, w - margin]);
-
-					xDomainExtentUser = d3.extent(userData, function(d){return +d.age;});
-															
-					xValueUser = function (d) {
-						return xScaleUser(+d.age);
-					}
-					
-										
-					break;
-					
-				case 'gender':
+				case 'category':
 					
 					xScaleUser = d3.scale.ordinal().rangePoints([margin, w - margin],1);
 
-					xDomainExtentUser = ['M','F'];
+					xDomainExtentUser = categoryList;
 															
 					xValueUser = function (d) {
-						return xScaleUser(d.sex);
-					}
-							
-					
-								
-					break;
-					
-				case 'job':
-					
-					xScaleUser = d3.scale.ordinal().rangePoints([margin, w - margin],1);
-
-					xDomainExtentUser = jobList;
-															
-					xValueUser = function (d) {
-						return xScaleUser(d.job);
+						return xScaleUser(d.category);
 					}
 					
 										
