@@ -1,9 +1,8 @@
 ## 2013-04-17 6:16PM ##
 ### Change 
-New change to the query set class will happen.
+Editted Axis labels
 ### To Do 
-Change query set class 
-change display logic
+Update the js to reflect axis rotation. 
 
 
 ## 2013-03-31 1:19PM ##

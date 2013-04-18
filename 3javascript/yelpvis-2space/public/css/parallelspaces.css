@@ -25,6 +25,12 @@ div#movieTitle {
 	margin:0px 10px 0px 100px;
 }
 
+
+div#wordTitle {
+	display:inline;
+	margin:0px 10px 0px 200px;
+}
+
 div.smallLeft {
 	margin:10px 60px 10px 0px;
 }

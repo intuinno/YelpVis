@@ -58,8 +58,8 @@ $('#page1').live('pageinit', function() {
     });
     
     
-	var w = 600;
-	var h = 600;
+	var w = 450;
+	var h = 450;
 	var margin = 20;
 	var jobList = ['administrator',
     'artist',

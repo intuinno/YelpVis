@@ -37,33 +37,35 @@
 			<div data-theme="b" data-role="header">
 				<a data-role="button" id="resetButton" class="ui-btn-left"> Reset </a>
 				<a data-role="button" href="#page1" class="ui-btn-right"> Help </a>
-				<h3> MovieVis  - Explore, Talk &amp; Share Insignts about movies and yourself</h3>
+				<h3> YelpVis  - Explore hidden insignts in Yelp Dataset</h3>
 			</div>
 			<div data-role="content">
 				<!-- <div>
-					<h1><span> <span style="font-family: 'serif', sans-serif;"> Movievis </span> &nbsp; <span style="font-family: helvetica; font-size: medium;"> Explore, Discover, Talk &amp; Share about Movies and Yourself </span> </span></h1>
+					<h1><span> <span style="font-family: 'serif', sans-serif;"> YelpVis </span> &nbsp; <span style="font-family: helvetica; font-size: medium;"> Explore hidden insignts in Yelp Dataset </span> </span></h1>
 				</div> -->
 				<div id="middle" class="ui-grid-a">
-					<div class="ui-block-a SpaceTitle">
+					<div class="ui-block-a">
 						<div id="movieTitle">
-															<b> Movie Space 
-						</b> 
-							
-							
+							<b> Word Space </b>
 						</div>
 						<div class="searchBox">
-							
-								<input type="text" id="searchMovie" placeholder="Search movies by name">
+
+							<input type="text" id="searchWord" placeholder="Search Word by name">
 							<ul id="suggestions" data-role="listview" data-inset="true" data-filter-theme="d"></ul>
 							
 							
 						</div>
 					</div>
-					<div class="ui-block-b SpaceTitle">
-						<div>
-							<p style="text-align: center;">
-								<b> User Space </b>
-							</p>
+					<div class="ui-block-b">
+						<div id="wordTitle">
+							<b> Business Space </b>
+						</div>
+						<div class="searchBox">
+
+							<input type="text" id="searchBusiness" placeholder="Search Business by name">
+							<ul id="suggestions" data-role="listview" data-inset="true" data-filter-theme="d"></ul>
+							
+							
 						</div>
 					</div>
 					<div class="ui-block-a" id="movieCanvas">
@@ -87,9 +89,11 @@
 									<label for="movieXAxisMenu"> X Axis: </label>
 									<select id="movieXAxisMenu" name="">
 										<option value="sim1"> Similarity </option>
-										<option value="relDate"> Release Date </option>
 										<option value="avgReview"> Average Review </option>
 										<option value="numReview"> Number of Review </option>
+										<option value="useful"> Number of Useful </option>
+										<option value="funny"> Number of Funny </option>
+										<option value="cool"> Number of Cool </option>
 									</select>
 								</div>
 							</div>
@@ -98,9 +102,11 @@
 									<label for="movieYAxisMenu"> Y Axis: </label>
 									<select id="movieYAxisMenu" name="">
 										<option value="sim2"> Similarity </option>
-										<option value="relDate"> Release Date </option>
 										<option value="avgReview"> Average Review </option>
 										<option value="numReview"> Number of Review </option>
+										<option value="useful"> Number of Useful </option>
+										<option value="funny"> Number of Funny </option>
+										<option value="cool"> Number of Cool </option>
 									</select>
 								</div>
 							</div>
@@ -113,10 +119,8 @@
 									<label for="userXAxisMenu"> X Axis: </label>
 									<select id="userXAxisMenu" name="">
 										<option value="sim1"> Similarity </option>
-										<option value="age"> Age </option>
-										<option value="job"> Job </option>
 										<option value="location"> Location </option>
-										<option value="gender"> Gender </option>
+										<option value="category"> Category </option>
 										<option value="avgReview"> Average Review </option>
 										<option value="numReview"> Number of Review </option>
 									</select>
@@ -127,9 +131,7 @@
 									<label for="userYAxisMenu"> Y Axis: </label>
 									<select id="userYAxisMenu" name="">
 										<option value="sim2"> Similarity </option>
-										<option value="age"> Age </option>
-										<option value="job"> Job </option>
-										<option value="gender"> Gender </option>
+										<option value="category"> Category </option>
 										<option value="avgReview"> Average Review </option>
 										<option value="numReview"> Number of Review </option>
 									</select>
