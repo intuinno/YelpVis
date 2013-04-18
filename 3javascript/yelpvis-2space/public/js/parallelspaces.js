@@ -10,7 +10,7 @@ if( typeof Object.create !== 'function') {
 
 $('#page1').live('pageinit', function() {
 
-	var PSmin = 4, PSmax = 5;
+	var PSmin = 1, PSmax = 100;
 
 	$("#range-1a").on("change", function(event) {
 
@@ -1035,8 +1035,9 @@ SelectionStatesSpace.prototype = {
                 }
                 
                 for (index =0; index < z.query.length; index++) {
-                    myRating += ratings[d.num][z.query[index].index];    
-                } 
+                    myRating += ratings[d.num][z.query[index].index];  
+                     
+                 } 
                 return myRating;
             });
                 
