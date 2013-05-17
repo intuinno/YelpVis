@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>Movievis</title>
+		<link rel="stylesheet" href="css/my.css" />
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.0-rc.1/jquery.mobile-1.3.0-rc.1.min.css" />
+		
+		<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+		<script src="http://code.jquery.com/mobile/1.3.0-rc.1/jquery.mobile-1.3.0-rc.1.min.js"></script>
+		<script type="text/javascript" src="js/jquery.tipsy.js"></script>
+		<script type="text/javascript" src = "js/jqm.autoComplete-1.5.1.js"></script>
+		<script type="text/javascript" src = "js/queue.min.js"></script>
+		
+		<link href="css/tipsy.css" rel="stylesheet" type="text/css" />
+		<link href="css/visdock.css" rel="stylesheet" type="text/css" />
+
+		<script type="text/javascript" src="js/d3.v3.js"></script>
+		<script type="text/javascript" src="js/my.js"></script>
+		<script type="text/javascript" src="js/science.v1.js"></script>
+		<script type="text/javascript" src="js/conrec.js"></script>
+		<script type="text/javascript" src="js/parallelspaces.js"></script>
+		<link href="css/parallelspaces.css" rel="stylesheet" type="text/css" />
+		
+		<!-- Javascript files for Visdock -->
+		<script type="text/javascript" src="js/2D.js"></script>		
+		<script type="text/javascript" src="js/IntersectionUtilities.js"></script>
+		<script type="text/javascript" src="js/UtilitiesLibrary.js"></script>
+		<script type="text/javascript" src="js/visdock_new.js"></script>
+		
+
+		<!-- User-generated css -->
+		<style>
+		</style>
+
+		<!-- User-generated js -->
+		<script></script>
+	</head>
+	<body>
+		<!-- Home -->
+		<div data-role="page" id="page1">
+			<div data-theme="b" data-role="header">
+				<a data-role="button" id="resetButton" class="ui-btn-left"> Reset </a>
+				<a data-role="button" href="#page1" class="ui-btn-right"> Help </a>
+				<h3> YelpVis  - Explore hidden insignts in Yelp Dataset</h3>
+			</div>
+			<div data-role="content">
+				<!-- <div>
+					<h1><span> <span style="font-family: 'serif', sans-serif;"> YelpVis </span> &nbsp; <span style="font-family: helvetica; font-size: medium;"> Explore hidden insignts in Yelp Dataset </span> </span></h1>
+				</div> -->
+				<div id="middle" class="ui-grid-a">
+					<div class="ui-block-a">
+						<div id="movieTitle">
+							<b> Word Space </b>
+						</div>
+						<div class="searchBox">
+
+							<input type="text" id="searchWord" placeholder="Search Word by name">
+							<ul id="suggestions" data-role="listview" data-inset="true" data-filter-theme="d"></ul>
+							
+							
+						</div>
+					</div>
+					<div class="ui-block-b">
+						<div id="wordTitle">
+							<b> Business Space </b>
+						</div>
+						<div class="searchBox">
+
+							<input type="text" id="searchBusiness" placeholder="Search Business by name">
+							<ul id="suggestionsBusiness" data-role="listview" data-inset="true" data-filter-theme="d"></ul>
+							
+							
+						</div>
+					</div>
+					<div class="ui-block-a" id="movieCanvas">
+					
+					</div>
+					<div id="legend" class="ui-block-b" >
+						
+		
+					
+					</div>
+					
+					<div id="userCanvas" class="ui-blocl-c">
+
+					</div>
+						
+				
+					<div class="ui-block-a">
+						<div class="ui-grid-a smallLeft"  >
+							<div class="ui-block-a">
+								<div data-role="fieldcontain" id="movieXAxisMenuDiv">
+									<label for="movieXAxisMenu"> X Axis: </label>
+									<select id="movieXAxisMenu" name="">
+										<option value="sim1"> Similarity </option>
+										<option value="avgReview"> Average Review </option>
+										<option value="numReview"> Number of Review </option>
+										<option value="useful"> Number of Useful </option>
+										<option value="funny"> Number of Funny </option>
+										<option value="cool"> Number of Cool </option>
+									</select>
+								</div>
+							</div>
+							<div class="ui-block-b ">
+								<div data-role="fieldcontain" id="movieYAxisMenuDiv">
+									<label for="movieYAxisMenu"> Y Axis: </label>
+									<select id="movieYAxisMenu" name="">
+										<option value="sim2"> Similarity </option>
+										<option value="avgReview"> Average Review </option>
+										<option value="numReview"> Number of Review </option>
+										<option value="useful"> Number of Useful </option>
+										<option value="funny"> Number of Funny </option>
+										<option value="cool"> Number of Cool </option>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="ui-block-b">
+						<div class="ui-grid-a smallRight">
+							<div class="ui-block-a">
+								<div data-role="fieldcontain" id="userXAxisMenuDiv">
+									<label for="userXAxisMenu"> X Axis: </label>
+									<select id="userXAxisMenu" name="">
+										<option value="sim1"> Similarity </option>
+										<option value="location"> Location </option>
+										<option value="category"> Category </option>
+										<option value="avgReview"> Average Review </option>
+										<option value="numReview"> Number of Review </option>
+									</select>
+								</div>
+							</div>
+							<div class="ui-block-b">
+								<div data-role="fieldcontain" id="userYAxisMenuDiv">
+									<label for="userYAxisMenu"> Y Axis: </label>
+									<select id="userYAxisMenu" name="">
+										<option value="sim2"> Similarity </option>
+										<option value="category"> Category </option>
+										<option value="avgReview"> Average Review </option>
+										<option value="numReview"> Number of Review </option>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			
+				   <div class="ui-grid-a">
+              <div class="ui-block-a">
+                  <h2 class="deok">
+                      Contour Plot Configuration
+                  </h2>
+                  <div id="denMode" data-role="collapsible-set" data-theme="a" data-content-theme="b"
+                  class="deok">
+                      <div data-role="collapsible" data-collapsed="true">
+                          <h3>
+                              On/Off
+                          </h3>
+                          <div class="ui-grid-a">
+                              <div class="ui-block-a">
+                                  <div>
+                                      <p>
+                                          <b>
+                                              Shows Contour plot based on Kernel Densitity Estimation(KDE)
+                                          </b>
+                                      </p>
+                                  </div>
+                              </div>
+                              <div class="ui-block-b">
+                                  <div data-role="fieldcontain" id="contourONDiv" class="deok">
+                                      <fieldset data-role="controlgroup">
+                                          
+                                          <select name="toggleswitch9" id="contourON" data-theme="" data-role="slider">
+                                              
+                                              <option value="on">
+                                                  On
+                                              </option>
+                                              <option value="off">
+                                                  Off
+                                              </option>
+                                          </select>
+                                      </fieldset>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div data-role="collapsible">
+                          <h3>
+                              Density Mode
+                          </h3>
+                          <div>
+                              <p>
+                                  <b>
+                                      Density mode shows the density of the selected entities. &nbsp;The Ampitude
+                                      mode considers ratings information, so that the higher ratings the entities
+                                      have, the higher the contour will be.&nbsp;
+                                  </b>
+                              </p>
+                          </div>
+                          <div data-role="fieldcontain">
+                              <fieldset data-role="controlgroup" data-type="horizontal">
+                                  <legend>
+                                  </legend>
+                                  <input id="radio3" name="contourMode" value="den" type="radio" >
+                                  <label for="radio3">
+                                      Density
+                                  </label>
+                                  <input id="radio4" name="contourMode" value="amp" type="radio" checked="checked">
+                                  <label for="radio4">
+                                      Amplitude
+                                  </label>
+                              </fieldset>
+                          </div>
+                      </div>
+                      <div data-role="collapsible">
+                          <h3>
+                              Bandwidth
+                          </h3>
+                          <div>
+                              <p>
+                                  <b>
+                                      Bandwidth determines how smooth the contour will be. &nbsp;Higher bandwidth
+                                      obscures most of the structure of data, while lower bandwidth undersmoothes
+                                      it.&nbsp;
+                                  </b>
+                              </p>
+                          </div>
+                          <div class="ui-grid-a">
+                              <div class="ui-block-a">
+                                  <div>
+                                      <p>
+                                          <b>
+                                              Use optimal bandwidth
+                                          </b>
+                                      </p>
+                                      <p>
+                                          <b>
+                                              (Not yet implemented)
+                                          </b>
+                                      </p>
+                                  </div>
+                              </div>
+                              <div class="ui-block-b">
+                                  <div data-role="fieldcontain">
+                                      <fieldset data-role="controlgroup">
+                                          <label for="toggleswitch10">
+                                          </label>
+                                          <select name="toggleswitch10" id="toggleswitch10" data-theme="" data-role="slider">
+                                              <option value="off">
+                                                  Off
+                                              </option>
+                                              <option value="on">
+                                                  On
+                                              </option>
+                                          </select>
+                                      </fieldset>
+                                  </div>
+                              </div>
+                          </div>
+                          <div data-role="fieldcontain" id="bandwidth" class="deok">
+                              <fieldset data-role="controlgroup">
+                                  
+                                  <input id="bandwidth" type="range" name="slider" value="1" min="0.5" max="3"
+                                  data-highlight="false" data-track-theme="b">
+                              </fieldset>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="ui-block-b">
+                  <h2 class="deok">
+                      Selection Configuration
+                  </h2>
+                  <div data-role="collapsible-set" data-theme="a" data-content-theme="b"
+                  class="deok">
+                      <div data-role="collapsible" data-collapsed="true">
+                          <h3>
+                              On/Off
+                          </h3>
+                          <div class="ui-grid-a">
+                              <div class="ui-block-a">
+                                  <div>
+                                      <p>
+                                          <b>
+                                              Shows selection halo for the items that matched selection criteria.
+                                          </b>
+                                      </p>
+                                  </div>
+                                 
+                              </div>
+                              <div class="ui-block-b">
+                                  <div data-role="fieldcontain" id="selectionON" class="deok">
+                                      <fieldset data-role="controlgroup">
+                                          <label for="selectionON">
+                                          </label>
+                                          <select name="toggleswitch11" id="selectionON" data-theme="" data-role="slider">
+                                              <option value="off">
+                                                  Off
+                                              </option>
+                                              <option value="on">
+                                                  On
+                                              </option>
+                                          </select>
+                                      </fieldset>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div data-role="collapsible">
+                          <h3>
+                              Selection Criteria
+                          </h3>
+                          <div>
+                              <p>
+                                  <b>
+                                      Select the Ratings range you want to see with the selection.&nbsp;
+                                  </b>
+                              </p>
+                              <p>
+                                  <b>
+                                      <br>
+                                  </b>
+                              </p>
+                          </div>
+                          <div data-role="rangeslider">
+							<label for="range-1a">Ratings</label>
+							<input type="range" name="range-1a" id="range-1a" min="1" max="500" value="100" step="1">
+							<label for="range-1b">Ratings</label>
+							<input type="range" name="range-1b" id="range-1b" min="1" max="1000" value="1000" step="1">
+						</div>
+                      </div>
+                      <div data-role="collapsible">
+                          <h3>
+                              Group Mode
+                          </h3>
+                          <div>
+                              <p>
+                                  <b>
+                                      When in Group mode, selecting new entity will add to the collection. &nbsp;The
+                                      selection criteria will be applied either logical OR or logical And.
+                                  </b>
+                              </p>
+                          </div>
+                          <div id="groupMode" data-role="fieldcontain">
+                              <fieldset data-role="controlgroup" data-type="horizontal">
+                                  <legend>
+                                  </legend>
+                                  <input id="radio7" name="" value="ind" type="radio" checked = "checked">
+                                  <label for="radio7">
+                                      Individual
+                                  </label>
+                                  <input id="radio8" name="" value="groupOR" type="radio">
+                                  <label for="radio8">
+                                      Group OR
+                                  </label>
+                                  <input id="radio9" name="" value="groupAND" type="radio">
+                                  <label for="radio9">
+                                      Group AND
+                                  </label>
+                              </fieldset>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div>
+          	
+          	<a href="#" id="saveas">Generate download Preview</a>
+          	
+          </div>
+			
+			</div>
+			<div data-theme="b" data-role="footer" data-position="fixed">
+				<a data-role="button" data-inline="true" href="#page1" class="ui-btn-right"> Button </a>
+				<a data-role="button" data-theme="e" href="http://www.intuinno.com" class="ui-btn-right"> intuinno </a>
+				<h3> by intuinno </h3>
+				<a data-role="button" data-theme="e" href="https://engineering.purdue.edu/pivot/"
+				class="ui-btn-left"> PivotLab </a>
+			</div>
+			
+       
+		
+		
+		</div>
+		
+	</body>
+</html>
