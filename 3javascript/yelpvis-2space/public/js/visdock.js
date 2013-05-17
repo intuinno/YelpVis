@@ -25,7 +25,7 @@ numButtonCols = 3,
 buttonOffset = dockWidth / numButtonCols,
 titleOffset = 12,
 buttonSize = (dockWidth - (numButtonCols + 1) * padding) / numButtonCols,
-VERSION = "1.0";
+VERSION = "0.1";
 
 var captured = [];
 var num0 = 0;
@@ -116,7 +116,7 @@ var RectangleTool = {
 	    	var box = RectangleTool.getBoundingBox(d3.mouse(this));
 	    	Toolbox.select("Rectangle", [[(box[0] - Panel.x), (box[1] -Panel.y)], [(box[0] - Panel.x), (box[1] - Panel.y) + box[3]],
 			    	[(box[0] - Panel.x) + box[2], (box[1] - Panel.y) + box[3]],
-			    	[(box[0] - Panel.x) + box[2], (box[1] - Panel.y)]], true);
+			    	[(box[0] - Panel.x) + box[2], (box[1] - Panel.y)]], Toolbox.inclusive);
 	    
 	    // Remove the bounding box
 	    	RectangleTool.bbox.remove();
@@ -186,7 +186,7 @@ var EllipseTool = {
 	    	var y = d3.mouse(this)[1] - Panel.y;
 	    	var ellip = EllipseTool.getBoundingEllipse([x,y]);
 
-	    	Toolbox.select("Ellipse", ellip, true);
+	    	Toolbox.select("Ellipse", ellip, Toolbox.inclusive);
 	    
 	    // Remove the bounding box
 	    	EllipseTool.bellipse.remove();
@@ -298,7 +298,7 @@ var LassoTool = {
 	    //}
 
 	    // Forward the selection
-	    	Toolbox.select("Lasso", LassoTool.rPoints, true);
+	    	Toolbox.select("Lasso", LassoTool.rPoints, Toolbox.inclusive);
 	    
 	    // Remove the bounding box
 	    	LassoTool.blasso.remove();
@@ -613,7 +613,7 @@ var Freeselect = {
 	    //}
 
 	    // Forward the selection
-	    	Toolbox.select("Freeselect", Freeselect.rPoints, true);
+	    	Toolbox.select("Freeselect", Freeselect.rPoints, Toolbox.inclusive);
 	    	Freeselect.points = [];
 	    	Freeselect.rPoints = [];
 	    
@@ -745,7 +745,7 @@ var PolygonTool = {
 	        	PolygonTool.bpolygon.remove();
 	       	 	PolygonTool.bpolygon = null;
 	    // Forward the selection
-	    		Toolbox.select("Polygon", Polyline.rPoints, true);
+	    		Toolbox.select("Polygon", Polyline.rPoints, Toolbox.inclusive);
 	    		PolygonTool.points = [];
 	    		PolygonTool.rPoints = [];
 	   	 	}
@@ -922,7 +922,7 @@ var AnnotatedByPointTool = {
 					if(div.style("width") != divWidth || div.style("height") != divHeight) {
 						foreignObject.attr("width", parseInt(div.style("width"))+20);
 						foreignObject.attr("height", parseInt(div.style("height")) + 15);
-						span.style("left", (parseInt(div.style("width")) - 32) + "px");
+						span.style("left", (parseInt(div.style("width")) - 40) + "px");
 						divWidth = div.style("width");
 						divHeight = div.style("height");
 						if(annotation.select("line").attr("x2") < AnnotatedByPointTool.start[0] && annotation.select("line").attr("y2") < AnnotatedByPointTool.start[1]) {
@@ -955,10 +955,10 @@ var AnnotatedByPointTool = {
 					var newText = window.prompt("Please enter the text you want to annotate");
 					if(newText != null && newText != "") {
 						div.text(newText);
-						QueryManager.names[parseInt(this.getAttributeNS(null,"class"))].text(newText);
+						QueryManager.names2[parseInt(this.getAttributeNS(null,"class"))].text(newText);
 						span = div.append("xhtml:span").attr("class", "close-btn").attr("id", this.getAttributeNS(null,"class"));
 						span.append("xhtml:a").attr("href", "#").text("x");
-						span.style("left", (parseInt(div.style("width")) - 32) + "px");
+						span.style("left", (parseInt(div.style("width")) - 40) + "px");
 						span.on("mousedown", function(){
 							d3.event.stopPropagation();
 							Panel.panel.on("mouseup",null);
@@ -985,7 +985,7 @@ var AnnotatedByPointTool = {
 		annotationArray[index][0].select("div").text(newname);
 		var span = annotationArray[index][0].select("div").append("xhtml:span").attr("class", "close-btn").attr("id", index);
 		span.append("xhtml:a").attr("href", "#").text("x");
-		span.style("left", (parseInt(annotationArray[index][0].select("div").style("width")) - 32) + "px");
+		span.style("left", (parseInt(annotationArray[index][0].select("div").style("width")) - 40) + "px");
 		span.on("mousedown", function(){
 			d3.event.stopPropagation();
 			Panel.panel.on("mouseup",null);
@@ -1167,7 +1167,7 @@ var AnnotatedByAreaTool = {
 						if(div.style("width") != divWidth || div.style("height") != divHeight) {
 							foreignObject.attr("width", parseInt(div.style("width"))+20);
 							foreignObject.attr("height", parseInt(div.style("height")) + 15);
-							span.style("left", (parseInt(div.style("width")) - 32) + "px");
+							span.style("left", (parseInt(div.style("width")) - 40) + "px");
 							divWidth = div.style("width");
 							divHeight = div.style("height");
 							if(annotation.select("line").attr("x2") < AnnotatedByAreaTool.pointStart[0] && annotation.select("line").attr("y2") < AnnotatedByAreaTool.pointStart[1]) {
@@ -1203,7 +1203,7 @@ var AnnotatedByAreaTool = {
 							QueryManager.names[parseInt(this.getAttributeNS(null,"class"))].text(newText);
 							span = div.append("xhtml:span").attr("class", "close-btn").attr("id", this.getAttributeNS(null,"class"));
 							span.append("xhtml:a").attr("href", "#").text("x");
-							span.style("left", (parseInt(div.style("width")) - 32) + "px");
+							span.style("left", (parseInt(div.style("width")) - 40) + "px");
 							span.on("mousedown", function(){
 								d3.event.stopPropagation();
 								Panel.panel.on("mouseup",null);
@@ -1260,7 +1260,7 @@ var AnnotatedByAreaTool = {
 		annotationArray[index][0].select("div").text(newname);
 		var span = annotationArray[index][0].select("div").append("xhtml:span").attr("class", "close-btn").attr("id", index);
 		span.append("xhtml:a").attr("href", "#").text("x");
-		span.style("left", (parseInt(annotationArray[index][0].select("div").style("width")) - 32) + "px");
+		span.style("left", (parseInt(annotationArray[index][0].select("div").style("width")) - 40) + "px");
 		span.on("mousedown", function(){
 			d3.event.stopPropagation();
 			Panel.panel.on("mouseup",null);
@@ -1452,6 +1452,7 @@ var BirdView = {
 var Toolbox = {
     dock: null,
     currTool: null,
+    inclusive: 1,
     x: 0,
     y: dockHeight - dockHeight/4 -4,
     scale: 1,
@@ -1465,8 +1466,8 @@ var Toolbox = {
 
 	// Create a group
 		this.dock = svg.append("g")
-	    	.attr("transform", "translate(" + (width - dockWidth + 1) 
-		  	+ ", 0)");
+	    	//.attr("transform", "translate(" + (width - dockWidth + 1) 
+		  	//+ ", 0)");
 	
 	// Create the main button panel
 		/*
@@ -1503,24 +1504,27 @@ var Toolbox = {
 		    //this.setAttributeNS(null,"fill","crimson")
 		    //MinMaxImage.attr("transform", "rotate(180)");
 		    this.setAttributeNS(null,"points","185,1 191,10 197,1 ")
-		    BirdView.panel.attr("display", "none");
+		    //BirdView.panel.attr("display", "none");
 		    for (var i=0;i<Toolbox.tools.length;i++){
 			button[i].attr("display","none")
+
 		    }
 		    Toolbox.panelbox.attr("height",20)
 		    QueryManager.dock.attr("display","none")
+		    checkbox.attr("display","none")
 		}
 		else{
 		    Toolbox.hideorshow = 1;
 		    this.setAttributeNS(null,"points","185,10 197,10 191,1")
 		  //  this.setAttributeNS(null,"fill","lightgreen")
 		    //MinMaxImage.attr("transform", "rotate(180)");
-		    BirdView.panel.attr("display", "inline");
+		    //BirdView.panel.attr("display", "inline");
 		    for (var i=0;i<Toolbox.tools.length;i++){
 			button[i].attr("display","inline")
 		    }
 		    Toolbox.panelbox.attr("height",dockHeight)
 		    QueryManager.dock.attr("display","inline")
+		    checkbox.attr("display","inline")
 		}
 	    })
 	    //.attr("transform", "rotation(180)");
@@ -1540,7 +1544,7 @@ var Toolbox = {
 	    	.text("VisDock v" + VERSION);
 	var button = []	
 	//adds the bird's eye view of the visualizatio
-	 BirdView.init(this.dock, dockWidth, height); 		
+	 //BirdView.init(this.dock, dockWidth, height); 		
 	
 	// Figure out the vertical offset
 		var offset = parseInt(title.style("font-size"), 10);
@@ -1585,8 +1589,41 @@ var Toolbox = {
 				.attr("xlink:href", this.tools[i].image);
 
 		}
-	
-		this.setTool(PointerTool);
+	// Create Checkbox
+	    var yPos = Math.floor(this.tools.length / numButtonCols) * buttonOffset +
+		offset;
+	    var checkbox = this.dock.append("g")
+	    checkbox.append("rect")
+		.attr("x",25)//100)
+		.attr("y", yPos-2)
+		.attr("width",15)
+		.attr("height",15)//alert("CSDCS")
+		.attr("fill","white")
+		//.attr("stroke","black")
+		//.on("click",function(){alert(checked)})	
+	    var checked = checkbox.append("svg:image")
+		.attr("x",25)
+		.attr("y",yPos-2)
+		.attr("width",15)
+		.attr("height",15)
+		.attr("xlink:href", "images/checkbox_yes.png")
+		.on("click",function(){if (Toolbox.inclusive == true){
+					    Toolbox.inclusive = false;//alert("0")
+					    checked.attr("xlink:href","images/checkbox_no.png")
+					    //checked.setAttributeNS(null,"xlink:href", "images/checkbox_no.png")
+					}
+					else{
+					    Toolbox.inclusive = true;//alert("1")
+					    checked.attr("xlink:href","images/checkbox_yes.png")
+					    //checked.setAttributeNS(null,"xlink:href", "images/checkbox_yes.png")	
+					}
+			
+					})	
+//alert(checked.attr("xlink:href"))
+	    checkbox.append("text")
+		.attr("x",42)
+		.attr("y",yPos+11)
+		.text("Borderline Inclusive")
     },
 
     setTool: function(tool) {
@@ -1721,6 +1758,7 @@ var Toolbox = {
 var QueryManager = {
     dock: null,
     names: [],
+    names2: [],
     query: [],
     querytoggle: [],
     querybox: [],
@@ -1768,8 +1806,8 @@ var QueryManager = {
     init: function(svg, width, height) {
 	// Create a group
 	this.dock = svg.append("g")
-	    .attr("transform", "translate(" + (width - dockWidth) 
-		  + "," + dockHeight + ")");
+	    //.attr("transform", "translate(" + (width - dockWidth) 
+		//  + "," + dockHeight + ")"); 
 	this.dock.append("rect")
 	    .attr("width", queryWidth)
 	    .attr("height", queryHeight)
@@ -2113,8 +2151,7 @@ var QueryManager = {
 	    .attr("width", queryWidth/4 - 2*this.margin)
 	    .attr("height", query_box_height - 2*this.margin)
 	    .attr("style","fill: white; stroke: black")
-	    .on("mousedown", function(){//alert(QueryManager.querytoggle)
-				//trash.attr("style","fill: white; stroke: black");
+	    .on("mousedown", function(){
 				var union = []
 //alert(QueryManager.querytoggle.length)
 				for (var j=0;j<QueryManager.querytoggle.length;j++){
@@ -2155,18 +2192,18 @@ var QueryManager = {
 				//QueryManager.xortoggle=0;
 				//trash.attr("style","fill: white; stroke: black");
 				var union = []
-				alert(QueryManager.querytoggle.length)
+				//alert(QueryManager.querytoggle.length)
 				for (var j=0;j<QueryManager.querytoggle.length;j++){
 //alert("failed")
-				alert(QueryManager.querytoggle)
-				alert(VisDock.captured[QueryManager.querytoggle[j]].length)
+				//alert(QueryManager.querytoggle)
+				//alert(VisDock.captured[QueryManager.querytoggle[j]].length)
 				    for (var k=0;k<VisDock.captured[QueryManager.querytoggle[j]].length;k++){
 					if (union.indexOf(VisDock.captured[QueryManager.querytoggle[j]][k]) == -1){
 					    union.push(VisDock.captured[QueryManager.querytoggle[j]][k]);
 					}
 				    }
 				}
-				alert(union)
+				//alert(union)
 				num++;
 				QueryManager.addQuery();
 				VisDock.captured[num] = union;
@@ -2197,19 +2234,18 @@ var QueryManager = {
 				//QueryManager.commontoggle=0;
 				//QueryManager.xortoggle=0;
 				//trash.attr("style","fill: white; stroke: black");
-				var first = [];
-				var common = []
-				for (var j=0;j<QueryManager.querytoggle.length;j++){
-				    for (var k=0;k<VisDock.captured[QueryManager.querytoggle[j]].length;k++){
-					if (j == 0){
-					    first.push(VisDock.captured[QueryManager.querytoggle[j]][k]);
-					}
-					else{
-					    if (first.indexOf(VisDock.captured[QueryManager.querytoggle[j]][k]) != -1){
-					        common.push(VisDock.captured[QueryManager.querytoggle[j]][k]);
-					    }
+				var first = VisDock.captured[QueryManager.querytoggle[0]];
+				var common = [];
+				for (var i=1;i<QueryManager.querytoggle.length;i++){
+				    var valid = 1;
+				    common = [];
+				    for (var j=0;j<VisDock.captured[QueryManager.querytoggle[i]].length;j++){
+					if (first.indexOf(VisDock.captured[QueryManager.querytoggle[i]][j]) != -1){
+					    common.push(VisDock.captured[QueryManager.querytoggle[i]][j])					
 					}
 				    }
+				    first = common;
+
 				}
 				if (common.length != 0){
 				    num++;
@@ -2239,19 +2275,18 @@ var QueryManager = {
 				//QueryManager.commontoggle=0;
 				//QueryManager.xortoggle=0;
 				//trash.attr("style","fill: white; stroke: black");
-				var first = [];
-				var common = []
-				for (var j=0;j<QueryManager.querytoggle.length;j++){
-				    for (var k=0;k<VisDock.captured[QueryManager.querytoggle[j]].length;k++){
-					if (j == 0){
-					    first.push(VisDock.captured[QueryManager.querytoggle[j]][k]);
-					}
-					else{
-					    if (first.indexOf(VisDock.captured[QueryManager.querytoggle[j]][k]) != -1){
-					        common.push(VisDock.captured[QueryManager.querytoggle[j]][k]);
-					    }
+				var first = VisDock.captured[QueryManager.querytoggle[0]];
+				var common = [];
+				for (var i=1;i<QueryManager.querytoggle.length;i++){
+				    var valid = 1;
+				    common = [];
+				    for (var j=0;j<VisDock.captured[QueryManager.querytoggle[i]].length;j++){
+					if (first.indexOf(VisDock.captured[QueryManager.querytoggle[i]][j]) != -1){
+					    common.push(VisDock.captured[QueryManager.querytoggle[i]][j])					
 					}
 				    }
+				    first = common;
+
 				}
 				if (common.length != 0){
 				    num++;
@@ -2283,19 +2318,18 @@ var QueryManager = {
 				//QueryManager.commontoggle=0;
 				//QueryManager.xortoggle=0;
 				//trash.attr("style","fill: white; stroke: black");
-				var first = [];
-				var common = []
-				for (var j=0;j<QueryManager.querytoggle.length;j++){
-				    for (var k=0;k<VisDock.captured[QueryManager.querytoggle[j]].length;k++){
-					if (j == 0){
-					    first.push(VisDock.captured[QueryManager.querytoggle[j]][k]);
-					}
-					else{
-					    if (first.indexOf(VisDock.captured[QueryManager.querytoggle[j]][k]) != -1){
-					        common.push(VisDock.captured[QueryManager.querytoggle[j]][k]);
-					    }
+				var first = VisDock.captured[QueryManager.querytoggle[0]];
+				var common = [];
+				for (var i=1;i<QueryManager.querytoggle.length;i++){
+				    var valid = 1;
+				    common = [];
+				    for (var j=0;j<VisDock.captured[QueryManager.querytoggle[i]].length;j++){
+					if (first.indexOf(VisDock.captured[QueryManager.querytoggle[i]][j]) != -1){
+					    common.push(VisDock.captured[QueryManager.querytoggle[i]][j])					
 					}
 				    }
+				    first = common;
+
 				}
 				var union = []
 				for (var j=0;j<QueryManager.querytoggle.length;j++){
@@ -2305,7 +2339,7 @@ var QueryManager = {
 					}
 				    }
 				}
-	//alert("common = " + common.length);alert(union.length)
+	//alert("common = " + common.length);//alert(union.length)
 				var xor = [];
 				for (var i=0;i<union.length;i++){
 				    if (common.indexOf(union[i]) == -1){
@@ -2339,19 +2373,17 @@ var QueryManager = {
 				//QueryManager.commontoggle=0;
 				//QueryManager.xortoggle=0;
 				//trash.attr("style","fill: white; stroke: black");
-				var first = [];
-				var common = []
-				for (var j=0;j<QueryManager.querytoggle.length;j++){
-				    for (var k=0;k<VisDock.captured[QueryManager.querytoggle[j]].length;k++){
-					if (j == 0){
-					    first.push(VisDock.captured[QueryManager.querytoggle[j]][k]);
-					}
-					else{
-					    if (first.indexOf(VisDock.captured[QueryManager.querytoggle[j]][k]) != -1){
-					        common.push(VisDock.captured[QueryManager.querytoggle[j]][k]);
-					    }
+				var first = VisDock.captured[QueryManager.querytoggle[0]];
+				var common = [];
+				for (var i=1;i<QueryManager.querytoggle.length;i++){
+				    var valid = 1;
+				    common = [];
+				    for (var j=0;j<VisDock.captured[QueryManager.querytoggle[i]].length;j++){
+					if (first.indexOf(VisDock.captured[QueryManager.querytoggle[i]][j]) != -1){
+					    common.push(VisDock.captured[QueryManager.querytoggle[i]][j])					
 					}
 				    }
+				    first = common;
 				}
 				var union = []
 				for (var j=0;j<QueryManager.querytoggle.length;j++){
@@ -2445,6 +2477,9 @@ var QueryManager = {
 							str = str + newname[j]
 						    }
 						    str = str + "..."
+						}
+						else{
+						    str = newname;
 						}
 						if (newname != null){
 						    QueryManager.names[index]// = QueryManager.query[index].append("svg:text")
@@ -2825,6 +2860,9 @@ var QueryManager = {
 						    }
 						    str = str + "..."
 						}
+						else{
+						    str = newname;
+						}
 //alert(newname.length);	
 						if (newname != null){
 						    //this.text(newname)
@@ -2881,7 +2919,7 @@ var QueryManager = {
 		    QueryManager.annotation[numAnno-1] = [];
 		    QueryManager.annotationbox[numAnno-1] = [];
 		    QueryManager.exit[numAnno-1] = [];
-		    QueryManager.names[numAnno-1] = [];
+		    QueryManager.names2[numAnno-1] = [];
 			//QueryManager.annotationtoggle[numAnno-1] = 0;
 		    QueryManager.annotation[numAnno-1] = QueryManager.dock.append("g")
 		        .attr("transform", "translate(0, " + (query_posy+query_box_height*(QueryManager.remove+QueryManager.relative)) + ")")
@@ -2924,8 +2962,12 @@ var QueryManager = {
 						    }
 						    str = str + "..."
 						}
+						else{
+						    str = newname;
+						}
+//alert("FSJKLJFDKLS")
 						if (newname != null){
-						    QueryManager.names[index]// = QueryManager.query[index].append("svg:text")
+						    QueryManager.names2[index]// = QueryManager.query[index].append("svg:text")
 		        				.text(str)
 						};})
 
@@ -3220,7 +3262,7 @@ var QueryManager = {
 							    QueryManager.extra = -1*(numAnno-8+QueryManager.remove)*QueryManager.ScrollHeight/(numAnno+QueryManager.remove);
 							}
 							})
-		    QueryManager.names[numAnno-1] = QueryManager.annotation[numAnno-1].append("svg:text")
+		    QueryManager.names2[numAnno-1] = QueryManager.annotation[numAnno-1].append("svg:text")
 			.attr("class",numAnno-1)
 		        .attr("x", 10)
 		        .attr("y", query_box_height / 2 + QueryManager.margin)
@@ -3228,16 +3270,19 @@ var QueryManager = {
 			.on("dblclick", function() {var index = parseInt(this.getAttributeNS(null,"class"));
 						var str = "Label" + (index+1).toString();
 						var newname = prompt("Enter new label please",str)
-						var str;
-						if (newname.length > 10){
-						    for (var j=0;j<10;j++){
+						var str = [];
+						if (newname.length > 7){
+						    for (var j=0;j<7;j++){
 							str = str + newname[j]
 						    }
-						    str = str + "..."
+						    str = str + "...";
+						}
+						else{
+						    str = newname;
 						}
 						if (newname != null){
 						    //this.text(newname)
-							QueryManager.names[index].text(newname);
+							QueryManager.names2[index].text(str);
 							if(annotationArray[index][1] == 0) {
 								AnnotatedByPointTool.changeLabel(str, index);
 							}
@@ -3390,7 +3435,7 @@ var VisDock = {
     numSvgText: 0,
     init_text: 0,
     query: [],
-    
+    birdtemp: [],
     // Selection handler - provided by host visualization:
     //
     // getHits(polygon, inclusive : boolean) - returns a list of
@@ -3404,12 +3449,14 @@ var VisDock = {
     init: function(selector, width, height) {
 
 		this.svg = d3.select(selector).append("svg")
-	   		.attr("width", width)
+	   		.attr("width", dockWidth)
 	    	.attr("height", height);
 
-		Panel.init(this.svg, width, height);
+		//Panel.init(this.svg, width, height);
+		//Panel.init(selector, width, height);
 
 		Toolbox.init(this.svg, width, height);
+
 		if (this.init_text == 0){
 		    var init_text = document.getElementsByTagName("g")
 		    this.init_text = init_text.length;
@@ -3422,15 +3469,32 @@ var VisDock = {
 
 		QueryManager.init(this.svg, width, height);
 
+// initialize bird eye
+		var h = height/width * dockWidth;
+		//alert(dockHeight + " " + queryHeight + " " + width + " " + dockWidth)
+//		this.birdtemp = new Image;
+
+/*		this.birdtemp = this.svg.append("g")
+		    .attr("transform","translate(" + (width-dockWidth) + "," + (dockHeight+queryHeight+query_box_height-8) + ")");
+		this.birdtemp.append("rect")
+		    .attr("rx",5).attr("ry",5)
+		    .attr("width", dockWidth)
+		    .attr("height", h)
+		    .attr("fill", "white")
+		    .attr("stroke","black") 
+*/
+//alert(this.birdtemp)	
+
     },
 	
-	getBirdViewport: function(){
+    getBirdViewport: function(){
 
     	return BirdView.viewport;
-   	},
-   	StartBirdViewBound : function (width,height, tx, ty, sx, sy){
+    },
+    StartBirdViewBound : function (width,height, tx, ty, sx, sy){
    		BirdView.StartBound(width,height, tx, ty, sx, sy);
-   	},
+    },
+
     getViewport: function() {
 		return Panel.hostvis;
     }

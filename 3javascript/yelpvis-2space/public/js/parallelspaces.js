@@ -670,9 +670,9 @@ SelectionStatesSpace.prototype = {
 					.on("zoom",zoomedMovie);
 					
 	VisDock.init("div#movieCanvas",450,450);
-    
+
     var svgMovie = VisDock.getViewport();
-    
+
 	svgMovie.attr("height", h)
 						.attr("viewBox", "0 0 " + w + " " +h)
 						.attr("title", "Movie Space")
