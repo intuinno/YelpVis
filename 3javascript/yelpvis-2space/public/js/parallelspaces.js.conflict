@@ -669,11 +669,13 @@ SelectionStatesSpace.prototype = {
 					.y(y)
 					.on("zoom",zoomedMovie);
 					
+
 	VisDock.init("#legend",dockWidth,900);
 
 	var svgMovie = d3.select("#movieCanvas").append("svg")
 
     //var svgMovie = VisDock.getViewport();
+
 
 	svgMovie.attr("height", h)
 						.attr("viewBox", "0 0 " + w + " " +h)
