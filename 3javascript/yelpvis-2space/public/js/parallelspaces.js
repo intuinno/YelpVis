@@ -670,6 +670,7 @@ SelectionStatesSpace.prototype = {
 					.on("zoom",zoomedMovie);
 					
 	VisDock.init("div#movieCanvas",450,450);
+	VisDock.init("div#legend",450,450);
     
     var svgMovie = VisDock.getViewport();
     
