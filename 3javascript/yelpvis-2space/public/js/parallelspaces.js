@@ -553,14 +553,14 @@ SelectionStatesSpace.prototype = {
 }
 
     //Variables for Index 
-    var svgLegend = d3.select("#legend")
+/*    var svgLegend = d3.select("#legend")
                     .append("svg")
                         .attr("height", 300);
                         //.attr("viewBox", "0 0 " + 100 + " " +h)
                         //.style("border", "1px solid silver");
                         
                         //.attr("transform", "translate(" + margin + "," + margin + ")");   
-    
+  */  
     
     //Array of QuerySets to represent selection States
     //selectionStatesMovie is for when movies are selected
@@ -669,9 +669,11 @@ SelectionStatesSpace.prototype = {
 					.y(y)
 					.on("zoom",zoomedMovie);
 					
-	VisDock.init("div#legend",450,900);
+	VisDock.init("#legend",dockWidth,900);
 
-    var svgMovie = VisDock.getViewport();
+	var svgMovie = d3.select("#movieCanvas").append("svg")
+
+    //var svgMovie = VisDock.getViewport();
 
 	svgMovie.attr("height", h)
 						.attr("viewBox", "0 0 " + w + " " +h)
@@ -701,7 +703,7 @@ SelectionStatesSpace.prototype = {
 							.attr("height",h-margin)
 							.attr("fill","white");
 						
-						
+	Panel.panel = svgMovieBody;					
 						
 
     var svgMovieContourGroup = svgMovieBody.append("svg:g").attr('class','movieContourGroup');

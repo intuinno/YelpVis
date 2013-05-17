@@ -69,6 +69,10 @@ var RectangleTool = {
     install: function() {
 	//VisDock.selectionHandler = true;
 	//alert(VisDock.selectionHandler)
+	//alert(svgMovieBody)
+		//svgMovieBody.selectAll("*").attr("pointer-events", "none");
+		//svgMovieBody.on("mousedown", RectangleTool.mousedown);
+		
 		Panel.viewport.selectAll("*").attr("pointer-events", "none");
 		Panel.panel.on("mousedown", RectangleTool.mousedown);
     },
