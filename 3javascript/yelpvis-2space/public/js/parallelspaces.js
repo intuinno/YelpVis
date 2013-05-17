@@ -65,6 +65,110 @@ $('#page1').live('pageinit', function() {
 	var margin = 20;
 	var categoryList = ['Mexican','Vegetarian', 'Breakfast & Brunch', 'American', 'Asian', 'Italian', 'Hotels & Travel','Arts & Entertainment', 'Nightlife','etc'];
     
+    VisDock.selectionHandler = {
+        
+        getHitsPolygon: function(points, inclusive){
+
+            var aa = getCircles();
+            
+            var nElements = getNumberOfCircles();   
+    
+            //var aa2 = getNodes(nElements);
+    
+            var hits = [];
+    
+            var count = 0;
+    
+            var captured = 0;
+
+            var shapebound = PolygonInit(points,[0,0]);
+
+            for (var i=0; i<nElements; i++){
+        
+                captured = 0;
+        
+                captured = CirclePolygonIntersection(points,shapebound,aa[i], inclusive);
+        
+                if (captured == 1 && CheckNodeConditions(aa[i],"class","leaf node")){
+        
+                    hits[count] = i;
+                    count++;
+                }
+            }
+            
+            return hits;
+
+        },
+    getHitsEllipse: function(points, inclusive){
+    var aa = getCircles();
+    var nElements = getNumberOfCircles();   
+    var aa2 = getNodes(nElements);
+    var hits = [];
+    var count = 0;
+    var captured = 0;
+    //var shapebound = PolygonInit(points);;
+
+    for (var i=0; i<nElements; i++){
+        captured = 0;
+        captured = CircleEllipseIntersection(points,aa[i]);
+        //alert(CheckNodeConditions(aa2[i],"class","leaf node"));
+        
+        if (captured == 1 && CheckNodeConditions(aa2[i],"class","leaf node")){
+        hits[count] = i;
+        count++;
+        }
+    }
+    return hits;
+    },
+    getHitsLine: function(points, inclusive){
+    var aa = getCircles();
+    var nElements = getNumberOfCircles();
+var sss=document.getElementsByTagName("g");
+//alert(sss.length)
+//alert(sss[4].getAttributeNS(null,"class"))
+    var aa2 = getNodes(nElements);
+    var hits = [];
+    var count = 0;
+    var captured = 0;
+
+    for (var i=0; i<nElements; i++){
+        captured = 0;
+        captured = CircleLineIntersection(points,aa[i]);
+        
+        if (captured == 1 && CheckNodeConditions(aa2[i],"class","leaf node")){
+        hits[count] = i;
+        count++;
+        }
+    }
+    return hits;
+    },
+    setColor: function(hits){
+
+    var aa = getCircles();
+//alert("hits = " +aa)
+    for (var i=0;i<hits.length;i++){
+        addCircleLayer(aa[hits[i]]);
+    }
+    },
+    changeColor: function(color, query, index){
+    var visibility = getQueryVisibility(index); 
+    for (var i=0;i<query.length;i++){
+        query[i].attr("style","opacity:" + visibility + ";fill: " +color)
+    }
+    },
+    changeVisibility: function(vis, query, index){
+    var color = getQueryColor(index);
+    for (var i=0;i<query.length;i++){
+        query[i].attr("style","opacity:" + vis + ";fill: " +color)
+    }
+    },
+    removeColor: function(hits, index){
+    for (var i=0;i<hits.length;i++){
+        hits[i].remove();
+    }
+    }
+}
+   
 
  function updateDisplay(space, selectionState) {
 
