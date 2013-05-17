@@ -1465,8 +1465,8 @@ var Toolbox = {
 
 	// Create a group
 		this.dock = svg.append("g")
-	    	.attr("transform", "translate(" + (width - dockWidth + 1) 
-		  	+ ", 0)");
+	    	//.attr("transform", "translate(" + (width - dockWidth + 1) 
+		  	//+ ", 0)");
 	
 	// Create the main button panel
 		/*
@@ -3404,16 +3404,20 @@ var VisDock = {
     init: function(selector, width, height) {
 
 		this.svg = d3.select(selector).append("svg")
-	   		.attr("width", width)
-	    	.attr("height", height);
+			.attr("width",dockWidth)
+			.attr("height",height)
+//	   		.attr("width", width)
+//	    	.attr("height", height);
 
-		Panel.init(this.svg, width, height);
+		Panel.init(this.svg, 0,0);
 
+		//Toolbox.init(this.svg, width, height);
 		Toolbox.init(this.svg, width, height);
 		if (this.init_text == 0){
 		    var init_text = document.getElementsByTagName("g")
 		    this.init_text = init_text.length;
 		}
+
 		if (init_g == 0){
 		    initg = document.getElementsByTagName("g");
 		    init_g = initg.length;
