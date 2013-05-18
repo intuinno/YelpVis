@@ -694,6 +694,7 @@ SelectionStatesSpace.prototype = {
 						.attr("height",h-2*margin);
 						
 	var svgMovieBody = svgMovie.append("g")
+							.attr("id","IDsvgMovie")
 							.attr("clip-path","url(#movieClip)")
 						//	.attr("transform", "translate(" + margin + "," + margin + ")")
 							.call(zoomMovie);
@@ -882,6 +883,7 @@ SelectionStatesSpace.prototype = {
 						.attr("height",h-2*margin);
 						
 	var svgUserBody = svgUser.append("g")
+							.attr("id","IDsvgUser")
 							.attr("clip-path","url(#userClip)")
 							.call(zoomUser);
 							
