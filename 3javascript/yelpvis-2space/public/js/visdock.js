@@ -80,6 +80,7 @@ var RectangleTool = {
 			
 		//RectangleTool.panel2 = d3.selectAll("#IDsvgUser");//document.getElementById("IDsvgUser")
 		var a1 = d3.select("#IDsvgMovie")//.selectAll("g");
+		//var a1 = d3.select("#movieSVGGroup")//.selectAll("g");		
 		RectangleTool.panel1 = a1;	
 
 		var a2 = d3.select("#IDsvgUser")//.selectAll("g");
@@ -92,11 +93,12 @@ var RectangleTool = {
 		//RectangleTool.panel2.on("mousedown", RectangleTool.mousedown(this.panel2));
 		//IDsvgMovie.on("mousedown", RectangleTool.mousedown());//RectangleTool.panel1));	
 		//RectangleTool.panel2.on("mousedown", RectangleTool.mousedown());//RectangleTool.panel2));
-		
-		a1.on("mousedown", RectangleTool.mousedown);//RectangleTool.panel1));	
-		a2.on("mousedown", RectangleTool.mousedown);//RectangleTool.panel2));
-		//panel2.selectAll("*").attr("pointer-events", "none");
-					
+		//RectangleTool.panel1.selectAll("*").attr("pointer-events", "none");
+		//RectangleTool.panel2.selectAll("*").attr("pointer-events", "none");
+				
+		RectangleTool.panel1.on("mousedown", RectangleTool.mousedown);//RectangleTool.panel1));	
+		RectangleTool.panel2.on("mousedown", RectangleTool.mousedown);//RectangleTool.panel2));
+				//alert("FJSDKL")	
 
 		//Panel.viewport.selectAll("*").attr("pointer-events", "none");
 		//Panel.panel.on("mousedown", RectangleTool.mousedown);
@@ -104,9 +106,14 @@ var RectangleTool = {
     uninstall: function() {
 	//VisDock.selectionHandler = null;
 		//Panel.viewport.selectAll("*").attr("pointer-events", "visiblePainted");
-		this.drawspace.on("mouseup", null);
-		this.drawspace.on("mousemove", null);
-		this.drawspace.on("mousedown", null);		
+		this.panel1.on("mouseup", null);
+		this.panel1.on("mousemove", null);
+		this.panel1.on("mousedown", null);	
+		
+		this.panel2.on("mouseup", null);
+		this.panel2.on("mousemove", null);
+		this.panel2.on("mousedown", null);			
+			
 		//Panel.panel.on("mouseup", null);
 		//Panel.panel.on("mousemove", null);
 		//Panel.panel.on("mousedown", null);
@@ -120,8 +127,8 @@ var RectangleTool = {
 		//alert(minX + " " + minY + " " + (maxX-minX) + " " + (maxY - minY))
 		return [minX, minY, maxX - minX, maxY - minY];
     },
-    mousedown: function(drawspace) {
-	//alert(drawspace)
+    mousedown: function() {
+	alert("drawspace")
 	// Prevent Browser's default behaviour
 		d3.event.preventDefault();
 		//alert("h")
@@ -227,10 +234,17 @@ var EllipseTool = {
     uninstall: function() {
 	//VisDock.selectionHandler = null;
 	
-		Panel.viewport.selectAll("*").attr("pointer-events", "visiblePainted");
-		Panel.panel.on("mouseup", null);
-    	Panel.panel.on("mousemove", null);
-		Panel.panel.on("mousedown", null);
+		//Panel.viewport.selectAll("*").attr("pointer-events", "visiblePainted");
+		//Panel.panel.on("mouseup", null);
+    	//Panel.panel.on("mousemove", null);
+		//Panel.panel.on("mousedown", null);
+		EllipseTool.panel1.on("mouseup", null);
+    	EllipseTool.panel1.on("mousemove", null);
+		EllipseTool.panel1.on("mousedown", null);		
+
+		EllipseTool.panel2.on("mouseup", null);
+    	EllipseTool.panel2.on("mousemove", null);
+		EllipseTool.panel2.on("mousedown", null);		
 		
 		//Panel.viewport.selectAll("*").attr("pointer-events", "visiblePainted");
 		//panel1.on("mouseup", null);
@@ -346,10 +360,19 @@ var LassoTool = {
     },
     uninstall: function() {
 	//VisDock.selectionHandler = null;
-		Panel.viewport.selectAll("*").attr("pointer-events", "visiblePainted");
-		Panel.panel.on("mousedown", null);
-		Panel.panel.on("mouseup", null);
-		Panel.panel.on("mousemove", null);
+		//Panel.viewport.selectAll("*").attr("pointer-events", "visiblePainted");
+
+		LassoTool.panel1.on("mousedown", null);
+		LassoTool.panel1.on("mouseup", null);
+		LassoTool.panel1.on("mousemove", null);
+
+		LassoTool.panel2.on("mousedown", null);
+		LassoTool.panel2.on("mouseup", null);
+		LassoTool.panel2.on("mousemove", null);
+		
+		//Panel.panel.on("mousedown", null);
+		//Panel.panel.on("mouseup", null);
+		//Panel.panel.on("mousemove", null);
     },
     
     getPoints: function () {
@@ -481,13 +504,22 @@ var Straight = {
 		this.panel1.on("mousedown", Straight.mousedown);	
 		this.panel2.on("mousedown", Straight.mousedown);	
 	
-		Panel.viewport.selectAll("*").attr("pointer-events", "none");
-		Panel.panel.on("mousedown", Straight.mousedown);
+		//Panel.viewport.selectAll("*").attr("pointer-events", "none");
+		//Panel.panel.on("mousedown", Straight.mousedown);
     },
     uninstall: function() {
 	//VisDock.selectionHandler = null;
-		Panel.viewport.selectAll("*").attr("pointer-events", "visiblePainted");
-		Panel.panel.on("mousedown", null);
+	
+		Straight.panel1.on("mousedown",null)
+		Straight.panel1.on("mousemove",null)
+		Straight.panel1.on("mouseup",null)
+		
+		Straight.panel2.on("mousedown",null)
+		Straight.panel2.on("mousemove",null)
+		Straight.panel2.on("mouseup",null)
+		
+		//Panel.viewport.selectAll("*").attr("pointer-events", "visiblePainted");
+		//Panel.panel.on("mousedown", null);
     },
     mousedown: function() {
 
@@ -580,15 +612,24 @@ var Polyline = {
 		this.panel1.on("mousedown", Polyline.mousedown);	
 		this.panel2.on("mousedown", Polyline.mousedown);	
 	
-		Panel.viewport.selectAll("*").attr("pointer-events", "none");
-		Panel.panel.on("mousedown", Polyline.mousedown);
+		//Panel.viewport.selectAll("*").attr("pointer-events", "none");
+		//Panel.panel.on("mousedown", Polyline.mousedown);
     },
     uninstall: function() {
 	//VisDock.selectionHandler = null;
-		Panel.viewport.selectAll("*").attr("pointer-events", "visiblePainted");
-		Panel.panel.on("mousedown", null);
-		Panel.panel.on("mousemove", null);
-		Panel.panel.on("mouseup", null);
+		//Panel.viewport.selectAll("*").attr("pointer-events", "visiblePainted");
+		
+		Polyline.panel1.on("mousedown",null)
+		Polyline.panel1.on("mousemove",null)
+		Polyline.panel1.on("mouseup",null)		
+
+		Polyline.panel2.on("mousedown",null)
+		Polyline.panel2.on("mousemove",null)
+		Polyline.panel2.on("mouseup",null)
+		
+		//Panel.panel.on("mousedown", null);
+		//Panel.panel.on("mousemove", null);
+		//Panel.panel.on("mouseup", null);
     },
     
     getPoints: function () {
@@ -723,15 +764,24 @@ var Freeselect = {
 		this.panel1.on("mousedown", Freeselect.mousedown);	
 		this.panel2.on("mousedown", Freeselect.mousedown);	
 	
-		Panel.viewport.selectAll("*").attr("pointer-events", "none");
-		Panel.panel.on("mousedown", Freeselect.mousedown);
+		//Panel.viewport.selectAll("*").attr("pointer-events", "none");
+		//Panel.panel.on("mousedown", Freeselect.mousedown);
     },
     uninstall: function() {
 	//VisDock.selectionHandler = null;
-		Panel.viewport.selectAll("*").attr("pointer-events", "visiblePainted");
-		Panel.panel.on("mousedown", null);
-		Panel.panel.on("mousemove", null);
-		Panel.panel.on("mouseup", null);
+	
+		Freeselect.panel1.on("mousedown",null)
+		Freeselect.panel1.on("mousemove",null)
+		Freeselect.panel1.on("mouseup",null)	
+
+		Freeselect.panel2.on("mousedown",null)
+		Freeselect.panel2.on("mousemove",null)
+		Freeselect.panel2.on("mouseup",null)
+	
+		//Panel.viewport.selectAll("*").attr("pointer-events", "visiblePainted");
+		//Panel.panel.on("mousedown", null);
+		//Panel.panel.on("mousemove", null);
+		//Panel.panel.on("mouseup", null);
     },
     
     getPoints: function () {
@@ -863,15 +913,24 @@ var PolygonTool = {
 		this.panel1.on("mousedown", PolygonTool.mousedown);	
 		this.panel2.on("mousedown", PolygonTool.mousedown);	
 	
-		Panel.viewport.selectAll("*").attr("pointer-events", "none");
-		Panel.panel.on("mousedown", PolygonTool.mousedown);
+		//Panel.viewport.selectAll("*").attr("pointer-events", "none");
+		//Panel.panel.on("mousedown", PolygonTool.mousedown);
     },
     uninstall: function() {
 	//VisDock.selectionHandler = null;
-		Panel.viewport.selectAll("*").attr("pointer-events", "visiblePainted");
-		Panel.panel.on("mousedown", null);
-		Panel.panel.on("mouseup", null);
-		Panel.panel.on("mousemove", null);
+	
+		PolygonTool.panel1.on("mousedown",null)
+		PolygonTool.panel1.on("mousemove",null)
+		PolygonTool.panel1.on("mouseup",null)	
+
+		PolygonTool.panel2.on("mousedown",null)
+		PolygonTool.panel2.on("mousemove",null)
+		PolygonTool.panel2.on("mouseup",null)
+	
+		//Panel.viewport.selectAll("*").attr("pointer-events", "visiblePainted");
+		//Panel.panel.on("mousedown", null);
+		//Panel.panel.on("mouseup", null);
+		//Panel.panel.on("mousemove", null);
     },
     
     getPoints: function () {
@@ -3628,7 +3687,7 @@ var VisDock = {
 
 		//Panel.init(this.svg, 0,0);
 
-		//Toolbox.init(this.svg, width, height);
+		//Toolbox.init(this.svgf, width, height);
 		Toolbox.init(this.svg, width, height);
 		if (this.init_text == 0){
 		    var init_text = document.getElementsByTagName("g")
