@@ -1017,8 +1017,14 @@ SelectionStatesSpace.prototype = {
             
                 
                 for (index =0; index < z.query.length; index++) {
-                    myRating += ratings[z.query[index].num][d.index];    
+                    myRating += ratings[z.query[index].num][d.index];   
+                     // if (isNaN(myRating)) {
+//                     
+                    // console.log("NaN");
+//                     
+                // }
                 } 
+                
                 return myRating;
             });
             

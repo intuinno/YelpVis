@@ -1182,6 +1182,10 @@ science.stats.kde2D = function( XData, YData, ZData, XCoord, YCoord, XBandwidth,
                 
                 acc += ZData[k] * kernel([(XCoord[i]-XData[k])/XBandwidth, (YCoord[j]-YData[k])/YBandwidth] );
                 
+                // if (isNaN(acc) ) {
+                    // console.log ("NaN happened in Science.stats.kde2D.  k=  ", k );
+                // }
+                
             }
             
             
