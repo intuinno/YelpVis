@@ -63,6 +63,9 @@ var RectangleTool = {
     image: "images/Rectangle.png",
     start: 0,
     bbox: null,
+    panel1: null,
+    panel2: null,
+    drawspace: null,
     select: function() {
 		Toolbox.setTool(RectangleTool);
     },
@@ -73,33 +76,66 @@ var RectangleTool = {
 		//svgMovieBody.selectAll("*").attr("pointer-events", "none");
 		//svgMovieBody.on("mousedown", RectangleTool.mousedown);
 
-		Panel.viewport.selectAll("*").attr("pointer-events", "none");
-		Panel.panel.on("mousedown", RectangleTool.mousedown);
+		RectangleTool.panel1 = d3.select("#IDsvgMovie");//document.getElementById("IDsvgMovie")
+			
+		RectangleTool.panel2 = d3.select("#IDsvgUser");//document.getElementById("IDsvgUser")
+			
+			
+		RectangleTool.panel1.on("mousedown", RectangleTool.mousedown(this.panel1));
+		RectangleTool.panel2.on("mousedown", RectangleTool.mousedown(this.panel2));
+		//this.panel1[0][0].on("mousedown", RectangleTool.mousedown(RectangleTool.panel1));	
+		//this.panel2[0][0].on("mousedown", RectangleTool.mousedown(RectangleTool.panel2));
+		//panel2.selectAll("*").attr("pointer-events", "none");
+					
+
+		//Panel.viewport.selectAll("*").attr("pointer-events", "none");
+		//Panel.panel.on("mousedown", RectangleTool.mousedown);
     },
     uninstall: function() {
 	//VisDock.selectionHandler = null;
-		Panel.viewport.selectAll("*").attr("pointer-events", "visiblePainted");
-		Panel.panel.on("mouseup", null);
-		Panel.panel.on("mousemove", null);
-		Panel.panel.on("mousedown", null);
+		//Panel.viewport.selectAll("*").attr("pointer-events", "visiblePainted");
+		this.drawspace.on("mouseup", null);
+		this.drawspace.on("mousemove", null);
+		this.drawspace.on("mousedown", null);		
+		//Panel.panel.on("mouseup", null);
+		//Panel.panel.on("mousemove", null);
+		//Panel.panel.on("mousedown", null);
     },
     getBoundingBox: function(curr) {
+    	//alert("before = " + curr + " " + RectangleTool.start)
 		var minX = Math.min(curr[0], RectangleTool.start[0]);
 		var maxX = Math.max(curr[0], RectangleTool.start[0]);
 		var minY = Math.min(curr[1], RectangleTool.start[1]);
 		var maxY = Math.max(curr[1], RectangleTool.start[1]);
+		//alert(minX + " " + minY + " " + (maxX-minX) + " " + (maxY - minY))
 		return [minX, minY, maxX - minX, maxY - minY];
     },
-    mousedown: function() {
-	
+    mousedown: function(drawspace) {
+	//alert(drawspace)
 	// Prevent Browser's default behaviour
 		d3.event.preventDefault();
-
+		
+		if (drawspace == RectangleTool.panel1){
+			alert(1)
+		}
+		else if (drawspace == RectangleTool.panel2){
+			alert(2)
+		}
+		else {
+			alert("else")
+		}
 	// Store starting point
-		RectangleTool.start = d3.mouse(this);
-
+	//alert(drawspace[0][0])
+		this.drawspace = drawspace
+		//this.drawspace.on("mousedown", function(){
+		RectangleTool.start = d3.mouse(RectangleTool.drawspace[0][0])
+		//})
+		//alert(RectangleTool.start)
+		//RectangleTool.start = d3.mouse(this.drawspace[0][0]);
+		//alert(RectangleTool.start)
+//alert(this.x)
 	// Create the rubber band bounding box
-		RectangleTool.bbox = Panel.panel.append("rect")
+		RectangleTool.bbox = RectangleTool.drawspace.append("rect")
 	    	.attr("id", "selection")
 	    	.attr("x", RectangleTool.start[0])
 	    	.attr("y", RectangleTool.start[1])
@@ -107,17 +143,23 @@ var RectangleTool = {
 	    	.attr("class", "selection");
 	
 	// Install event handlers
-		Panel.panel.on("mousemove", function() {
-
+		RectangleTool.drawspace.on("mousemove", function() {
+			var c = d3.mouse(RectangleTool.drawspace[0][0])
+			//alert(RectangleTool.start)
+			//alert(drawspace + " " + c)
 	    // Update the selection
-	    	var box = RectangleTool.getBoundingBox(d3.mouse(this));
+	    //alert(c)
+	    	var box = RectangleTool.getBoundingBox(c);
+	    	//alert(box)
 	    	RectangleTool.bbox.attr("x", box[0]).attr("y", box[1])
 				.attr("width", box[2])
 				.attr("height", box[3]);
+			
 		});
-		Panel.panel.on("mouseup", function() {		
+		RectangleTool.drawspace.on("mouseup", function() {		
+			//alert(drawspace)
 	    // Forward the selection
-	    	var box = RectangleTool.getBoundingBox(d3.mouse(this));
+	    	var box = RectangleTool.getBoundingBox(d3.mouse(RectangleTool.drawspace[0][0]));
 	    	Toolbox.select("Rectangle", [[(box[0] - Panel.x), (box[1] -Panel.y)], [(box[0] - Panel.x), (box[1] - Panel.y) + box[3]],
 			    	[(box[0] - Panel.x) + box[2], (box[1] - Panel.y) + box[3]],
 			    	[(box[0] - Panel.x) + box[2], (box[1] - Panel.y)]], true);
@@ -134,14 +176,17 @@ var EllipseTool = {
     image: "images/Ellipse.png",
     start: 0,
     bellipse: null,
+    panel1: null,
+    panel2: null,
     select: function() {
 		console.log("select: " + EllipseTool.name);
 		Toolbox.setTool(EllipseTool);
     },
     install: function() {
 	//VisDock.selectionHandler = true;
-		var panel1 = document.getElementById("IDsvgMovie")
-		var panel2 = document.getElementById("IDsvgUser")		
+		var panel1 = d3.selectAll("#IDsvgMovie")//document.getElementById("IDsvgMovie")
+		var panel2 = d3.selectAll("#IDsvgUser")//document.getElementById("IDsvgUser")
+		//alert(panel1)		
 		//alert(aa)
 		//Panel.viewport.selectAll("*").attr("pointer-events", "none");
 		//Panel.panel.on("mousedown", EllipseTool.mousedown);
@@ -154,10 +199,21 @@ var EllipseTool = {
     },
     uninstall: function() {
 	//VisDock.selectionHandler = null;
+	
 		Panel.viewport.selectAll("*").attr("pointer-events", "visiblePainted");
 		Panel.panel.on("mouseup", null);
     	Panel.panel.on("mousemove", null);
 		Panel.panel.on("mousedown", null);
+		
+		//Panel.viewport.selectAll("*").attr("pointer-events", "visiblePainted");
+		//panel1.on("mouseup", null);
+    	//panel1.on("mousemove", null);
+		//panel1.on("mousedown", null);			
+	
+		//Panel.viewport.selectAll("*").attr("pointer-events", "visiblePainted");
+		//panel2.on("mouseup", null);
+    	//panel2.on("mousemove", null);
+		//panel2.on("mousedown", null);
     },
     getBoundingEllipse: function(curr) {
 		var cen_X = Math.round((EllipseTool.start[0] + curr[0])/2);
@@ -222,23 +278,27 @@ var LassoTool = {
     rPoints: [],
     blasso: null,
     strpoints: [],
-	
+    panel1: null,
+    panel2: null,	
     select: function() {
 		console.log("select: " + LassoTool.name);
 		Toolbox.setTool(LassoTool);
     },
     install: function() {
 	//VisDock.selectionHandler = true;
-		var panel1 = document.getElementById("IDsvgMovie")
-		var panel2 = document.getElementById("IDsvgUser")		
+		this.panel1 = d3.selectAll("#IDsvgMovie")//document.getElementById("IDsvgMovie")
+		this.panel2 = d3.selectAll("#IDsvgUser")//document.getElementById("IDsvgUser")
+
+		this.panel1.on("mousedown", LassoTool.mousedown);	
+		this.panel2.on("mousedown", LassoTool.mousedown);	
 		
 		//Panel.viewport.selectAll("*").attr("pointer-events", "none");
 		//Panel.panel.on("mousedown", EllipseTool.mousedown);
-		alert(panel2)
-		panel1.selectAll("*").attr("pointer-events", "none");
-		panel1.on("mousedown", LassoTool.mousedown);	
-		panel2.selectAll("*").attr("pointer-events", "none");
-		panel2.on("mousedown", LassoTool.mousedown);		
+		//alert(panel2)
+		//panel1.selectAll("*").attr("pointer-events", "none");
+		//panel1.on("mousedown", LassoTool.mousedown);	
+		//panel2.selectAll("*").attr("pointer-events", "none");
+		//panel2.on("mousedown", LassoTool.mousedown);		
 	
 		//Panel.viewport.selectAll("*").attr("pointer-events", "none");
 		//Panel.panel.on("mousedown", LassoTool.mousedown);
@@ -352,13 +412,21 @@ var Straight = {
     image: "images/straight_line.png",
     start: 0, 
     Line: null,
-	
+    panel1: null,
+    panel2: null,	
     select: function() {
 		console.log("select: " + Straight.name);
 		Toolbox.setTool(Straight);
     },
     install: function() {
 	//VisDock.selectionHandler = true;
+	
+		this.panel1 = d3.selectAll("#IDsvgMovie")//document.getElementById("IDsvgMovie")
+		this.panel2 = d3.selectAll("#IDsvgUser")//document.getElementById("IDsvgUser")
+
+		this.panel1.on("mousedown", Straight.mousedown);	
+		this.panel2.on("mousedown", Straight.mousedown);	
+	
 		Panel.viewport.selectAll("*").attr("pointer-events", "none");
 		Panel.panel.on("mousedown", Straight.mousedown);
     },
@@ -431,13 +499,21 @@ var Polyline = {
     points: [],
     rPoints: [],
     bpolyline: null,
-	
+    panel1: null,
+    panel2: null,	
     select: function() {
 		console.log("select: " + Polyline.name);
 		Toolbox.setTool(Polyline);
     },
     install: function() {
 	//VisDock.selectionHandler = true;
+	
+		this.panel1 = d3.selectAll("#IDsvgMovie")//document.getElementById("IDsvgMovie")
+		this.panel2 = d3.selectAll("#IDsvgUser")//document.getElementById("IDsvgUser")
+
+		this.panel1.on("mousedown", Polyline.mousedown);	
+		this.panel2.on("mousedown", Polyline.mousedown);	
+	
 		Panel.viewport.selectAll("*").attr("pointer-events", "none");
 		Panel.panel.on("mousedown", Polyline.mousedown);
     },
@@ -554,13 +630,21 @@ var Freeselect = {
     points: [],
     rPoints: [],
     bfreeline: null,
-	
+    panel1: null,
+    panel2: null,	
     select: function() {
 		console.log("select: " + Freeselect.name);
 		Toolbox.setTool(Freeselect);
     },
     install: function() {
 	//VisDock.selectionHandler = true;
+	
+		this.panel1 = d3.selectAll("#IDsvgMovie")//document.getElementById("IDsvgMovie")
+		this.panel2 = d3.selectAll("#IDsvgUser")//document.getElementById("IDsvgUser")
+
+		this.panel1.on("mousedown", Freeselect.mousedown);	
+		this.panel2.on("mousedown", Freeselect.mousedown);	
+	
 		Panel.viewport.selectAll("*").attr("pointer-events", "none");
 		Panel.panel.on("mousedown", Freeselect.mousedown);
     },
@@ -674,13 +758,21 @@ var PolygonTool = {
     points: [],
     rPoints: [],
     bpolygon: null,
-	
+    panel1: null,
+    panel2: null,	
     select: function() {
 		console.log("select: " + PolygonTool.name);
 		Toolbox.setTool(PolygonTool);
     },
     install: function() {
 	//VisDock.selectionHandler = true;
+	
+		this.panel1 = d3.selectAll("#IDsvgMovie")//document.getElementById("IDsvgMovie")
+		this.panel2 = d3.selectAll("#IDsvgUser")//document.getElementById("IDsvgUser")
+
+		this.panel1.on("mousedown", PolygonTool.mousedown);	
+		this.panel2.on("mousedown", PolygonTool.mousedown);	
+	
 		Panel.viewport.selectAll("*").attr("pointer-events", "none");
 		Panel.panel.on("mousedown", PolygonTool.mousedown);
     },
@@ -3324,10 +3416,10 @@ var Panel = {
 		this.width = width;
 		this.height = height;
 	// Define the viewport rectangle
-		this.panel.append("rect")
-	    	.attr("width", width - dockWidth)
-	    	.attr("height", height)
-	    	.attr("class", "panel");
+	//	this.panel.append("rect")
+	//    	.attr("width", width - dockWidth)
+	//    	.attr("height", height)
+	//    	.attr("class", "panel");
 	
 	//this.viewport = this.panel.append("g")
 	    //.attr("clip-path", "url(#panel)");
@@ -3433,7 +3525,7 @@ var VisDock = {
 //	   		.attr("width", width)
 //	    	.attr("height", height);
 
-		Panel.init(this.svg, 0,0);
+//		Panel.init(this.svg, 0,0);
 
 		//Toolbox.init(this.svg, width, height);
 		Toolbox.init(this.svg, width, height);
