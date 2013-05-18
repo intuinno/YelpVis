@@ -75,16 +75,26 @@ var RectangleTool = {
 	//alert(svgMovieBody)
 		//svgMovieBody.selectAll("*").attr("pointer-events", "none");
 		//svgMovieBody.on("mousedown", RectangleTool.mousedown);
+ 
+		//RectangleTool.panel1 = d3.selectAll("#IDsvgMovie");//document.getElementById("IDsvgMovie")
+			
+		//RectangleTool.panel2 = d3.selectAll("#IDsvgUser");//document.getElementById("IDsvgUser")
+		var a1 = d3.select("#IDsvgMovie")//.selectAll("g");
+		RectangleTool.panel1 = a1;	
 
-		RectangleTool.panel1 = d3.select("#IDsvgMovie");//document.getElementById("IDsvgMovie")
+		var a2 = d3.select("#IDsvgUser")//.selectAll("g");
+		RectangleTool.panel2 = a2;	
+//alert(IDsvgMovie)
+		//a1.on("mousedown", RectangleTool.mousedown(a1));
+		//a2.on("mousedown", RectangleTool.mousedown(a2));
 			
-		RectangleTool.panel2 = d3.select("#IDsvgUser");//document.getElementById("IDsvgUser")
-			
-			
-		RectangleTool.panel1.on("mousedown", RectangleTool.mousedown(this.panel1));
-		RectangleTool.panel2.on("mousedown", RectangleTool.mousedown(this.panel2));
-		//this.panel1[0][0].on("mousedown", RectangleTool.mousedown(RectangleTool.panel1));	
-		//this.panel2[0][0].on("mousedown", RectangleTool.mousedown(RectangleTool.panel2));
+		//RectangleTool.panel1.on("mousedown", RectangleTool.mousedown(this.panel1));
+		//RectangleTool.panel2.on("mousedown", RectangleTool.mousedown(this.panel2));
+		//IDsvgMovie.on("mousedown", RectangleTool.mousedown());//RectangleTool.panel1));	
+		//RectangleTool.panel2.on("mousedown", RectangleTool.mousedown());//RectangleTool.panel2));
+		
+		a1.on("mousedown", RectangleTool.mousedown);//RectangleTool.panel1));	
+		a2.on("mousedown", RectangleTool.mousedown);//RectangleTool.panel2));
 		//panel2.selectAll("*").attr("pointer-events", "none");
 					
 
@@ -114,8 +124,21 @@ var RectangleTool = {
 	//alert(drawspace)
 	// Prevent Browser's default behaviour
 		d3.event.preventDefault();
-		
-		if (drawspace == RectangleTool.panel1){
+		//alert("h")
+		var tool = d3.select("#legend").selectAll("g")
+		//alert(tool)
+		var det = d3.mouse(tool[0][0])
+		if (det[0]<0){
+			RectangleTool.drawspace = RectangleTool.panel1;
+		//	alert("meh")
+		}
+		else{
+			RectangleTool.drawspace = RectangleTool.panel2;
+		//	alert("meh2")
+		}
+		//alert(RectangleTool.drawspace)
+		//alert(det[0]) 
+		/*if (drawspace == RectangleTool.panel1){
 			alert(1)
 		}
 		else if (drawspace == RectangleTool.panel2){
@@ -124,11 +147,13 @@ var RectangleTool = {
 		else {
 			alert("else")
 		}
+		*/
 	// Store starting point
 	//alert(drawspace[0][0])
-		this.drawspace = drawspace
+		//this.drawspace = drawspace
 		//this.drawspace.on("mousedown", function(){
 		RectangleTool.start = d3.mouse(RectangleTool.drawspace[0][0])
+		//alert(RectangleTool.start)
 		//})
 		//alert(RectangleTool.start)
 		//RectangleTool.start = d3.mouse(this.drawspace[0][0]);
@@ -141,7 +166,7 @@ var RectangleTool = {
 	    	.attr("y", RectangleTool.start[1])
 	    	.attr("width", "10").attr("height", "10")
 	    	.attr("class", "selection");
-	
+	//alert("hello" + RectangleTool.bbox)
 	// Install event handlers
 		RectangleTool.drawspace.on("mousemove", function() {
 			var c = d3.mouse(RectangleTool.drawspace[0][0])
@@ -154,7 +179,7 @@ var RectangleTool = {
 	    	RectangleTool.bbox.attr("x", box[0]).attr("y", box[1])
 				.attr("width", box[2])
 				.attr("height", box[3]);
-			
+			//alert(RectangleTool.bbox)
 		});
 		RectangleTool.drawspace.on("mouseup", function() {		
 			//alert(drawspace)
@@ -167,6 +192,7 @@ var RectangleTool = {
 	    // Remove the bounding box
 	    	RectangleTool.bbox.remove();
 	    	RectangleTool.bbox = null;
+	    	RectangleTool.drawspace.on("mousemove",null)
 		});
     }
 };
@@ -178,23 +204,24 @@ var EllipseTool = {
     bellipse: null,
     panel1: null,
     panel2: null,
+    drawspace: null,
     select: function() {
 		console.log("select: " + EllipseTool.name);
 		Toolbox.setTool(EllipseTool);
     },
     install: function() {
 	//VisDock.selectionHandler = true;
-		var panel1 = d3.selectAll("#IDsvgMovie")//document.getElementById("IDsvgMovie")
-		var panel2 = d3.selectAll("#IDsvgUser")//document.getElementById("IDsvgUser")
+		EllipseTool.panel1 = d3.selectAll("#IDsvgMovie")//document.getElementById("IDsvgMovie")
+		EllipseTool.panel2 = d3.selectAll("#IDsvgUser")//document.getElementById("IDsvgUser")
 		//alert(panel1)		
 		//alert(aa)
 		//Panel.viewport.selectAll("*").attr("pointer-events", "none");
 		//Panel.panel.on("mousedown", EllipseTool.mousedown);
 		//panel1.selectAll("*").attr("pointer-events", "none");
 
-		panel1.on("mousedown", EllipseTool.mousedown);	
+		EllipseTool.panel1.on("mousedown", EllipseTool.mousedown);	
 		//panel2.selectAll("*").attr("pointer-events", "none");
-		panel2.on("mousedown", EllipseTool.mousedown);			
+		EllipseTool.panel2.on("mousedown", EllipseTool.mousedown);			
 			
     },
     uninstall: function() {
@@ -227,29 +254,41 @@ var EllipseTool = {
 	// Prevent Browser's default behaviour
 		d3.event.preventDefault();
 
+		var tool = d3.select("#legend").selectAll("g")
+		var det = d3.mouse(tool[0][0])
+		if (det[0]<0){
+			EllipseTool.drawspace = EllipseTool.panel1;
+		}
+		else{
+			EllipseTool.drawspace = EllipseTool.panel2;
+		//	alert("meh2")
+		}
+
         // Store starting point
-        EllipseTool.start = d3.mouse(this);
+        EllipseTool.start = d3.mouse(EllipseTool.drawspace[0][0]);
 
 	// Create the rubber band bounding box
-		EllipseTool.bellipse = Panel.panel.append("ellipse")
+		EllipseTool.bellipse = EllipseTool.drawspace.append("ellipse")
 	    	.attr("id", "selection")
 	    	.attr("cx", "0")
 	    	.attr("cy", "0")
 	    	.attr("rx", "0")
 	    	.attr("ry", "0")
 	    	.attr("class", "selection");
-
+//alert("SFJKL")
 	// Install event handlers
-		Panel.panel.on("mousemove", function() {
-
+		EllipseTool.drawspace.on("mousemove", function() {
+		
 	    // Update the selection
-	    	var ellip = EllipseTool.getBoundingEllipse(d3.mouse(this));
+	    	//var c = d3.mouse(EllipseTool.drawspace);
+	    	
+	    	var ellip = EllipseTool.getBoundingEllipse(d3.mouse(EllipseTool.drawspace[0][0]));
 	    	EllipseTool.bellipse.attr("cx", ellip[0]).attr("cy", ellip[1])
 			.attr("rx", ellip[2])
 			.attr("ry", ellip[3]);
 		});
 
-		Panel.panel.on("mouseup", function() {	    	
+		EllipseTool.drawspace.on("mouseup", function() {	    	
 	    // Forward the selection
 	    	var x = d3.mouse(this)[0] - Panel.x;
 	    	var y = d3.mouse(this)[1] - Panel.y;
@@ -260,6 +299,7 @@ var EllipseTool = {
 	    // Remove the bounding box
 	    	EllipseTool.bellipse.remove();
 	    	EllipseTool.bellipse = null;
+	    	EllipseTool.drawspace.on("mousemove",null)
 		});
     },
 
@@ -280,6 +320,7 @@ var LassoTool = {
     strpoints: [],
     panel1: null,
     panel2: null,	
+    drawspace: null,
     select: function() {
 		console.log("select: " + LassoTool.name);
 		Toolbox.setTool(LassoTool);
@@ -337,8 +378,19 @@ var LassoTool = {
     mousedown: function() {
 	// Prevent Browser's default behaviour
 		d3.event.preventDefault();
+		
+		var tool = d3.select("#legend").selectAll("g")
+		var det = d3.mouse(tool[0][0])
+		if (det[0]<0){
+			LassoTool.drawspace = LassoTool.panel1;
+		}
+		else{
+			LassoTool.drawspace = LassoTool.panel2;
+		//	alert("meh2")
+		}		
+		
         // Store starting point
-		LassoTool.start = d3.mouse(this);        
+		LassoTool.start = d3.mouse(LassoTool.drawspace[0][0]);        
 
 		if (LassoTool.dragging == false) {
 	    	LassoTool.dragging = true;
@@ -346,7 +398,7 @@ var LassoTool = {
 	    	LassoTool.segments += 1;
 	    	var points = LassoTool.getPoints();
 	    	if (LassoTool.segments == 1) {
-	        	LassoTool.blasso = Panel.panel.append("polygon")
+	        	LassoTool.blasso = LassoTool.drawspace.append("polygon")
 	            	.attr("id", "selection")
 	            	.attr("points", points)
 	            	.attr("class", "selection");
@@ -356,7 +408,7 @@ var LassoTool = {
 	    		}
 		}
 		
-		Panel.panel.on("mouseup", function() {
+		LassoTool.drawspace.on("mouseup", function() {
 
 	    // Remove event handlers
 	    //alert(d3.event.button);
@@ -364,7 +416,7 @@ var LassoTool = {
 	    //Panel.panel.on("mouseup", null);
 
 	    // Update Segment number
-	    	LassoTool.LassoToolUpdate(d3.mouse(this));
+	    	LassoTool.LassoToolUpdate(d3.mouse(LassoTool.drawspace[0][0]));
 	    	LassoTool.segments += 1;
 	    	var points = LassoTool.getPoints();
 	    //LassoTool.segments -= 1;
@@ -390,17 +442,18 @@ var LassoTool = {
 	    	LassoTool.strpoints = "";
 	    	LassoTool.points = [];
 	    	LassoTool.rPoints = [];
+	    	LassoTool.drawspace.on("mousemove",null)
 		});
 
 	// Install event handlers
-		Panel.panel.on("mousemove", function() {    
+		LassoTool.drawspace.on("mousemove", function() {    
 	   		 if (LassoTool.dragging) {
 		// Update the selection
 				LassoTool.LassoToolUpdate(d3.mouse(this));
 				LassoTool.segments += 1;
 				var points = LassoTool.getPoints();
 		//Freeselect.segments -= 1;
-	        	LassoTool.blasso.attr("points", points)
+	        	LassoTool.blasso.attr("points", points)
 	    	}    
 		});
 		console.log("click lasso");
@@ -414,6 +467,7 @@ var Straight = {
     Line: null,
     panel1: null,
     panel2: null,	
+    drawspace: null,
     select: function() {
 		console.log("select: " + Straight.name);
 		Toolbox.setTool(Straight);
@@ -440,8 +494,19 @@ var Straight = {
 	// Prevent Browser's default behaviour
 		d3.event.preventDefault();
 
+		var tool = d3.select("#legend").selectAll("g")
+		var det = d3.mouse(tool[0][0])
+		if (det[0]<0){
+			Straight.drawspace = Straight.panel1;
+		}
+		else{
+			Straight.drawspace = Straight.panel2;
+		//	alert("meh2")
+		}
+
+
         // Store starting point
-		Straight.start = d3.mouse(this);        
+		Straight.start = d3.mouse(Straight.drawspace[0][0]);        
 
 	// Create the rubber band straight line
 	//Straight.Line = Panel.panel.append("line")
@@ -451,7 +516,7 @@ var Straight = {
         //    .attr("x2", d3.mouse(this)[0])
 	//    .attr("y2", d3.mouse(this)[1])
 	//    .attr("class", "selection");
-		Straight.Line = Panel.panel.append("line")
+		Straight.Line = Straight.drawspace.append("line")
 	    	.attr("id", "selection")
 	    	.attr("x1", "0")
 	    	.attr("y1", "0")
@@ -459,7 +524,7 @@ var Straight = {
 	    	.attr("y2", "1")
 	    	.attr("class", "selection");
 	// Install event handlers
-		Panel.panel.on("mousemove", function() {
+		Straight.drawspace.on("mousemove", function() {
 
 	    // Update the selection
 	    	Straight.Line.attr("x1", Straight.start[0])
@@ -469,7 +534,7 @@ var Straight = {
 	    
 		});
 
-		Panel.panel.on("mouseup", function() {
+		Straight.drawspace.on("mouseup", function() {
 
 	    // Remove event handlers
 	    
@@ -482,7 +547,7 @@ var Straight = {
 	    // Remove the bounding box
 	    	Straight.Line.remove();
 	    	Straight.Line = null;
-	
+			Straight.drawspace.on("mousemove",null)
 		});
 
 		console.log("click Straight");
@@ -501,6 +566,7 @@ var Polyline = {
     bpolyline: null,
     panel1: null,
     panel2: null,	
+    drawspace: null,
     select: function() {
 		console.log("select: " + Polyline.name);
 		Toolbox.setTool(Polyline);
@@ -550,9 +616,19 @@ var Polyline = {
 	// Prevent Browser's default behaviour
 		d3.event.preventDefault();
 
+		var tool = d3.select("#legend").selectAll("g")
+		var det = d3.mouse(tool[0][0])
+		if (det[0]<0){
+			Polyline.drawspace = Polyline.panel1;
+		}
+		else{
+			Polyline.drawspace = Polyline.panel2;
+		//	alert("meh2")
+		}
+
         // Store starting point
 		Polyline.before = Polyline.start;
-		Polyline.start = d3.mouse(this);        
+		Polyline.start = d3.mouse(Polyline.drawspace[0][0]);        
 
 	// Dragging event is enabled
 	//if (Polyline.dragging) {
@@ -563,11 +639,11 @@ var Polyline = {
 	//}
 
 		Polyline.dragging = true;
-		Polyline.PolylineUpdate(d3.mouse(this));
+		Polyline.PolylineUpdate(d3.mouse(Polyline.drawspace[0][0]));
 		Polyline.segments += 1;
 		var points = Polyline.getPoints();
 		if (Polyline.segments == 1) {
-	   		Polyline.bpolyline = Panel.panel.append("polyline")
+	   		Polyline.bpolyline = Polyline.drawspace.append("polyline")
 	       		.attr("id", "selection")
 	        	.attr("points", points)
 	        	.attr("class", "selection");
@@ -576,14 +652,14 @@ var Polyline = {
 	    	Polyline.bpolyline.attr("points",points);
 		}
 	
-		Panel.panel.on("mouseup", function() {
+		Polyline.drawspace.on("mouseup", function() {
 
 	    // Remove event handlers
 	    //Panel.panel.on("mousemove", null);
 	    //Panel.panel.on("mouseup", null);
 
 	    // Update Segment number
-	    	Polyline.PolylineUpdate(d3.mouse(this));
+	    	Polyline.PolylineUpdate(d3.mouse(Polyline.drawspace[0][0]));
 	    	Polyline.segments += 1;
 	    	var points = Polyline.getPoints();
 	    	Polyline.segments -= 1;
@@ -600,12 +676,13 @@ var Polyline = {
 				Toolbox.select("Polyline", Polyline.rPoints, true);
 				Polyline.points = [];
 				Polyline.rPoints = [];
+				Polyline.drawspace.on("mousemove",null)
 	    	} 
 	    // Remove the bounding box	
 		});
 
 	// Install event handlers
-		Panel.panel.on("mousemove", function() {
+		Polyline.drawspace.on("mousemove", function() {
 	    
 	    	if (Polyline.dragging) {
 		// Update the selection
@@ -632,6 +709,7 @@ var Freeselect = {
     bfreeline: null,
     panel1: null,
     panel2: null,	
+    drawspace: null,
     select: function() {
 		console.log("select: " + Freeselect.name);
 		Toolbox.setTool(Freeselect);
@@ -679,16 +757,27 @@ var Freeselect = {
 
 	// Prevent Browser's default behaviour
 		d3.event.preventDefault();
+		
+		var tool = d3.select("#legend").selectAll("g")
+		var det = d3.mouse(tool[0][0])
+		if (det[0]<0){
+			Freeselect.drawspace = Freeselect.panel1;
+		}
+		else{
+			Freeselect.drawspace = Freeselect.panel2;
+		//	alert("meh2")
+		}		
+		//alert(Freeselect.drawspace)
         // Store starting point
-		Freeselect.start = d3.mouse(this);        
+		Freeselect.start = d3.mouse(Freeselect.drawspace[0][0]);        
 
 		if (Freeselect.dragging == false) {
 	    	Freeselect.dragging = true;
-	    	Freeselect.FreeselectUpdate(d3.mouse(this));
+	    	Freeselect.FreeselectUpdate(d3.mouse(Freeselect.drawspace[0][0]));
 	    	Freeselect.segments += 1;
 	    	var points = Freeselect.getPoints();
 	    	if (Freeselect.segments == 1) {
-	        	Freeselect.bfreeline = Panel.panel.append("polyline")
+	        	Freeselect.bfreeline = Freeselect.drawspace.append("polyline")
 	            	.attr("id", "selection")
 	            	.attr("points", points)
 	            	.attr("class", "selection");
@@ -698,7 +787,7 @@ var Freeselect = {
 	    	}
 		}
 		
-		Panel.panel.on("mouseup", function() {
+		Freeselect.drawspace.on("mouseup", function() {
 
 	    // Remove event handlers
 	    //alert(d3.event.button);
@@ -706,7 +795,7 @@ var Freeselect = {
 	    //Panel.panel.on("mouseup", null);
 
 	    // Update Segment number
-	    	Freeselect.FreeselectUpdate(d3.mouse(this));
+	    	Freeselect.FreeselectUpdate(d3.mouse(Freeselect.drawspace[0][0]));
 	    	Freeselect.segments += 1;
 	    	var points = Freeselect.getPoints();
 	    	Freeselect.segments -= 1;
@@ -724,17 +813,17 @@ var Freeselect = {
 	    	Toolbox.select("Freeselect", Freeselect.rPoints, true);
 	    	Freeselect.points = [];
 	    	Freeselect.rPoints = [];
-	    
+	    	Freeselect.drawspace.on("mousemove",null)
 	    // Remove the bounding box
 
 		});
 
 	// Install event handlers
-		Panel.panel.on("mousemove", function() {
+		Freeselect.drawspace.on("mousemove", function() {
 	    
 	    	if (Freeselect.dragging) {
 		// Update the selection
-				Freeselect.FreeselectUpdate(d3.mouse(this));
+				Freeselect.FreeselectUpdate(d3.mouse(Freeselect.drawspace[0][0]));
 				Freeselect.segments += 1;
 				var points = Freeselect.getPoints();
 		//Freeselect.segments -= 1;
@@ -760,6 +849,7 @@ var PolygonTool = {
     bpolygon: null,
     panel1: null,
     panel2: null,	
+    drawspace: null,
     select: function() {
 		console.log("select: " + PolygonTool.name);
 		Toolbox.setTool(PolygonTool);
@@ -809,9 +899,19 @@ var PolygonTool = {
 	// Prevent Browser's default behaviour
 		d3.event.preventDefault();
 
+		var tool = d3.select("#legend").selectAll("g")
+		var det = d3.mouse(tool[0][0])
+		if (det[0]<0){
+			PolygonTool.drawspace = PolygonTool.panel1;
+		}
+		else{
+			PolygonTool.drawspace = PolygonTool.panel2;
+		//	alert("meh2")
+		}
+
         // Store starting point
 		PolygonTool.before = PolygonTool.start;
-		PolygonTool.start = d3.mouse(this);        
+		PolygonTool.start = d3.mouse(PolygonTool.drawspace[0][0]);        
 
 	// Dragging event is enabled
 	//if (Polyline.dragging) {
@@ -822,12 +922,12 @@ var PolygonTool = {
 	//}
 
 		PolygonTool.dragging = true;
-		PolygonTool.PolygonToolUpdate(d3.mouse(this));
+		PolygonTool.PolygonToolUpdate(d3.mouse(PolygonTool.drawspace[0][0]));
 		PolygonTool.segments += 1;
 		var points = PolygonTool.getPoints();
 	//alert(points);
 		if (PolygonTool.segments == 1) {
-	   		PolygonTool.bpolygon = Panel.panel.append("polygon")
+	   		PolygonTool.bpolygon = PolygonTool.drawspace.append("polygon")
 	        	.attr("id", "selection")
 	        	.attr("points", points)
 	        	.attr("class", "selection");
@@ -836,7 +936,7 @@ var PolygonTool = {
 	    	PolygonTool.bpolygon.attr("points",points);
 		}
 	
-		Panel.panel.on("mouseup", function() {
+		PolygonTool.drawspace.on("mouseup", function() {
 
 	    // Remove event handlers
 	    //alert(d3.event.button);
@@ -844,7 +944,7 @@ var PolygonTool = {
 	    //Panel.panel.on("mouseup", null);
 
 	    // Update Segment number
-	    	PolygonTool.PolygonToolUpdate(d3.mouse(this));
+	    	PolygonTool.PolygonToolUpdate(d3.mouse(PolygonTool.drawspace[0][0]));
 	    	PolygonTool.segments += 1;
 	    	var points = Polyline.getPoints();
 	    	PolygonTool.segments -= 1;
@@ -864,16 +964,17 @@ var PolygonTool = {
 	    		Toolbox.select("Polygon", Polyline.rPoints, true);
 	    		PolygonTool.points = [];
 	    		PolygonTool.rPoints = [];
+	    		PolygonTool.drawspace.on("mousemove",null)
 	   	 	}
     	    // Remove the bounding box
 		});
 
 	// Install event handlers
-		Panel.panel.on("mousemove", function() {
+		PolygonTool.drawspace.on("mousemove", function() {
 	    
 	    	if (PolygonTool.dragging) {
 		// Update the selection
-				PolygonTool.PolygonToolUpdate(d3.mouse(this));
+				PolygonTool.PolygonToolUpdate(d3.mouse(PolygonTool.drawspace[0][0]));
 				PolygonTool.segments += 1;
 				var points = PolygonTool.getPoints();
 				PolygonTool.segments -= 1;
@@ -3525,7 +3626,7 @@ var VisDock = {
 //	   		.attr("width", width)
 //	    	.attr("height", height);
 
-//		Panel.init(this.svg, 0,0);
+		//Panel.init(this.svg, 0,0);
 
 		//Toolbox.init(this.svg, width, height);
 		Toolbox.init(this.svg, width, height);

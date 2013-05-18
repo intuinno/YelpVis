@@ -669,7 +669,7 @@ SelectionStatesSpace.prototype = {
 					.y(y)
 					.on("zoom",zoomedMovie);
 					
-	VisDock.init("#legend",dockWidth,900);
+
 
 	var svgMovie = d3.select("#movieCanvas").append("svg")
 
@@ -841,7 +841,7 @@ SelectionStatesSpace.prototype = {
 		});
 
 	});
-
+	VisDock.init("#legend",dockWidth,900);
 	var xScaleUser = d3.scale.linear().range([margin, w-margin]);
 	var yScaleUser = d3.scale.linear().range([h-margin,margin]);
 	
