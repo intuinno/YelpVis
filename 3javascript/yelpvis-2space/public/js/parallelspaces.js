@@ -66,6 +66,7 @@ $('#page1').live('pageinit', function() {
 	var categoryList = ['Mexican','Vegetarian', 'Breakfast & Brunch', 'American', 'Asian', 'Italian', 'Hotels & Travel','Arts & Entertainment', 'Nightlife','etc'];
     
 
+
 	var drawspace = null;
 	
 	
@@ -278,6 +279,7 @@ getHitsPolygon: function(points, inclusive) {
 
 },
 
+
     getHitsEllipse: function(points, inclusive){
     var aa = getCircles();
     var nElements = getNumberOfCircles();   
@@ -475,7 +477,11 @@ var sss=document.getElementsByTagName("g");
 
 
 
+<<<<<<< HEAD
            // updateLegend(space, mySelectionState);
+=======
+            //updateLegend(space, mySelectionState);
+>>>>>>> 21537c012cb284b8199bb682ad86cec3649c727b
     
           
             
@@ -771,7 +777,7 @@ SelectionStatesSpace.prototype = {
     
     //State variable for the selection
 	var isMovieSelected = false;
-	var isGroupSelectionMode = false;
+	var isUnion = false;
 	var isContourOn = true;
 	
     
