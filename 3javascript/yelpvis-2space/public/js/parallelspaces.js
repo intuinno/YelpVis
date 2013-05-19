@@ -60,8 +60,8 @@ $('#page1').live('pageinit', function() {
     });
     
     
-	var w = 450;
-	var h = 450;
+	var w = 600;
+	var h = 600;
 	var margin = 20;
 	var categoryList = ['Mexican','Vegetarian', 'Breakfast & Brunch', 'American', 'Asian', 'Italian', 'Hotels & Travel','Arts & Entertainment', 'Nightlife','etc'];
     
@@ -678,7 +678,6 @@ SelectionStatesSpace.prototype = {
 	svgMovie.attr("height", h)
 						.attr("viewBox", "0 0 " + w + " " +h)
 						.attr("title", "Movie Space")
-						.style("border", "1px solid silver")
 						.attr("transform", "translate(" + margin + "," + margin + ")")
 					.append("svg:g");
 						//.attr("transform", "translate(" + margin + "," + margin + ")");	
@@ -868,7 +867,6 @@ SelectionStatesSpace.prototype = {
 						.attr("height", h)
 						.attr("viewBox", "0 0 " + w + " " +h)
 						.attr("title", "User Space")
-						.style("border", "1px solid silver")
 						.attr("transform", "translate(" + margin + "," + margin + ")")
 					.append("svg:g");
 					

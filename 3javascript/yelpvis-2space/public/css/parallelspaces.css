@@ -79,10 +79,20 @@ svg .star {
 	opacity:0.5;
 }
 
+#VisDocksvg {
+	padding: 0px;
+	
+}
+
+#VisDocksvg {
+	padding: 0px;
+	fill:black;
+}
+
 svg {
 	font: 10px sans-serif;
-	padding: 10px;
-	width: 90%;
+	padding: 0px;
+	width: 100%;
 }
 
 .axis 
@@ -126,3 +136,13 @@ path {
 .deok {
         margin: 10px 60px 10px 60px;
     }
+
+#VisDocksvg {
+	padding: 0px;
+	
+}
+
+.VisDocksvg {
+	padding: 0px;
+	
+}
