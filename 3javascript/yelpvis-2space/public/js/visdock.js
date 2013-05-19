@@ -1413,7 +1413,7 @@ var AnnotatedByAreaTool = {
 		
         // Store starting point
 		var N = AnnotatedByAreaTool.blasso.length;
-		AnnotatedByAreaTool.start = d3.mouse(this);        
+		AnnotatedByAreaTool.start = d3.mouse(AnnotatedByAreaTool.drawspace[0][0]);        
 
 		if (AnnotatedByAreaTool.dragging == false) {
 	    	AnnotatedByAreaTool.dragging = true;
@@ -1816,6 +1816,7 @@ var Toolbox = {
 
 	// Create a group
 		this.dock = svg.append("g")
+			.attr("ID","Toolboxsvg")
 	    	//.attr("transform", "translate(" + (width - dockWidth + 1) 
 		  	//+ ", 0)");
 	
@@ -1836,6 +1837,7 @@ var Toolbox = {
 	    .attr("width", dockWidth)
 	    .attr("height", dockHeight)
 	    .attr("class", "dock")
+	    .attr("ID","Panelboxsvg")
 	    //.attr("fill","yellow");
 	var MinMax = this.dock.append("polygon")
 	    
@@ -3761,6 +3763,7 @@ var VisDock = {
 		this.svg = d3.select(selector).append("svg")
 			.attr("width",dockWidth)
 			.attr("height",height)
+			.attr("ID","VisDocksvg")
 //	   		.attr("width", width)
 //	    	.attr("height", height);
 
