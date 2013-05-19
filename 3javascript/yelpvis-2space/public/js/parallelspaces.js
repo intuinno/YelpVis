@@ -187,7 +187,7 @@ getHitsPolygon: function(points, inclusive) {
 
 		captured = CirclePolygonIntersection(points, shapebound, aa[0][i], inclusive);
 
-		if (captured == 1 && CheckNodeConditions(aa[0][i], "class", "movieCircle star")) {
+		if (captured == 1 && CheckNodeConditions(aa[0][i], "class", "star")) {
 
 			hits[count] = aa[0][i];
 			count++;
@@ -412,9 +412,9 @@ var sss=document.getElementsByTagName("g");
                 
                 //Enter + Update 
                 selectionCircle.attr("cx", function(d) {
-                    return +d.X;
+                    return xSelect(d);
                 }).attr("cy", function(d) {
-                    return +d.Y;
+                    return ySelect(d);
                 }).attr("r", function(d) {
                     return rSelect(+d.numReview);
                 }).attr("fill", color).attr("stroke", color).classed("selectedCircle", true);
