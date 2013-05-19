@@ -93,7 +93,7 @@ var RectangleTool = {
 		//RectangleTool.panel2.on("mousedown", RectangleTool.mousedown(this.panel2));
 		//IDsvgMovie.on("mousedown", RectangleTool.mousedown());//RectangleTool.panel1));	
 		//RectangleTool.panel2.on("mousedown", RectangleTool.mousedown());//RectangleTool.panel2));
-		//RectangleTool.panel1.selectAll("*").attr("pointer-events", "none");
+		//RectangleTool.panel1.selectAll("*").attr("pointer-events", "none");
 		//RectangleTool.panel2.selectAll("*").attr("pointer-events", "none");
 				
 		RectangleTool.panel1.on("mousedown", RectangleTool.mousedown);//RectangleTool.panel1));	
