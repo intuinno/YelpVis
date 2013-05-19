@@ -65,40 +65,219 @@ $('#page1').live('pageinit', function() {
 	var margin = 20;
 	var categoryList = ['Mexican','Vegetarian', 'Breakfast & Brunch', 'American', 'Asian', 'Italian', 'Hotels & Travel','Arts & Entertainment', 'Nightlife','etc'];
     
+
+	var drawspace = null;
+	
+	
+		//alert(panel1)		
+		//alert(aa)
+		//Panel.viewport.selectAll("*").attr("pointer-events", "none");
+		//Panel.panel.on("mousedown", EllipseTool.mousedown);
+		//panel1.selectAll("*").attr("pointer-events", "none");
+
+		//EllipseTool.panel1.on("mousedown", EllipseTool.mousedown);	
+		//panel2.selectAll("*").attr("pointer-events", "none");
+		//EllipseTool.panel2.on("mousedown", EllipseTool.mousedown);		    
+    
+    
+    
     VisDock.selectionHandler = {
-        
-        getHitsPolygon: function(points, inclusive){
+        reset: function(){
+        	for (var j=0;j<num;j++){
 
-            var aa = getCircles();
-            
-            var nElements = getNumberOfCircles();   
-    
-            //var aa2 = getNodes(nElements);
-    
-            var hits = [];
-    
-            var count = 0;
-    
-            var captured = 0;
+			   	QueryManager.remove -= 1;//alert(QueryManager.remove)	
+			   	VisDock.captured.splice(j,1);
+				QueryManager.query[j].remove();
 
-            var shapebound = PolygonInit(points,[0,0]);
+			   	QueryManager.removed.push(j);
 
-            for (var i=0; i<nElements; i++){
-        
-                captured = 0;
-        
-                captured = CirclePolygonIntersection(points,shapebound,aa[i], inclusive);
-        
-                if (captured == 1 && CheckNodeConditions(aa[i],"class","leaf node")){
-        
-                    hits[count] = i;
-                    count++;
-                }
-            }
-            
-            return hits;
-
+				    	//VisDock.selectionHandler.removeColor(QueryManager.layers[j], index);
+				    	
+				    	
+			   	var add = 0;;
+			 	for (var i=0;i<num;i++){
+			        if (QueryManager.removed.indexOf(i) != -1){
+				    add -= 1;
+			        }
+			        var move = ((i+QueryManager.relative+add)*query_box_height);
+			        QueryManager.query[i].attr("transform","translate(0,"+ (move)+")");//alert(move);
+			        if (move <= 7*query_box_height && move >= 0){
+					    QueryManager.query[i].attr("display","inline");
+				    }
+				    else {
+					    QueryManager.query[i].attr("display","none");
+				    }
+				};	
+        		if (QueryManager.ScrollbHeight < QueryManager.ScrollHeight){
+    				    QueryManager.ScrollbHeight = QueryManager.ScrollHeight - (num-8+QueryManager.remove)*QueryManager.ScrollHeight/(num+QueryManager.remove);
+				        if (QueryManager.ScrollbHeight + QueryManager.b_pos_y >= QueryManager.ScrollHeight){
+					    var increment = QueryManager.ScrollHeight/(num+QueryManager.remove)-QueryManager.ScrollHeight/(num+QueryManager.remove-1);
+					//alert(QueryManager.b_pos_y)
+					    QueryManager.Bar.attr("transform","translate(0,"+(b_width+QueryManager.b_pos_y+increment)+")")
+								//var add = 0;
+								//for (var i=0;i<num;i++){
+								
+				        }
+				        QueryManager.Bar.attr("height",QueryManager.ScrollbHeight)
+							    
+				    }
+				    else{
+				        QueryManager.extra = -1*(num-8+QueryManager.remove)*QueryManager.ScrollHeight/(num+QueryManager.remove);
+				    }
+				
+				}
+        	
+        	
+        	
         },
+
+getHitsPolygon: function(points, inclusive) {
+
+	//var bb = d3.selectAll(".userCircle");
+	//isMovieSelected = 0;
+	var tool = d3.select("#legend").selectAll("g")
+	var det = d3.mouse(tool[0][0])
+	if (det[0] < 0) {
+
+		if (isMovieSelected == 1) {
+
+		} else {
+			clearSelection();
+			VisDock.selectionHandler.reset();
+			//num = 0;
+
+		}
+
+		drawspace = panel1;
+		isMovieSelected = 1;
+		var aa = d3.selectAll(".movieCircle");
+	} else {
+
+		if (isMovieSelected == 1) {
+			clearSelection();
+			VisDock.selectionHandler.reset();
+			num = 0;
+		} else {
+
+		}
+
+		drawspace = panel2;
+		isMovieSelected = 0;
+		var aa = d3.selectAll(".userCircle");
+		//	alert("meh2")
+	}
+
+	var nElements = aa[0].length;
+	//getNumberOfCircles();
+
+	//var aa2 = getNodes(nElements);
+
+	var hits = [];
+
+	var count = 0;
+
+	var captured = 0;
+
+	var shapebound = PolygonInit(points, [0, 0]);
+
+	for (var i = 0; i < nElements; i++) {
+
+		captured = 0;
+
+		captured = CirclePolygonIntersection(points, shapebound, aa[0][i], inclusive);
+
+		if (captured == 1 && CheckNodeConditions(aa[0][i], "class", "movieCircle star")) {
+
+			hits[count] = aa[0][i];
+			count++;
+		}
+	}
+
+	var tempGalaxy = [];
+	//var count2 = 0;
+	for ( i = 0; i < hits.length; i++) {
+		//Group mode:  Add to the current selection
+		if (isMovieSelected) {
+			for (var count = 0; count < userLength; count++) {
+
+				if (ratings[count][i] >= PSmin && ratings[count][i] <= PSmax) {
+
+					tempGalaxy[i].push(userData[count]);
+				}
+			}
+		} else {
+
+			for (var count = 0; count < movieLength; count++) {
+
+				if (ratings[i][count] >= PSmin && ratings[i][count] <= PSmax) {
+
+					tempGalaxy.push(movieData[count]);
+				}
+			}
+		}
+	}
+
+	if (isUnion) {
+
+		var union = []
+
+		for (var j = 0; j < tempGalaxy.length; j++) {
+
+			for (var k = 0; k < tempGalaxy[j].length; k++) {
+				if (union.indexOf(tempGalaxy[j][k]) == -1) {
+					union.push(tempGalaxy[j][k]);
+				}
+			}
+		}
+
+		num++;
+		QueryManager.addQuery();
+		VisDock.captured[num] = union;
+		//VisDock.selectionHandler.setColor(union);
+		QueryManager.querytoggle = [];
+		for (var i = 0; i < num; i++) {
+
+			QueryManager.querybox[i].attr("style", "fill: white;stroke:black")
+		}
+
+		var tempQuerySet = new QuerySets('movie', hits, union, num, 'union', PSmin, PSmax, "", $('input[name=contourMode]:checked').val(), isContourOn);
+
+	} else {
+		var common = []
+		var first = tempGalaxy[0];
+		for ( i = 0; i < tempGalaxy.length; i++) {
+			var valid = 1;
+			common = [];
+			for (var j = 0; j < tempGalaxy[i].length; j++) {
+				if (first.indexOf(tempGalaxy[i][j]) != -1) {
+					common.push(tempGalaxy[i][j])
+				}
+			}
+			first = common;
+
+		}
+		if (common.length != 0) {
+			num++;
+			QueryManager.addQuery();
+			VisDock.captured[num - 1] = common;
+		}
+		var tempQuerySet = new QuerySets('movie', hits, common, num, 'common', PSmin, PSmax, "", $('input[name=contourMode]:checked').val(), isContourOn);
+
+	}
+
+	//  var textLegend = d.title + " (Ratings " + PSmin + "-" + PSmax + ") " + $('input[name=contourMode]:checked').val();
+
+	selectionStatesMovie.add(tempQuerySet);
+
+	x.domain(xDomainExtent);
+	y.domain(yDomainExtent);
+
+
+	updateDisplay('user', selectionStatesMovie);
+//	updateDisplay('movie', selectionStatesMovie);;
+
+},
+
     getHitsEllipse: function(points, inclusive){
     var aa = getCircles();
     var nElements = getNumberOfCircles();   
@@ -296,7 +475,7 @@ var sss=document.getElementsByTagName("g");
 
 
 
-            updateLegend(space, mySelectionState);
+           // updateLegend(space, mySelectionState);
     
           
             
@@ -770,61 +949,6 @@ SelectionStatesSpace.prototype = {
 					})
 					.on('click', function(d, i) {
 
-						var tempGalaxy = [];
-
-						if(isMovieSelected === false) {
-						
-							
-							isMovieSelected = true;
-							clearSelection();
-							
-						
-						}
-						if (selectionStatesMovie.isSelected(d) === false) {
-                             //Here this star is newly selected 
-                             //So Add to the Selection
-                             
-                             if( isGroupSelectionMode ) {
-                                 //Group mode:  Add to the current selection
-                                 
-                             } else {
-                                 //Individual mode: Add to the new selection
-                                 
-                                 for (var count = 0; count < userLength; count++) {
-            
-                                     if (ratings[count][i] >= PSmin && ratings[count][i] <= PSmax) {
-                
-                                        tempGalaxy.push(userData[count]);
-                                     }
-                                 }
-                                 
-                                 var newClass = selectionStatesMovie.newClass(); 
-                                 var newQuery = [d];
-                                 var textLegend = d.title + " (Ratings " + PSmin + "-" + PSmax + ") " + $('input[name=contourMode]:checked').val();
-                                 
-                                 var tempQuerySet = new QuerySets('movie',newQuery, tempGalaxy, newClass,'single', PSmin, PSmax, textLegend, $('input[name=contourMode]:checked').val(),isContourOn);
-                                 
-                                 selectionStatesMovie.add(tempQuerySet);
-                                 
-                                 x.domain(xDomainExtent);
-                                 y.domain(yDomainExtent);
-                                
-                             }
-                            
-            
-                        } else {
-                            
-                            //Here this star is already selected
-                            //So remove it 
-                            
-                            
-                                selectionStatesMovie.removeEntity(d);
-    
-                                            
-                        }
-                        
-                        updateDisplay('user',selectionStatesMovie); 
-
 
 					});
 
@@ -910,6 +1034,10 @@ SelectionStatesSpace.prototype = {
 			.call(yAxisUser);
 	
 	VisDock.init("#legend",dockWidth,570);	
+
+	var panel1 = d3.selectAll("#IDsvgMovie")//document.getElementById("IDsvgMovie")
+	var panel2 = d3.selectAll("#IDsvgUser")//document.getElementById("IDsvgUser")
+
 	
 	d3.csv("data/business.csv", function(userCSV) {
 

@@ -45,11 +45,11 @@ function getPolygons(){
 function CheckNodeConditions(obj,attr,str){
  var result=obj.getAttributeNS(null,attr);
 //alert(result)
- if (result == str){
-  return 1;
+ if (result.indexOf(str) == -1){
+  return 0;
  }
  else {
-  return 0;
+  return 1;
  }
 }
 
