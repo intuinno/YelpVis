@@ -65,38 +65,95 @@ $('#page1').live('pageinit', function() {
 	var margin = 20;
 	var categoryList = ['Mexican','Vegetarian', 'Breakfast & Brunch', 'American', 'Asian', 'Italian', 'Hotels & Travel','Arts & Entertainment', 'Nightlife','etc'];
     
-    VisDock.selectionHandler = {
+        VisDock.selectionHandler = {
         
         getHitsPolygon: function(points, inclusive){
 
-            var aa = getCircles();
+            // var aa = getCircles();
+//             
+            // var nElements = getNumberOfCircles();   
+//     
+            // //var aa2 = getNodes(nElements);
+//     
+            // var hits = [];
+//     
+            // var count = 0;
+//     
+            // var captured = 0;
+// 
+            // var shapebound = PolygonInit(points,[0,0]);
+// 
+            // for (var i=0; i<nElements; i++){
+//         
+                // captured = 0;
+//         
+                // captured = CirclePolygonIntersection(points,shapebound,aa[i], inclusive);
+//         
+                // if (captured == 1 && CheckNodeConditions(aa[i],"class","leaf node")){
+//         
+                    // hits[count] = i;
+                    // count++;
+                // }
+            // }
+//             
+            // return hits;
             
-            var nElements = getNumberOfCircles();   
-    
-            //var aa2 = getNodes(nElements);
-    
-            var hits = [];
-    
-            var count = 0;
-    
-            var captured = 0;
-
-            var shapebound = PolygonInit(points,[0,0]);
-
-            for (var i=0; i<nElements; i++){
-        
-                captured = 0;
-        
-                captured = CirclePolygonIntersection(points,shapebound,aa[i], inclusive);
-        
-                if (captured == 1 && CheckNodeConditions(aa[i],"class","leaf node")){
-        
-                    hits[count] = i;
-                    count++;
-                }
-            }
             
-            return hits;
+                        var tempGalaxy = [];
+
+                        //check if Word space or Business Space 
+                        
+                        if(isMovieSelected === false) {
+                        
+                            
+                            isMovieSelected = true;
+                            clearSelection();
+                            
+                        
+                        }
+                        
+                      
+                             if( isGroupSelectionMode ) {
+                                 //Group mode:  Add to the current selection
+                                 
+                             } else {
+                                 //Individual mode: Add to the new selection
+                                 
+                                 for (var count = 0; count < userLength; count++) {
+            
+                                     if (ratings[count][i] >= PSmin && ratings[count][i] <= PSmax) {
+                
+                                        tempGalaxy.push(userData[count]);
+                                     }
+                                 }
+                                 
+                                 var newClass = selectionStatesMovie.newClass(); 
+                                 var newQuery = [d];
+                                 var textLegend = d.title + " (Ratings " + PSmin + "-" + PSmax + ") " + $('input[name=contourMode]:checked').val();
+                                 
+                                 var tempQuerySet = new QuerySets('movie',newQuery, tempGalaxy, newClass,'single', PSmin, PSmax, textLegend, $('input[name=contourMode]:checked').val(),isContourOn);
+                                 
+                                 selectionStatesMovie.add(tempQuerySet);
+                                 
+                                 x.domain(xDomainExtent);
+                                 y.domain(yDomainExtent);
+                                
+                             }
+                            
+            
+                        } else {
+                            
+                            //Here this star is already selected
+                            //So remove it 
+                            
+                            
+                                selectionStatesMovie.removeEntity(d);
+    
+                                            
+                        }
+                        
+                        updateDisplay('user',selectionStatesMovie); 
+
 
         },
     getHitsEllipse: function(points, inclusive){
@@ -592,7 +649,7 @@ SelectionStatesSpace.prototype = {
     
     //State variable for the selection
 	var isMovieSelected = false;
-	var isGroupSelectionMode = false;
+	var isUnion = false;
 	var isContourOn = true;
 	
     
@@ -769,61 +826,6 @@ SelectionStatesSpace.prototype = {
 						return fillMovieScale(+d.avgReview);
 					})
 					.on('click', function(d, i) {
-
-						var tempGalaxy = [];
-
-						if(isMovieSelected === false) {
-						
-							
-							isMovieSelected = true;
-							clearSelection();
-							
-						
-						}
-						if (selectionStatesMovie.isSelected(d) === false) {
-                             //Here this star is newly selected 
-                             //So Add to the Selection
-                             
-                             if( isGroupSelectionMode ) {
-                                 //Group mode:  Add to the current selection
-                                 
-                             } else {
-                                 //Individual mode: Add to the new selection
-                                 
-                                 for (var count = 0; count < userLength; count++) {
-            
-                                     if (ratings[count][i] >= PSmin && ratings[count][i] <= PSmax) {
-                
-                                        tempGalaxy.push(userData[count]);
-                                     }
-                                 }
-                                 
-                                 var newClass = selectionStatesMovie.newClass(); 
-                                 var newQuery = [d];
-                                 var textLegend = d.title + " (Ratings " + PSmin + "-" + PSmax + ") " + $('input[name=contourMode]:checked').val();
-                                 
-                                 var tempQuerySet = new QuerySets('movie',newQuery, tempGalaxy, newClass,'single', PSmin, PSmax, textLegend, $('input[name=contourMode]:checked').val(),isContourOn);
-                                 
-                                 selectionStatesMovie.add(tempQuerySet);
-                                 
-                                 x.domain(xDomainExtent);
-                                 y.domain(yDomainExtent);
-                                
-                             }
-                            
-            
-                        } else {
-                            
-                            //Here this star is already selected
-                            //So remove it 
-                            
-                            
-                                selectionStatesMovie.removeEntity(d);
-    
-                                            
-                        }
-                        
-                        updateDisplay('user',selectionStatesMovie); 
 
 
 					});
