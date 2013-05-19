@@ -2058,7 +2058,7 @@ var Toolbox = {
 	    	if (VisDock.captured[num].length != 0){
 				num++;
 	//			alert("hi")
-				VisDock.selectionHandler.setColor(VisDock.captured[num-1]);
+				//VisDock.selectionHandler.setColor(VisDock.captured[num-1]);
 				query_posy = (num-1)*query_box_height;
 		//var query = QueryManager.dock.append("g")
 		//    .attr("transform", "translate(" + query_posx + ", " + query_posy + ")")
