@@ -194,10 +194,10 @@ var RectangleTool = {
 			//alert(drawspace)
 	    // Forward the selection
 	    	var box = RectangleTool.getBoundingBox(d3.mouse(RectangleTool.drawspace[0][0]));
-	    	/*Toolbox.select("Rectangle", [[(box[0] - Panel.x), (box[1] -Panel.y)], [(box[0] - Panel.x), (box[1] - Panel.y) + box[3]],
+	    	Toolbox.select("Rectangle", [[(box[0] - Panel.x), (box[1] -Panel.y)], [(box[0] - Panel.x), (box[1] - Panel.y) + box[3]],
 			    	[(box[0] - Panel.x) + box[2], (box[1] - Panel.y) + box[3]],
-			    	[(box[0] - Panel.x) + box[2], (box[1] - Panel.y)]], true);
-	    */
+			    	[(box[0] - Panel.x) + box[2], (box[1] - Panel.y)]], Toolbox.inclusive);
+	    
 	    // Remove the bounding box
 	    	RectangleTool.bbox.remove();
 	    	RectangleTool.bbox = null;
@@ -310,7 +310,7 @@ var EllipseTool = {
 	    	var y = d3.mouse(this)[1] - Panel.y;
 	    	var ellip = EllipseTool.getBoundingEllipse([x,y]);
 
-	    	//Toolbox.select("Ellipse", ellip, true);
+	    	Toolbox.select("Ellipse", ellip, Toolbox.inclusive);
 	    
 	    // Remove the bounding box
 	    	EllipseTool.bellipse.remove();
@@ -459,7 +459,7 @@ var LassoTool = {
 	    //}
 
 	    // Forward the selection
-	    	//Toolbox.select("Lasso", LassoTool.rPoints, true);
+	    	Toolbox.select("Lasso", LassoTool.rPoints, Toolbox.inclusive);
 	    
 	    // Remove the bounding box
 	    	LassoTool.blasso.remove();
@@ -572,11 +572,11 @@ var Straight = {
 
 	    // Remove event handlers
 	    
-	    	Panel.panel.on("mousemove", null);
-	    	Panel.panel.on("mouseup", null);
+	    	Straight.drawspace.on("mousemove", null);
+	    	Straight.drawspace.on("mouseup", null);
 
 	    // Forward the selection
-	    	//Toolbox.select("Straight", [Straight.start, [(d3.mouse(this)[0] - Panel.x), (d3.mouse(this)[1] - Panel.y)]], true);
+	    	Toolbox.select("Straight", [Straight.start, [(d3.mouse(this)[0] - Panel.x), (d3.mouse(this)[1] - Panel.y)]], Toolbox.inclusive);
 	    
 	    // Remove the bounding box
 	    	Straight.Line.remove();
@@ -716,7 +716,7 @@ var Polyline = {
 	        	Polyline.bpolyline.remove();
 	        	Polyline.bpolyline = null;
 		// Forward the selection
-				Toolbox.select("Polyline", Polyline.rPoints, true);
+				Toolbox.select("Polyline", Polyline.rPoints, Toolbox.inclusive);
 				Polyline.points = [];
 				Polyline.rPoints = [];
 				Polyline.drawspace.on("mousemove",null)
@@ -862,7 +862,7 @@ var Freeselect = {
 	    //}
 
 	    // Forward the selection
-	    	Toolbox.select("Freeselect", Freeselect.rPoints, true);
+	    	Toolbox.select("Freeselect", Freeselect.rPoints, Toolbox.inclusive);
 	    	Freeselect.points = [];
 	    	Freeselect.rPoints = [];
 	    	Freeselect.drawspace.on("mousemove",null)
@@ -1022,7 +1022,7 @@ var PolygonTool = {
 	        	PolygonTool.bpolygon.remove();
 	       	 	PolygonTool.bpolygon = null;
 	    // Forward the selection
-	    		Toolbox.select("Polygon", Polyline.rPoints, true);
+	    		Toolbox.select("Polygon", Polyline.rPoints, Toolbox.inclusive);
 	    		PolygonTool.points = [];
 	    		PolygonTool.rPoints = [];
 	    		PolygonTool.drawspace.on("mousemove",null)
@@ -1189,14 +1189,15 @@ var AnnotatedByPointTool = {
 		annotationArray[numAnno][0] = annotation;
 		annotationArray[numAnno][1] = 0;
 		numAnno ++;
-		annotation.append("circle")
+		
+		/*annotation.append("circle")
 			.attr("cx", AnnotatedByPointTool.start[0])
 			.attr("cy", AnnotatedByPointTool.start[1])
 			.attr("class", "annotation-circle")
 			.attr("r", 2)
 			.attr("fill", "red")
 			.attr("opacity", 0.8);
-			
+			*/
 		annotation.append("line")
 			.attr("x1", AnnotatedByPointTool.start[0])
 			.attr("y1", AnnotatedByPointTool.start[1])
@@ -1213,17 +1214,17 @@ var AnnotatedByPointTool = {
 					.text("label " + numAnno);
 		var divWidth = div.style("width");
 		var divHeight = div.style("height");
-		var span = div.append("xhtml:span").attr("class", "close-btn");
-		span.append("xhtml:a").attr("href", "#").text("x");
+		//var span = div.append("xhtml:span").attr("class", "close-btn");
+		//span.append("xhtml:a").attr("href", "#").text("x");
 		var index = QueryManager.addAnnotation("red", 1, "label " + numAnno);
 		label.attr("class", index);
 		
-		span.on("mousedown", function(){
+		/*span.on("mousedown", function(){
 			d3.event.stopPropagation();
 			AnnotatedByPointTool.drawspace.on("mouseup",null);
 			annotation.remove();
 			QueryManager.annotation[index].remove();
-		});
+		});*/
 		
 		label.on("mousedown", function(){
 			d3.event.stopPropagation();
@@ -1235,7 +1236,7 @@ var AnnotatedByPointTool = {
 					if(div.style("width") != divWidth || div.style("height") != divHeight) {
 						foreignObject.attr("width", parseInt(div.style("width"))+20);
 						foreignObject.attr("height", parseInt(div.style("height")) + 15);
-						span.style("left", (parseInt(div.style("width")) - 32) + "px");
+						//span.style("left", (parseInt(div.style("width")) - 32) + "px");
 						divWidth = div.style("width");
 						divHeight = div.style("height");
 						if(annotation.select("line").attr("x2") < AnnotatedByPointTool.start[0] && annotation.select("line").attr("y2") < AnnotatedByPointTool.start[1]) {
@@ -1269,7 +1270,7 @@ var AnnotatedByPointTool = {
 					if(newText != null && newText != "") {
 						div.text(newText);
 						QueryManager.names[parseInt(this.getAttributeNS(null,"class"))].text(newText);
-						span = div.append("xhtml:span").attr("class", "close-btn").attr("id", this.getAttributeNS(null,"class"));
+						/*span = div.append("xhtml:span").attr("class", "close-btn").attr("id", this.getAttributeNS(null,"class"));
 						span.append("xhtml:a").attr("href", "#").text("x");
 						span.style("left", (parseInt(div.style("width")) - 32) + "px");
 						span.on("mousedown", function(){
@@ -1277,7 +1278,7 @@ var AnnotatedByPointTool = {
 							AnnotatedByPointTool.drawspace.on("mouseup",null);
 							annotation.remove();
 							QueryManager.annotation[parseInt(this.getAttributeNS(null,"id"))].remove();
-						});
+						});*/
 					}
 				}
 				label.on("mousemove", null);
@@ -1296,7 +1297,7 @@ var AnnotatedByPointTool = {
 	
 	changeLabel: function(newname, index) {
 		annotationArray[index][0].select("div").text(newname);
-		var span = annotationArray[index][0].select("div").append("xhtml:span").attr("class", "close-btn").attr("id", index);
+		/*var span = annotationArray[index][0].select("div").append("xhtml:span").attr("class", "close-btn").attr("id", index);
 		span.append("xhtml:a").attr("href", "#").text("x");
 		span.style("left", (parseInt(annotationArray[index][0].select("div").style("width")) - 32) + "px");
 		span.on("mousedown", function(){
@@ -1304,7 +1305,7 @@ var AnnotatedByPointTool = {
 			AnnotatedByPointTool.drawspace.on("mouseup",null);
 			annotationArray[index][0].remove();
 			QueryManager.annotation[index].remove();
-		});
+		});*/
 	},
 	
 	removeLabel: function(index){
@@ -1436,6 +1437,7 @@ var AnnotatedByAreaTool = {
 	    // Update Segment number
 	    	AnnotatedByAreaTool.AnnotatedByAreaToolUpdate(d3.mouse(AnnotatedByAreaTool.drawspace[0][0]));
 	    	AnnotatedByAreaTool.segments += 1;
+	    	var N = AnnotatedByAreaTool.blasso.length-1; 
 	    	var points = AnnotatedByAreaTool.getPoints();
 	    	AnnotatedByAreaTool.blasso[N].attr("points",points);
 			
@@ -1469,13 +1471,15 @@ var AnnotatedByAreaTool = {
 			AnnotatedByAreaTool.areaarray.push(numAnno)
 //alert(AnnotatedByAreaTool.areaarray)
 			numAnno ++;
-			annotation.append("circle")
+			
+			/*annotation.append("circle")
 				.attr("cx", AnnotatedByAreaTool.pointStart[0])
 				.attr("cy", AnnotatedByAreaTool.pointStart[1])
 				.attr("class", "annotation-circle")
 				.attr("r", 2)
 				.attr("fill", "red")
 				.attr("opacity", 0.8);
+			*/
 			
 			annotation.append("line")
 				.attr("x1", AnnotatedByAreaTool.pointStart[0])
@@ -1493,12 +1497,12 @@ var AnnotatedByAreaTool = {
 						.text("label" + numAnno);
 			var divWidth = div.style("width");
 			var divHeight = div.style("height");
-			var span = div.append("xhtml:span").attr("class", "close-btn");
-			span.append("xhtml:a").attr("href", "#").text("x");
+			/*var span = div.append("xhtml:span").attr("class", "close-btn");
+			span.append("xhtml:a").attr("href", "#").text("x");*/
 			var index = QueryManager.addAnnotation("red", 1, "label " + numAnno);
 			label.attr("class", index);
 			
-			span.on("mousedown", function(){
+			/*span.on("mousedown", function(){
 				d3.event.stopPropagation();
 				AnnotatedByAreaTool.drawspace.on("mouseup",null);
 				annotation.remove();
@@ -1506,7 +1510,7 @@ var AnnotatedByAreaTool = {
 		    	AnnotatedByAreaTool.blasso.remove();
 		    	AnnotatedByAreaTool.strpoints = "";
 		    	AnnotatedByAreaTool.points = [];
-			});
+			});*/
 		
 			label.on("mousedown", function(){
 				d3.event.stopPropagation();
@@ -1518,7 +1522,7 @@ var AnnotatedByAreaTool = {
 						if(div.style("width") != divWidth || div.style("height") != divHeight) {
 							foreignObject.attr("width", parseInt(div.style("width"))+20);
 							foreignObject.attr("height", parseInt(div.style("height")) + 15);
-							span.style("left", (parseInt(div.style("width")) - 32) + "px");
+							//span.style("left", (parseInt(div.style("width")) - 32) + "px");
 							divWidth = div.style("width");
 							divHeight = div.style("height");
 							if(annotation.select("line").attr("x2") < AnnotatedByAreaTool.pointStart[0] && annotation.select("line").attr("y2") < AnnotatedByAreaTool.pointStart[1]) {
@@ -1552,7 +1556,7 @@ var AnnotatedByAreaTool = {
 						if(newText != null && newText != "") {
 							div.text(newText);
 							QueryManager.names[parseInt(this.getAttributeNS(null,"class"))].text(newText);
-							span = div.append("xhtml:span").attr("class", "close-btn").attr("id", this.getAttributeNS(null,"class"));
+							/*span = div.append("xhtml:span").attr("class", "close-btn").attr("id", this.getAttributeNS(null,"class"));
 							span.append("xhtml:a").attr("href", "#").text("x");
 							span.style("left", (parseInt(div.style("width")) - 32) + "px");
 							span.on("mousedown", function(){
@@ -1563,7 +1567,7 @@ var AnnotatedByAreaTool = {
 						    	AnnotatedByAreaTool.blasso.remove();
 						    	AnnotatedByAreaTool.strpoints = "";
 						    	AnnotatedByAreaTool.points = [];
-							});
+							});*/
 						}
 					}
 					label.on("mousemove", null);
@@ -1580,7 +1584,7 @@ var AnnotatedByAreaTool = {
 			
 
 	    // Forward the selection
-	  //  	Toolbox.select("Lasso", LassoTool.points, true);
+	    	Toolbox.select("Lasso", LassoTool.points, Toolbox.inclusive);
 	    
 	    // Remove the bounding box
 	    //	AnnotatedByAreaTool.blasso.remove();
@@ -1590,7 +1594,8 @@ var AnnotatedByAreaTool = {
 		});
 
 	// Install event handlers
-		AnnotatedByAreaTool.drawspace.on("mousemove", function() {    
+		AnnotatedByAreaTool.drawspace.on("mousemove", function() {   
+			var N = AnnotatedByAreaTool.blasso.length-1; 
 	   		 if (AnnotatedByAreaTool.dragging) {
 		// Update the selection
 				AnnotatedByAreaTool.AnnotatedByAreaToolUpdate(d3.mouse(AnnotatedByAreaTool.drawspace[0][0]));
@@ -1609,7 +1614,7 @@ var AnnotatedByAreaTool = {
 	},
 	changeLabel: function(newname, index) {
 		annotationArray[index][0].select("div").text(newname);
-		var span = annotationArray[index][0].select("div").append("xhtml:span").attr("class", "close-btn").attr("id", index);
+		/*var span = annotationArray[index][0].select("div").append("xhtml:span").attr("class", "close-btn").attr("id", index);
 		span.append("xhtml:a").attr("href", "#").text("x");
 		span.style("left", (parseInt(annotationArray[index][0].select("div").style("width")) - 32) + "px");
 		span.on("mousedown", function(){
@@ -1620,7 +1625,7 @@ var AnnotatedByAreaTool = {
 			AnnotatedByAreaTool.strpoints = "";  //if we need to set it null
 			AnnotatedByAreaTool.points = [];
 			QueryManager.annotation[index].remove();
-		});
+		});*/
 	},
 	
 	removeLabel: function(index){
@@ -1808,6 +1813,7 @@ var Toolbox = {
     scale: 1,
     panelbox: null,
     hideorshow: 1,
+    inclusive: 1,
     tools: [ PointerTool, RectangleTool, EllipseTool, LassoTool,
     	 Straight, Polyline, Freeselect,
 	     PolygonTool, PanZoomTool, RotateTool, AnnotatedByPointTool, AnnotatedByAreaTool ],
@@ -1856,24 +1862,31 @@ var Toolbox = {
 		    //this.setAttributeNS(null,"fill","crimson")
 		    //MinMaxImage.attr("transform", "rotate(180)");
 		    this.setAttributeNS(null,"points","185,1 191,10 197,1 ")
-		    BirdView.panel.attr("display", "none");
+		    //BirdView.panel.attr("display", "none");
 		    for (var i=0;i<Toolbox.tools.length;i++){
 			button[i].attr("display","none")
+
 		    }
 		    Toolbox.panelbox.attr("height",20)
 		    QueryManager.dock.attr("display","none")
+
+		    checkbox.attr("display","none")
+
 		}
 		else{
 		    Toolbox.hideorshow = 1;
 		    this.setAttributeNS(null,"points","185,10 197,10 191,1")
 		  //  this.setAttributeNS(null,"fill","lightgreen")
 		    //MinMaxImage.attr("transform", "rotate(180)");
-		    BirdView.panel.attr("display", "inline");
+		    //BirdView.panel.attr("display", "inline");
 		    for (var i=0;i<Toolbox.tools.length;i++){
 			button[i].attr("display","inline")
 		    }
 		    Toolbox.panelbox.attr("height",dockHeight)
 		    QueryManager.dock.attr("display","inline")
+
+		    checkbox.attr("display","inline")
+
 		}
 	    })
 	    //.attr("transform", "rotation(180)");
@@ -1937,6 +1950,42 @@ var Toolbox = {
 				.attr("height", buttonSize/2)
 				.attr("xlink:href", this.tools[i].image);
 
+	    	var yPos = Math.floor(this.tools.length / numButtonCols) * buttonOffset +
+			offset;
+	    	var checkbox = this.dock.append("g")
+	    	checkbox.append("rect")
+				.attr("x",25)//100)
+				.attr("y", yPos-2)
+				.attr("width",15)
+				.attr("height",15)//alert("CSDCS")
+				.attr("fill","white")
+
+		//.attr("stroke","black")
+		//.on("click",function(){alert(checked)})	
+	    	var checked = checkbox.append("svg:image")
+				.attr("x",25)
+				.attr("y",yPos-2)
+				.attr("width",15)
+				.attr("height",15)
+				.attr("xlink:href", "images/checkbox_yes.png")
+				.on("click",function(){if (Toolbox.inclusive == true){
+						    Toolbox.inclusive = false;//alert("0")
+						    checked.attr("xlink:href","images/checkbox_no.png")
+					    //checked.setAttributeNS(null,"xlink:href", "images/checkbox_no.png")
+						}
+						else{
+					    	Toolbox.inclusive = true;//alert("1")
+					    	checked.attr("xlink:href","images/checkbox_yes.png")
+					    //checked.setAttributeNS(null,"xlink:href", "images/checkbox_yes.png")	
+						}
+			
+						})	
+	    	checkbox.append("text")
+				.attr("x",42)
+				.attr("y",yPos+11)
+				.text("Borderline Inclusive")
+
+
 		}
 	
 		this.setTool(PointerTool);
@@ -1960,7 +2009,9 @@ var Toolbox = {
     },
 
   	select: function(SelectType, polygon, inclusive) {
+  		
 		if (VisDock.selectionHandler != null) {
+
 	    	if (VisDock.numSvgPolygon == 0){
 				VisDock.numSvgPolygon = document.getElementsByTagName("polygon").length;
 	    	}
@@ -2550,19 +2601,18 @@ var QueryManager = {
 				//QueryManager.commontoggle=0;
 				//QueryManager.xortoggle=0;
 				//trash.attr("style","fill: white; stroke: black");
-				var first = [];
-				var common = []
-				for (var j=0;j<QueryManager.querytoggle.length;j++){
-				    for (var k=0;k<VisDock.captured[QueryManager.querytoggle[j]].length;k++){
-					if (j == 0){
-					    first.push(VisDock.captured[QueryManager.querytoggle[j]][k]);
-					}
-					else{
-					    if (first.indexOf(VisDock.captured[QueryManager.querytoggle[j]][k]) != -1){
-					        common.push(VisDock.captured[QueryManager.querytoggle[j]][k]);
-					    }
+				var first = VisDock.captured[QueryManager.querytoggle[0]];
+				var common = [];
+				for (var i=1;i<QueryManager.querytoggle.length;i++){
+				    var valid = 1;
+				    common = [];
+				    for (var j=0;j<VisDock.captured[QueryManager.querytoggle[i]].length;j++){
+					if (first.indexOf(VisDock.captured[QueryManager.querytoggle[i]][j]) != -1){
+					    common.push(VisDock.captured[QueryManager.querytoggle[i]][j])					
 					}
 				    }
+				    first = common;
+
 				}
 				if (common.length != 0){
 				    num++;
@@ -2592,19 +2642,18 @@ var QueryManager = {
 				//QueryManager.commontoggle=0;
 				//QueryManager.xortoggle=0;
 				//trash.attr("style","fill: white; stroke: black");
-				var first = [];
-				var common = []
-				for (var j=0;j<QueryManager.querytoggle.length;j++){
-				    for (var k=0;k<VisDock.captured[QueryManager.querytoggle[j]].length;k++){
-					if (j == 0){
-					    first.push(VisDock.captured[QueryManager.querytoggle[j]][k]);
-					}
-					else{
-					    if (first.indexOf(VisDock.captured[QueryManager.querytoggle[j]][k]) != -1){
-					        common.push(VisDock.captured[QueryManager.querytoggle[j]][k]);
-					    }
+				var first = VisDock.captured[QueryManager.querytoggle[0]];
+				var common = [];
+				for (var i=1;i<QueryManager.querytoggle.length;i++){
+				    var valid = 1;
+				    common = [];
+				    for (var j=0;j<VisDock.captured[QueryManager.querytoggle[i]].length;j++){
+					if (first.indexOf(VisDock.captured[QueryManager.querytoggle[i]][j]) != -1){
+					    common.push(VisDock.captured[QueryManager.querytoggle[i]][j])					
 					}
 				    }
+				    first = common;
+
 				}
 				if (common.length != 0){
 				    num++;
@@ -2636,19 +2685,18 @@ var QueryManager = {
 				//QueryManager.commontoggle=0;
 				//QueryManager.xortoggle=0;
 				//trash.attr("style","fill: white; stroke: black");
-				var first = [];
-				var common = []
-				for (var j=0;j<QueryManager.querytoggle.length;j++){
-				    for (var k=0;k<VisDock.captured[QueryManager.querytoggle[j]].length;k++){
-					if (j == 0){
-					    first.push(VisDock.captured[QueryManager.querytoggle[j]][k]);
-					}
-					else{
-					    if (first.indexOf(VisDock.captured[QueryManager.querytoggle[j]][k]) != -1){
-					        common.push(VisDock.captured[QueryManager.querytoggle[j]][k]);
-					    }
+				var first = VisDock.captured[QueryManager.querytoggle[0]];
+				var common = [];
+				for (var i=1;i<QueryManager.querytoggle.length;i++){
+				    var valid = 1;
+				    common = [];
+				    for (var j=0;j<VisDock.captured[QueryManager.querytoggle[i]].length;j++){
+					if (first.indexOf(VisDock.captured[QueryManager.querytoggle[i]][j]) != -1){
+					    common.push(VisDock.captured[QueryManager.querytoggle[i]][j])					
 					}
 				    }
+				    first = common;
+
 				}
 				var union = []
 				for (var j=0;j<QueryManager.querytoggle.length;j++){
@@ -2692,19 +2740,18 @@ var QueryManager = {
 				//QueryManager.commontoggle=0;
 				//QueryManager.xortoggle=0;
 				//trash.attr("style","fill: white; stroke: black");
-				var first = [];
-				var common = []
-				for (var j=0;j<QueryManager.querytoggle.length;j++){
-				    for (var k=0;k<VisDock.captured[QueryManager.querytoggle[j]].length;k++){
-					if (j == 0){
-					    first.push(VisDock.captured[QueryManager.querytoggle[j]][k]);
-					}
-					else{
-					    if (first.indexOf(VisDock.captured[QueryManager.querytoggle[j]][k]) != -1){
-					        common.push(VisDock.captured[QueryManager.querytoggle[j]][k]);
-					    }
+				var first = VisDock.captured[QueryManager.querytoggle[0]];
+				var common = [];
+				for (var i=1;i<QueryManager.querytoggle.length;i++){
+				    var valid = 1;
+				    common = [];
+				    for (var j=0;j<VisDock.captured[QueryManager.querytoggle[i]].length;j++){
+					if (first.indexOf(VisDock.captured[QueryManager.querytoggle[i]][j]) != -1){
+					    common.push(VisDock.captured[QueryManager.querytoggle[i]][j])					
 					}
 				    }
+				    first = common;
+
 				}
 				var union = []
 				for (var j=0;j<QueryManager.querytoggle.length;j++){
