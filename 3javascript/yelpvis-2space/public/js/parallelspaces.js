@@ -197,10 +197,11 @@ getHitsPolygon: function(points, inclusive) {
 	var tempGalaxy = [];
 	//var count2 = 0;
 	for ( i = 0; i < hits.length; i++) {
+		tempGalaxy[i] = [];
 		//Group mode:  Add to the current selection
 		if (isMovieSelected) {
 			for (var count = 0; count < userLength; count++) {
-
+	
 				if (ratings[count][i] >= PSmin && ratings[count][i] <= PSmax) {
 
 					tempGalaxy[i].push(userData[count]);
@@ -476,14 +477,8 @@ var sss=document.getElementsByTagName("g");
     
 
 
-
-<<<<<<< HEAD
            // updateLegend(space, mySelectionState);
-=======
-            //updateLegend(space, mySelectionState);
->>>>>>> 21537c012cb284b8199bb682ad86cec3649c727b
-    
-          
+   
             
         }     
         
