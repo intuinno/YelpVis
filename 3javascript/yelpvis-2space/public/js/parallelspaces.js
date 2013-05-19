@@ -230,9 +230,9 @@ var sss=document.getElementsByTagName("g");
                 
                 //Enter + Update 
                 selectionCircle.attr("cx", function(d) {
-                    return xSelect(d);
+                    return +d.X;
                 }).attr("cy", function(d) {
-                    return ySelect(d);
+                    return +d.Y;
                 }).attr("r", function(d) {
                     return rSelect(+d.numReview);
                 }).attr("fill", color).attr("stroke", color).classed("selectedCircle", true);
@@ -1128,8 +1128,14 @@ SelectionStatesSpace.prototype = {
             
                 
                 for (index =0; index < z.query.length; index++) {
-                    myRating += ratings[z.query[index].num][d.index];    
+                    myRating += ratings[z.query[index].num][d.index];   
+                     // if (isNaN(myRating)) {
+//                     
+                    // console.log("NaN");
+//                     
+                // }
                 } 
+                
                 return myRating;
             });
             

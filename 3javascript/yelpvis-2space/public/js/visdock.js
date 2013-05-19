@@ -130,6 +130,8 @@ var RectangleTool = {
     mousedown: function() {
 	//alert("drawspace")
 	// Prevent Browser's default behaviour
+	
+	   
 		d3.event.preventDefault();
 		//alert("h")
 		var tool = d3.select("#legend").selectAll("g")
@@ -3681,6 +3683,7 @@ var VisDock = {
     svg: null,
     selectionHandler: null,
     captured: [],
+    selectionHandler:null,
     SelectShape: "polygon",
     color: ["red","magenta","orange","yellow","OliveDrab","green","DeepSkyBlue","SlateBlue","cyan","dodgerblue","lightseagreen"],
     opacity: "1",
