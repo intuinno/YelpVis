@@ -1154,6 +1154,12 @@ var AnnotatedByPointTool = {
 		this.panel1.on("mousedown", null);	
 		this.panel2.on("mousedown", null);		
 		
+		this.panel1.on("mousemove", null);	
+		this.panel2.on("mousemove", null);		
+		
+		this.panel1.on("mouseup", null);	
+		this.panel2.on("mouseup", null);						
+		
 		//Panel.panel.on("mousedown", null);
 		//Panel.viewport.selectAll("*").attr("pointer-events", "visiblePainted");
 		//Panel.annotation.selectAll("*").attr("pointer-events", "none");
@@ -1165,10 +1171,12 @@ var AnnotatedByPointTool = {
 		if (det[0]<0){
 			AnnotatedByPointTool.drawspace = AnnotatedByPointTool.panel1;
 			var annotation = VisDock.panel1.annotation.append("g");
+			//alert(annotation)
 		}
 		else{
 			AnnotatedByPointTool.drawspace = AnnotatedByPointTool.panel2;
 			var annotation = VisDock.panel2.annotation.append("g");
+			//alert(annotation)
 		//	alert("meh2")
 		}		
 		
@@ -1320,6 +1328,9 @@ var AnnotatedByAreaTool = {
 	isDrag: false,
 	isResize: false,
 	index: 0,
+	panel1: null,
+	panel2: null,
+	drawspace: null,
 	
     select: function() {
 		console.log("select: " + AnnotatedByAreaTool.name);
@@ -1328,18 +1339,37 @@ var AnnotatedByAreaTool = {
 	
     install: function() {
 	//VisDock.selectionHandler = true;
-		Panel.viewport.selectAll("*").attr("pointer-events", "none");
-		Panel.annotation.selectAll("*").attr("pointer-events", "visiblePainted");
-		Panel.panel.on("mousedown", AnnotatedByAreaTool.mousedown);
+	
+		this.panel1 = d3.selectAll("#IDsvgMovie")//document.getElementById("IDsvgMovie")
+		this.panel2 = d3.selectAll("#IDsvgUser")//document.getElementById("IDsvgUser")
+
+		this.panel1.on("mousedown", AnnotatedByAreaTool.mousedown);	
+		this.panel2.on("mousedown", AnnotatedByAreaTool.mousedown);		
+	
+	
+		//Panel.viewport.selectAll("*").attr("pointer-events", "none");
+		//Panel.annotation.selectAll("*").attr("pointer-events", "visiblePainted");
+		//Panel.panel.on("mousedown", AnnotatedByAreaTool.mousedown);
     },
 	
     uninstall: function() {
 	//VisDock.selectionHandler = null;
-		Panel.panel.on("mousedown", null);
-		Panel.panel.on("mousemove", null);
-		Panel.panel.on("mouseup", null);
-		Panel.viewport.selectAll("*").attr("pointer-events", "visiblePainted");
-		Panel.annotation.selectAll("*").attr("pointer-events", "none");
+	
+		this.panel1.on("mousedown", null);	
+		this.panel2.on("mousedown", null);		
+		
+		this.panel1.on("mousemove", null);	
+		this.panel2.on("mousemove", null);		
+		
+		this.panel1.on("mouseup", null);	
+		this.panel2.on("mouseup", null);		
+	
+	
+		//Panel.panel.on("mousedown", null);
+		//Panel.panel.on("mousemove", null);
+		//Panel.panel.on("mouseup", null);
+		//Panel.viewport.selectAll("*").attr("pointer-events", "visiblePainted");
+		//Panel.annotation.selectAll("*").attr("pointer-events", "none");
     },
 	
     getPoints: function () {
@@ -1365,17 +1395,33 @@ var AnnotatedByAreaTool = {
     mousedown: function() {
 	// Prevent Browser's default behaviour
 		d3.event.preventDefault();
+		
+		var tool = d3.select("#legend").selectAll("g")
+		var det = d3.mouse(tool[0][0])
+		if (det[0]<0){
+			AnnotatedByAreaTool.drawspace = AnnotatedByAreaTool.panel1;
+			var annotation = VisDock.panel1.annotation.append("g");
+			//alert(annotation)
+		}
+		else{
+			AnnotatedByAreaTool.drawspace = AnnotatedByAreaTool.panel2;
+			var annotation = VisDock.panel2.annotation.append("g");
+			//alert(annotation)
+		//	alert("meh2")
+		}			
+		
+		
         // Store starting point
 		var N = AnnotatedByAreaTool.blasso.length;
 		AnnotatedByAreaTool.start = d3.mouse(this);        
 
 		if (AnnotatedByAreaTool.dragging == false) {
 	    	AnnotatedByAreaTool.dragging = true;
-	    	AnnotatedByAreaTool.AnnotatedByAreaToolUpdate(d3.mouse(this));
+	    	AnnotatedByAreaTool.AnnotatedByAreaToolUpdate(d3.mouse(AnnotatedByAreaTool.drawspace[0][0]));
 	    	AnnotatedByAreaTool.segments += 1;
 	    	var points = AnnotatedByAreaTool.getPoints();
 	    	if (AnnotatedByAreaTool.segments == 1) {
-	        	AnnotatedByAreaTool.blasso[N] = Panel.panel.append("polygon")
+	        	AnnotatedByAreaTool.blasso[N] = AnnotatedByAreaTool.drawspace.append("polygon")
 	            	.attr("id", "selection")
 	            	.attr("points", points)
 	            	.attr("class", "selection");
@@ -1385,10 +1431,10 @@ var AnnotatedByAreaTool = {
 	    		}
 		}
 		
-		Panel.panel.on("mouseup", function() {
+		AnnotatedByAreaTool.drawspace.on("mouseup", function() {
 
 	    // Update Segment number
-	    	AnnotatedByAreaTool.AnnotatedByAreaToolUpdate(d3.mouse(this));
+	    	AnnotatedByAreaTool.AnnotatedByAreaToolUpdate(d3.mouse(AnnotatedByAreaTool.drawspace[0][0]));
 	    	AnnotatedByAreaTool.segments += 1;
 	    	var points = AnnotatedByAreaTool.getPoints();
 	    	AnnotatedByAreaTool.blasso[N].attr("points",points);
@@ -1415,7 +1461,7 @@ var AnnotatedByAreaTool = {
 			AnnotatedByAreaTool.end[0] = AnnotatedByAreaTool.pointStart[0] + 50;
 			AnnotatedByAreaTool.end[1] = AnnotatedByAreaTool.pointStart[1] - 50;
 		
-			var annotation = Panel.annotation.append("g");
+			//var annotation = Panel.annotation.append("g");
 			annotationArray[numAnno] = [];
 			annotationArray[numAnno][0] = annotation;
 			annotationArray[numAnno][1] = 1;
@@ -1454,7 +1500,7 @@ var AnnotatedByAreaTool = {
 			
 			span.on("mousedown", function(){
 				d3.event.stopPropagation();
-				Panel.panel.on("mouseup",null);
+				AnnotatedByAreaTool.drawspace.on("mouseup",null);
 				annotation.remove();
 				QueryManager.annotation[index].remove();
 		    	AnnotatedByAreaTool.blasso.remove();
@@ -1465,9 +1511,9 @@ var AnnotatedByAreaTool = {
 			label.on("mousedown", function(){
 				d3.event.stopPropagation();
 				var firstPlace, secondPlace;
-				firstPlace = d3.mouse(this);
+				firstPlace = d3.mouse(AnnotatedByAreaTool.drawspace[0][0]);
 				label.on("mousemove", function() {
-					secondPlace = d3.mouse(this);
+					secondPlace = d3.mouse(AnnotatedByAreaTool.drawspace[0][0]);
 					if(Math.abs(secondPlace[0] - firstPlace[0]) > 10 || Math.abs(secondPlace[1] - firstPlace[1]) > 10) {	
 						if(div.style("width") != divWidth || div.style("height") != divHeight) {
 							foreignObject.attr("width", parseInt(div.style("width"))+20);
@@ -1483,17 +1529,17 @@ var AnnotatedByAreaTool = {
 						}
 						else{
 							AnnotatedByAreaTool.isDrag = true;  //drag
-							if(d3.mouse(this)[0] < AnnotatedByAreaTool.pointStart[0] && d3.mouse(this)[1] < AnnotatedByAreaTool.pointStart[1]) {
-								annotation.select("line").attr("x2", d3.mouse(this)[0])
-									.attr("y2", d3.mouse(this)[1]);
-								label.select("foreignObject").attr("x", d3.mouse(this)[0] - parseInt(foreignObject.attr("width")))
-									.attr("y", d3.mouse(this)[1]);
+							if(d3.mouse(AnnotatedByAreaTool.drawspace[0][0])[0] < AnnotatedByAreaTool.pointStart[0] && d3.mouse(AnnotatedByAreaTool.drawspace[0][0])[1] < AnnotatedByAreaTool.pointStart[1]) {
+								annotation.select("line").attr("x2", d3.mouse(AnnotatedByAreaTool.drawspace[0][0])[0])
+									.attr("y2", d3.mouse(AnnotatedByAreaTool.drawspace[0][0])[1]);
+								label.select("foreignObject").attr("x", d3.mouse(AnnotatedByAreaTool.drawspace[0][0])[0] - parseInt(foreignObject.attr("width")))
+									.attr("y", d3.mouse(AnnotatedByAreaTool.drawspace[0][0])[1]);
 							}
 							else{
-								annotation.select("line").attr("x2", d3.mouse(this)[0])
-									.attr("y2", d3.mouse(this)[1]);
-								label.select("foreignObject").attr("x", d3.mouse(this)[0])
-									.attr("y", d3.mouse(this)[1]);
+								annotation.select("line").attr("x2", d3.mouse(AnnotatedByAreaTool.drawspace[0][0])[0])
+									.attr("y2", d3.mouse(AnnotatedByAreaTool.drawspace[0][0])[1]);
+								label.select("foreignObject").attr("x", d3.mouse(AnnotatedByAreaTool.drawspace[0][0])[0])
+									.attr("y", d3.mouse(AnnotatedByAreaTool.drawspace[0][0])[1]);
 							}
 						} 
 					}
@@ -1544,10 +1590,10 @@ var AnnotatedByAreaTool = {
 		});
 
 	// Install event handlers
-		Panel.panel.on("mousemove", function() {    
+		AnnotatedByAreaTool.drawspace.on("mousemove", function() {    
 	   		 if (AnnotatedByAreaTool.dragging) {
 		// Update the selection
-				AnnotatedByAreaTool.AnnotatedByAreaToolUpdate(d3.mouse(this));
+				AnnotatedByAreaTool.AnnotatedByAreaToolUpdate(d3.mouse(AnnotatedByAreaTool.drawspace[0][0]));
 				AnnotatedByAreaTool.segments += 1;
 				var points = AnnotatedByAreaTool.getPoints();
 	        	AnnotatedByAreaTool.blasso[N].attr("points", points)

@@ -841,7 +841,7 @@ SelectionStatesSpace.prototype = {
 		});
 
 	});
-	VisDock.init("#legend",dockWidth,900);
+
 	var xScaleUser = d3.scale.linear().range([margin, w-margin]);
 	var yScaleUser = d3.scale.linear().range([h-margin,margin]);
 	
@@ -910,6 +910,8 @@ SelectionStatesSpace.prototype = {
 			.attr("class","y axis")
 			.attr("transform","translate(" + margin + ",0)")
 			.call(yAxisUser);
+	
+	VisDock.init("#legend",dockWidth,570);	
 	
 	d3.csv("data/business.csv", function(userCSV) {
 
