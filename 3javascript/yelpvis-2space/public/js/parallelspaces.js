@@ -124,9 +124,9 @@ $('#page1').live('pageinit', function() {
                 
                 //Enter + Update 
                 selectionCircle.attr("cx", function(d) {
-                    return xSelect(d);
+                    return +d.X;
                 }).attr("cy", function(d) {
-                    return ySelect(d);
+                    return +d.Y;
                 }).attr("r", function(d) {
                     return rSelect(+d.numReview);
                 }).attr("fill", color).attr("stroke", color).classed("selectedCircle", true);
