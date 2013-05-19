@@ -84,6 +84,21 @@ $('#page1').live('pageinit', function() {
     
     VisDock.selectionHandler = {
         reset: function(){
+        	
+        	VisDock.captured = [];
+        	QueryManager.remove = 0;
+        	for (i=0;i<num;i++){
+        		QueryManager.query[i].remove();
+        	}
+        	var b_width = QueryManager.b_width;
+        	var b_height = QueryManager.b_height;
+        	QueryManager.ScrollHeight = QueryManager.b_height - 2*QueryManager.b_width;
+        	QueryManager.ScrollbHeight = QueryManager.ScrollHeight;
+        	QueryManager.ScrollBar.attr("x",0).attr("y",0)
+        		.attr("width",b_width)
+        		.attr("height",b_height)
+        	num = 0;
+        	/*
         	for (var j=0;j<num;j++){
 
 			   	QueryManager.remove -= 1;//alert(QueryManager.remove)	
@@ -127,7 +142,7 @@ $('#page1').live('pageinit', function() {
 				    }
 				
 				}
-        	
+        	*/
         	
         	
         },
@@ -144,7 +159,10 @@ getHitsPolygon: function(points, inclusive) {
 
 		} else {
 			clearSelection();
-			VisDock.selectionHandler.reset();
+			if (num != 0){
+				VisDock.selectionHandler.reset();
+			}
+			
 			//num = 0;
 
 		}
@@ -157,7 +175,11 @@ getHitsPolygon: function(points, inclusive) {
 
 		if (isMovieSelected == 1) {
 			clearSelection();
-			VisDock.selectionHandler.reset();
+			if (num != 0){
+				VisDock.selectionHandler.reset();
+			}
+			
+			
 			num = 0;
 		} else {
 
@@ -273,10 +295,10 @@ getHitsPolygon: function(points, inclusive) {
 		if (common.length != 0) {
 			//num++;
 			//QueryManager.addQuery();
-			VisDock.captured[num - 1] = common;
+			VisDock.captured[num] = common;
 		}
 		var tempQuerySet = new QuerySets(querySpace, hits, common, num, 'common', PSmin, PSmax, "", $('input[name=contourMode]:checked').val(), isContourOn);
-
+		
 	}
 
 	//  var textLegend = d.title + " (Ratings " + PSmin + "-" + PSmax + ") " + $('input[name=contourMode]:checked').val();
@@ -300,6 +322,182 @@ getHitsPolygon: function(points, inclusive) {
 },
 
 
+getHitsEllipse: function(points, inclusive){
+
+	//var bb = d3.selectAll(".userCircle");
+	//isMovieSelected = 0;
+	var tool = d3.select("#legend").selectAll("g")
+	var det = d3.mouse(tool[0][0])
+	if (det[0] < 0) {
+
+		if (isMovieSelected == 1) {
+
+		} else {
+			clearSelection();
+			if (num != 0){
+				VisDock.selectionHandler.reset();
+			}
+			
+			//num = 0;
+
+		}
+
+		drawspace = panel1;
+		isMovieSelected = 1;
+		var aa = d3.selectAll(".movieCircle");
+		
+	} else {
+
+		if (isMovieSelected == 1) {
+			clearSelection();
+			if (num != 0){
+				VisDock.selectionHandler.reset();
+			}
+			
+			
+			num = 0;
+		} else {
+
+		}
+
+		drawspace = panel2;
+		isMovieSelected = 0;
+		var aa = d3.selectAll(".userCircle");
+		//	alert("meh2")
+	}
+	
+	var nElements = aa[0].length;
+	//getNumberOfCircles();
+
+	//var aa2 = getNodes(nElements);
+	var bb = aa.data();
+	var hits = [];
+
+	var count = 0;
+
+	var captured = 0;
+
+	//var shapebound = PolygonInit(points, [0, 0]);
+
+	for (var i = 0; i < nElements; i++) {
+
+		captured = 0;
+
+		captured = CircleEllipseIntersection(points,aa[0][i]);
+
+		if (captured == 1 && CheckNodeConditions(aa[0][i], "class", "star")) {
+			
+			//if (isMovieSelected){
+				hits[count] = bb[i];//aa[0][i];
+			//}
+			//else{
+			//	hits[count] = mojvieData[i];
+			//}
+			count++;
+		}
+	}
+
+	var tempGalaxy = [];
+	//var count2 = 0;
+	for ( i = 0; i < hits.length; i++) {
+		tempGalaxy[i] = [];
+		//Group mode:  Add to the current selection
+		if (isMovieSelected) {
+			for (var count = 0; count < userLength; count++) {
+	
+				if (ratings[count][bb[i].index] >= PSmin && ratings[count][bb[i].index] <= PSmax) {
+
+					tempGalaxy[i].push(userData[count]);
+				}
+			}
+		} else {
+
+			for (var count = 0; count < movieLength; count++) {
+
+				if (ratings[bb[i].num][count] >= PSmin && ratings[bb[i].num][count] <= PSmax) {
+
+					tempGalaxy[i].push(movieData[count]);
+				}
+			}
+		}
+	}
+	var querySpace;
+	if(isMovieSelected) {
+		querySpace = 'movie';
+	} else {
+		querySpace = 'user';
+	}
+
+	if (isUnion) {
+
+		var union = []
+
+		for (var j = 0; j < tempGalaxy.length; j++) {
+
+			for (var k = 0; k < tempGalaxy[j].length; k++) {
+				if (union.indexOf(tempGalaxy[j][k]) == -1) {
+					union.push(tempGalaxy[j][k]);
+				}
+			}
+		}
+
+		//num++;
+		//QueryManager.addQuery();
+		VisDock.captured[num] = union;
+		//VisDock.selectionHandler.setColor(union);
+		QueryManager.querytoggle = [];
+		for (var i = 0; i < num; i++) {
+
+			QueryManager.querybox[i].attr("style", "fill: white;stroke:black")
+		}
+
+		var tempQuerySet = new QuerySets(querySpace, hits, union, num, 'union', PSmin, PSmax, "", $('input[name=contourMode]:checked').val(), isContourOn);
+
+	} else {
+		var common = []
+		var first = tempGalaxy[0];
+		for ( i = 0; i < tempGalaxy.length; i++) {
+			var valid = 1;
+			common = [];
+			for (var j = 0; j < tempGalaxy[i].length; j++) {
+				if (first.indexOf(tempGalaxy[i][j]) != -1) {
+					common.push(tempGalaxy[i][j])
+				}
+			}
+			first = common;
+
+		}
+		if (common.length != 0) {
+			//num++;
+			//QueryManager.addQuery();
+			VisDock.captured[num] = common;
+		}
+		var tempQuerySet = new QuerySets(querySpace, hits, common, num, 'common', PSmin, PSmax, "", $('input[name=contourMode]:checked').val(), isContourOn);
+		
+	}
+
+	//  var textLegend = d.title + " (Ratings " + PSmin + "-" + PSmax + ") " + $('input[name=contourMode]:checked').val();
+
+	if(isMovieSelected) {
+	selectionStatesMovie.add(tempQuerySet);
+
+	x.domain(xDomainExtent);
+	y.domain(yDomainExtent);
+
+	updateDisplay('user', selectionStatesMovie);
+	} else {
+		selectionStatesUser.add(tempQuerySet);
+		updateDisplay('movie',selectionStatesUser);
+	}
+	
+	
+	return hits;
+//	updateDisplay('movie', selectionStatesMovie);;
+
+},
+
+
+/*
     getHitsEllipse: function(points, inclusive){
     var aa = getCircles();
     var nElements = getNumberOfCircles();   
@@ -321,6 +519,10 @@ getHitsPolygon: function(points, inclusive) {
     }
     return hits;
     },
+*/    
+    
+    
+    
     getHitsLine: function(points, inclusive){
     var aa = getCircles();
     var nElements = getNumberOfCircles();

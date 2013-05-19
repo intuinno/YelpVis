@@ -1022,7 +1022,7 @@ var PolygonTool = {
 	        	PolygonTool.bpolygon.remove();
 	       	 	PolygonTool.bpolygon = null;
 	    // Forward the selection
-	    		Toolbox.select("Polygon", Polyline.rPoints, Toolbox.inclusive);
+	    		Toolbox.select("Polygon", PolygonTool.rPoints, Toolbox.inclusive);
 	    		PolygonTool.points = [];
 	    		PolygonTool.rPoints = [];
 	    		PolygonTool.drawspace.on("mousemove",null)
@@ -1051,14 +1051,24 @@ var PanZoomTool = {
     name: "PanZoom",
     image: "images/Pan.png",
     start: null,
+	panel1: null,
+	panel2: null,
+	drawspace: null,
 	
     select: function() {
 		console.log("select: " + PanZoomTool.name);
 		Toolbox.setTool(PanZoomTool);
     },
     install: function() {
-		Panel.viewport.selectAll("*").attr("pointer-events", "none");
-		Panel.panel.on("mousedown", PanZoomTool.mousedown);
+    	
+		PanZoomTool.panel1 = d3.selectAll("#IDsvgMovie")//document.getElementById("IDsvgMovie")
+		PanZoomTool.panel2 = d3.selectAll("#IDsvgUser")//document.getElementById("IDsvgUser")    	
+
+
+    	
+    	
+		//Panel.viewport.selectAll("*").attr("pointer-events", "none");
+		//Panel.panel.on("mousedown", PanZoomTool.mousedown);
 		window.addEventListener("mousewheel", PanZoomTool.mousewheel, false);
 		window.addEventListener("DOMMouseScroll", PanZoomTool.mousewheel, false);
     },
@@ -1069,17 +1079,36 @@ var PanZoomTool = {
 		Panel.viewport.selectAll("*").attr("pointer-events", "visiblePainted");
     },
     mousedown: function() {
-		PanZoomTool.start = d3.mouse(this);
-		Panel.panel.on("mousemove", function() {
-	    	var curr = d3.mouse(this);
+    	
+		var tool = d3.select("#legend").selectAll("g")
+		var det = d3.mouse(tool[0][0])
+		if (det[0]<0){
+			this.drawspace = this.panel1;
+		}
+		else{
+			this.drawspace = this.panel2;
+		//	alert("meh2")
+		}    	
+    	
+		PanZoomTool.start = d3.mouse(PanZoomTool.drawspace[0][0]);
+		PanZoomTool.drawspace.on("mousemove", function() {
+	    	var curr = d3.mouse(PanZoomTool.drawspace[0][0]);
+	    	
 	    	
 	    	Panel.pan(curr[0] - PanZoomTool.start[0],
 		      	curr[1] - PanZoomTool.start[1]);
+		      	
+		      	
+		      	
+		      	
+		      	
+		      	
+		      	
 	    	PanZoomTool.start = curr;
 		});
-		Panel.panel.on("mouseup", function() {
-			Panel.panel.on("mousemove", null);
-	    	Panel.panel.on("mouseup", null);
+		PanZoomTool.drawspace.on("mouseup", function() {
+			PanZoomTool.drawspace.on("mousemove", null);
+	    	PanZoomTool.drawspace.on("mouseup", null);
 		});
     },
     mousewheel: function(evt) {
@@ -2055,7 +2084,10 @@ var Toolbox = {
 //alert(VisDock.captured[num])
 
 	    // Create a new layer for this selection
-	    	if (VisDock.captured[num].length != 0){
+	    //if (VisDock.captured.length != 0){
+	    	
+	    
+	    	//if (VisDock.captured[num].length != 0){
 				num++;
 	//			alert("hi")
 				//VisDock.selectionHandler.setColor(VisDock.captured[num-1]);
@@ -2075,10 +2107,11 @@ var Toolbox = {
 						.attr("y", query_box_height / 2)
 						.attr("text-anchor","middle")
 						.text("Query " + num);*/
-	QueryManager.addQuery();
-	    	}	    
+			QueryManager.addQuery();
+	    		}	    
 	    // Set selection color for this set of ids
-		}
+			//}
+		//}
     },
     
    /*tranform of master to move birdview
@@ -3755,12 +3788,12 @@ var Panel = {
     },
 
     setTransform: function() {
-		this.viewport.attr("transform",
+		PanZoomTool.drawspace[0][0].attr("transform",
 			   "scale(" + this.scale + ")" +
 			   "translate(" + this.x + " " + this.y + ") " +
 			   "rotate(" + this.rotation + ")");
-		var invTransform = Panel.viewport[0][0].getCTM().inverse();
-		BirdView.applyInverse(invTransform);
+		var invTransform = PanZoomTool.drawspace[0][0].getCTM().inverse();
+		//BirdView.applyInverse(invTransform);
     },
 
     reset: function() {
