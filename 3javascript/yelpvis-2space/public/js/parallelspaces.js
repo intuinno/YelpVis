@@ -152,6 +152,7 @@ getHitsPolygon: function(points, inclusive) {
 		drawspace = panel1;
 		isMovieSelected = 1;
 		var aa = d3.selectAll(".movieCircle");
+		
 	} else {
 
 		if (isMovieSelected == 1) {
@@ -167,12 +168,12 @@ getHitsPolygon: function(points, inclusive) {
 		var aa = d3.selectAll(".userCircle");
 		//	alert("meh2")
 	}
-
+	
 	var nElements = aa[0].length;
 	//getNumberOfCircles();
 
 	//var aa2 = getNodes(nElements);
-
+	var bb = aa.data();
 	var hits = [];
 
 	var count = 0;
@@ -188,8 +189,13 @@ getHitsPolygon: function(points, inclusive) {
 		captured = CirclePolygonIntersection(points, shapebound, aa[0][i], inclusive);
 
 		if (captured == 1 && CheckNodeConditions(aa[0][i], "class", "movieCircle star")) {
-
-			hits[count] = aa[0][i];
+			
+			//if (isMovieSelected){
+				hits[count] = bb[i];//aa[0][i];
+			//}
+			//else{
+			//	hits[count] = mojvieData[i];
+			//}
 			count++;
 		}
 	}
@@ -232,8 +238,8 @@ getHitsPolygon: function(points, inclusive) {
 			}
 		}
 
-		num++;
-		QueryManager.addQuery();
+		//num++;
+		//QueryManager.addQuery();
 		VisDock.captured[num] = union;
 		//VisDock.selectionHandler.setColor(union);
 		QueryManager.querytoggle = [];
@@ -259,8 +265,8 @@ getHitsPolygon: function(points, inclusive) {
 
 		}
 		if (common.length != 0) {
-			num++;
-			QueryManager.addQuery();
+			//num++;
+			//QueryManager.addQuery();
 			VisDock.captured[num - 1] = common;
 		}
 		var tempQuerySet = new QuerySets('movie', hits, common, num, 'common', PSmin, PSmax, "", $('input[name=contourMode]:checked').val(), isContourOn);
@@ -276,6 +282,8 @@ getHitsPolygon: function(points, inclusive) {
 
 
 	updateDisplay('user', selectionStatesMovie);
+	
+	return hits;
 //	updateDisplay('movie', selectionStatesMovie);;
 
 },
@@ -412,9 +420,10 @@ var sss=document.getElementsByTagName("g");
                 
                 //Enter + Update 
                 selectionCircle.attr("cx", function(d) {
-                    return +d.X;
+                	
+                    return xSelect(d);
                 }).attr("cy", function(d) {
-                    return +d.Y;
+                    return ySelect(d);
                 }).attr("r", function(d) {
                     return rSelect(+d.numReview);
                 }).attr("fill", color).attr("stroke", color).classed("selectedCircle", true);
@@ -455,10 +464,13 @@ var sss=document.getElementsByTagName("g");
                 
                 //Enter + Update
                 selectionCircle.attr("cx", function(d) {
+                	//return d.getAttributeNS(null,"cx")
                     return xQuery(d);
                 }).attr("cy", function(d) {
                     return yQuery(d);
+                    //return d.getAttributeNS(null,"cy")
                 }).attr("r", function(d) {
+                	//return d.getAttributeNS(null,"r")
                     return rQuery(+d.numReview);
                 }).attr("fill", color).attr("stroke", color).classed("selectedCircle", true);
                 
@@ -956,8 +968,8 @@ SelectionStatesSpace.prototype = {
 		$('.movieCircle').tipsy({
 			gravity : 'w',
 			html : true,
-			fade : true,
-			delayOut : 1000,
+			fade : false,
+			delayOut : 0,
 			title : function() {
 				var d = this.__data__, c = d.title;
 				return  c  ;
@@ -1035,6 +1047,8 @@ SelectionStatesSpace.prototype = {
 			.call(yAxisUser);
 	
 	VisDock.init("#legend",dockWidth,570);	
+	VisDock.color = [ '#1f77b4','#ff7f0e', '#2ca02c', '#d62728','#9467bd','#8c564b','#e377c2','#7f7f7f','#bcbd22','#17becf'];
+
 
 	var panel1 = d3.selectAll("#IDsvgMovie")//document.getElementById("IDsvgMovie")
 	var panel2 = d3.selectAll("#IDsvgUser")//document.getElementById("IDsvgUser")
