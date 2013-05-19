@@ -123,6 +123,8 @@ var RectangleTool = {
     mousedown: function(drawspace) {
 	//alert(drawspace)
 	// Prevent Browser's default behaviour
+	
+	   
 		d3.event.preventDefault();
 		//alert("h")
 		var tool = d3.select("#legend").selectAll("g")
