@@ -196,7 +196,7 @@ var RectangleTool = {
 	    	var box = RectangleTool.getBoundingBox(d3.mouse(RectangleTool.drawspace[0][0]));
 	    	Toolbox.select("Rectangle", [[(box[0] - Panel.x), (box[1] -Panel.y)], [(box[0] - Panel.x), (box[1] - Panel.y) + box[3]],
 			    	[(box[0] - Panel.x) + box[2], (box[1] - Panel.y) + box[3]],
-			    	[(box[0] - Panel.x) + box[2], (box[1] - Panel.y)]], true);
+			    	[(box[0] - Panel.x) + box[2], (box[1] - Panel.y)]], Toolbox.inclusive);
 	    
 	    // Remove the bounding box
 	    	RectangleTool.bbox.remove();
@@ -310,7 +310,7 @@ var EllipseTool = {
 	    	var y = d3.mouse(this)[1] - Panel.y;
 	    	var ellip = EllipseTool.getBoundingEllipse([x,y]);
 
-	    	Toolbox.select("Ellipse", ellip, true);
+	    	Toolbox.select("Ellipse", ellip, Toolbox.inclusive);
 	    
 	    // Remove the bounding box
 	    	EllipseTool.bellipse.remove();
@@ -459,7 +459,7 @@ var LassoTool = {
 	    //}
 
 	    // Forward the selection
-	    	Toolbox.select("Lasso", LassoTool.rPoints, true);
+	    	Toolbox.select("Lasso", LassoTool.rPoints, Toolbox.inclusive);
 	    
 	    // Remove the bounding box
 	    	LassoTool.blasso.remove();
@@ -576,7 +576,7 @@ var Straight = {
 	    	Straight.drawspace.on("mouseup", null);
 
 	    // Forward the selection
-	    	Toolbox.select("Straight", [Straight.start, [(d3.mouse(this)[0] - Panel.x), (d3.mouse(this)[1] - Panel.y)]], true);
+	    	Toolbox.select("Straight", [Straight.start, [(d3.mouse(this)[0] - Panel.x), (d3.mouse(this)[1] - Panel.y)]], Toolbox.inclusive);
 	    
 	    // Remove the bounding box
 	    	Straight.Line.remove();
@@ -716,7 +716,7 @@ var Polyline = {
 	        	Polyline.bpolyline.remove();
 	        	Polyline.bpolyline = null;
 		// Forward the selection
-				Toolbox.select("Polyline", Polyline.rPoints, true);
+				Toolbox.select("Polyline", Polyline.rPoints, Toolbox.inclusive);
 				Polyline.points = [];
 				Polyline.rPoints = [];
 				Polyline.drawspace.on("mousemove",null)
@@ -862,7 +862,7 @@ var Freeselect = {
 	    //}
 
 	    // Forward the selection
-	    	Toolbox.select("Freeselect", Freeselect.rPoints, true);
+	    	Toolbox.select("Freeselect", Freeselect.rPoints, Toolbox.inclusive);
 	    	Freeselect.points = [];
 	    	Freeselect.rPoints = [];
 	    	Freeselect.drawspace.on("mousemove",null)
@@ -1022,7 +1022,7 @@ var PolygonTool = {
 	        	PolygonTool.bpolygon.remove();
 	       	 	PolygonTool.bpolygon = null;
 	    // Forward the selection
-	    		Toolbox.select("Polygon", Polyline.rPoints, true);
+	    		Toolbox.select("Polygon", Polyline.rPoints, Toolbox.inclusive);
 	    		PolygonTool.points = [];
 	    		PolygonTool.rPoints = [];
 	    		PolygonTool.drawspace.on("mousemove",null)
@@ -1584,7 +1584,7 @@ var AnnotatedByAreaTool = {
 			
 
 	    // Forward the selection
-	  //  	Toolbox.select("Lasso", LassoTool.points, true);
+	    	Toolbox.select("Lasso", LassoTool.points, Toolbox.inclusive);
 	    
 	    // Remove the bounding box
 	    //	AnnotatedByAreaTool.blasso.remove();
@@ -1813,6 +1813,7 @@ var Toolbox = {
     scale: 1,
     panelbox: null,
     hideorshow: 1,
+    inclusive: 1,
     tools: [ PointerTool, RectangleTool, EllipseTool, LassoTool,
     	 Straight, Polyline, Freeselect,
 	     PolygonTool, PanZoomTool, RotateTool, AnnotatedByPointTool, AnnotatedByAreaTool ],
@@ -1861,24 +1862,31 @@ var Toolbox = {
 		    //this.setAttributeNS(null,"fill","crimson")
 		    //MinMaxImage.attr("transform", "rotate(180)");
 		    this.setAttributeNS(null,"points","185,1 191,10 197,1 ")
-		    BirdView.panel.attr("display", "none");
+		    //BirdView.panel.attr("display", "none");
 		    for (var i=0;i<Toolbox.tools.length;i++){
 			button[i].attr("display","none")
+
 		    }
 		    Toolbox.panelbox.attr("height",20)
 		    QueryManager.dock.attr("display","none")
+
+		    checkbox.attr("display","none")
+
 		}
 		else{
 		    Toolbox.hideorshow = 1;
 		    this.setAttributeNS(null,"points","185,10 197,10 191,1")
 		  //  this.setAttributeNS(null,"fill","lightgreen")
 		    //MinMaxImage.attr("transform", "rotate(180)");
-		    BirdView.panel.attr("display", "inline");
+		    //BirdView.panel.attr("display", "inline");
 		    for (var i=0;i<Toolbox.tools.length;i++){
 			button[i].attr("display","inline")
 		    }
 		    Toolbox.panelbox.attr("height",dockHeight)
 		    QueryManager.dock.attr("display","inline")
+
+		    checkbox.attr("display","inline")
+
 		}
 	    })
 	    //.attr("transform", "rotation(180)");
@@ -1941,6 +1949,42 @@ var Toolbox = {
 				.attr("width", buttonSize/2)
 				.attr("height", buttonSize/2)
 				.attr("xlink:href", this.tools[i].image);
+
+	    	var yPos = Math.floor(this.tools.length / numButtonCols) * buttonOffset +
+			offset;
+	    	var checkbox = this.dock.append("g")
+	    	checkbox.append("rect")
+				.attr("x",25)//100)
+				.attr("y", yPos-2)
+				.attr("width",15)
+				.attr("height",15)//alert("CSDCS")
+				.attr("fill","white")
+
+		//.attr("stroke","black")
+		//.on("click",function(){alert(checked)})	
+	    	var checked = checkbox.append("svg:image")
+				.attr("x",25)
+				.attr("y",yPos-2)
+				.attr("width",15)
+				.attr("height",15)
+				.attr("xlink:href", "images/checkbox_yes.png")
+				.on("click",function(){if (Toolbox.inclusive == true){
+						    Toolbox.inclusive = false;//alert("0")
+						    checked.attr("xlink:href","images/checkbox_no.png")
+					    //checked.setAttributeNS(null,"xlink:href", "images/checkbox_no.png")
+						}
+						else{
+					    	Toolbox.inclusive = true;//alert("1")
+					    	checked.attr("xlink:href","images/checkbox_yes.png")
+					    //checked.setAttributeNS(null,"xlink:href", "images/checkbox_yes.png")	
+						}
+			
+						})	
+	    	checkbox.append("text")
+				.attr("x",42)
+				.attr("y",yPos+11)
+				.text("Borderline Inclusive")
+
 
 		}
 	
@@ -2557,19 +2601,18 @@ var QueryManager = {
 				//QueryManager.commontoggle=0;
 				//QueryManager.xortoggle=0;
 				//trash.attr("style","fill: white; stroke: black");
-				var first = [];
-				var common = []
-				for (var j=0;j<QueryManager.querytoggle.length;j++){
-				    for (var k=0;k<VisDock.captured[QueryManager.querytoggle[j]].length;k++){
-					if (j == 0){
-					    first.push(VisDock.captured[QueryManager.querytoggle[j]][k]);
-					}
-					else{
-					    if (first.indexOf(VisDock.captured[QueryManager.querytoggle[j]][k]) != -1){
-					        common.push(VisDock.captured[QueryManager.querytoggle[j]][k]);
-					    }
+				var first = VisDock.captured[QueryManager.querytoggle[0]];
+				var common = [];
+				for (var i=1;i<QueryManager.querytoggle.length;i++){
+				    var valid = 1;
+				    common = [];
+				    for (var j=0;j<VisDock.captured[QueryManager.querytoggle[i]].length;j++){
+					if (first.indexOf(VisDock.captured[QueryManager.querytoggle[i]][j]) != -1){
+					    common.push(VisDock.captured[QueryManager.querytoggle[i]][j])					
 					}
 				    }
+				    first = common;
+
 				}
 				if (common.length != 0){
 				    num++;
@@ -2599,19 +2642,18 @@ var QueryManager = {
 				//QueryManager.commontoggle=0;
 				//QueryManager.xortoggle=0;
 				//trash.attr("style","fill: white; stroke: black");
-				var first = [];
-				var common = []
-				for (var j=0;j<QueryManager.querytoggle.length;j++){
-				    for (var k=0;k<VisDock.captured[QueryManager.querytoggle[j]].length;k++){
-					if (j == 0){
-					    first.push(VisDock.captured[QueryManager.querytoggle[j]][k]);
-					}
-					else{
-					    if (first.indexOf(VisDock.captured[QueryManager.querytoggle[j]][k]) != -1){
-					        common.push(VisDock.captured[QueryManager.querytoggle[j]][k]);
-					    }
+				var first = VisDock.captured[QueryManager.querytoggle[0]];
+				var common = [];
+				for (var i=1;i<QueryManager.querytoggle.length;i++){
+				    var valid = 1;
+				    common = [];
+				    for (var j=0;j<VisDock.captured[QueryManager.querytoggle[i]].length;j++){
+					if (first.indexOf(VisDock.captured[QueryManager.querytoggle[i]][j]) != -1){
+					    common.push(VisDock.captured[QueryManager.querytoggle[i]][j])					
 					}
 				    }
+				    first = common;
+
 				}
 				if (common.length != 0){
 				    num++;
@@ -2643,19 +2685,18 @@ var QueryManager = {
 				//QueryManager.commontoggle=0;
 				//QueryManager.xortoggle=0;
 				//trash.attr("style","fill: white; stroke: black");
-				var first = [];
-				var common = []
-				for (var j=0;j<QueryManager.querytoggle.length;j++){
-				    for (var k=0;k<VisDock.captured[QueryManager.querytoggle[j]].length;k++){
-					if (j == 0){
-					    first.push(VisDock.captured[QueryManager.querytoggle[j]][k]);
-					}
-					else{
-					    if (first.indexOf(VisDock.captured[QueryManager.querytoggle[j]][k]) != -1){
-					        common.push(VisDock.captured[QueryManager.querytoggle[j]][k]);
-					    }
+				var first = VisDock.captured[QueryManager.querytoggle[0]];
+				var common = [];
+				for (var i=1;i<QueryManager.querytoggle.length;i++){
+				    var valid = 1;
+				    common = [];
+				    for (var j=0;j<VisDock.captured[QueryManager.querytoggle[i]].length;j++){
+					if (first.indexOf(VisDock.captured[QueryManager.querytoggle[i]][j]) != -1){
+					    common.push(VisDock.captured[QueryManager.querytoggle[i]][j])					
 					}
 				    }
+				    first = common;
+
 				}
 				var union = []
 				for (var j=0;j<QueryManager.querytoggle.length;j++){
@@ -2699,19 +2740,18 @@ var QueryManager = {
 				//QueryManager.commontoggle=0;
 				//QueryManager.xortoggle=0;
 				//trash.attr("style","fill: white; stroke: black");
-				var first = [];
-				var common = []
-				for (var j=0;j<QueryManager.querytoggle.length;j++){
-				    for (var k=0;k<VisDock.captured[QueryManager.querytoggle[j]].length;k++){
-					if (j == 0){
-					    first.push(VisDock.captured[QueryManager.querytoggle[j]][k]);
-					}
-					else{
-					    if (first.indexOf(VisDock.captured[QueryManager.querytoggle[j]][k]) != -1){
-					        common.push(VisDock.captured[QueryManager.querytoggle[j]][k]);
-					    }
+				var first = VisDock.captured[QueryManager.querytoggle[0]];
+				var common = [];
+				for (var i=1;i<QueryManager.querytoggle.length;i++){
+				    var valid = 1;
+				    common = [];
+				    for (var j=0;j<VisDock.captured[QueryManager.querytoggle[i]].length;j++){
+					if (first.indexOf(VisDock.captured[QueryManager.querytoggle[i]][j]) != -1){
+					    common.push(VisDock.captured[QueryManager.querytoggle[i]][j])					
 					}
 				    }
+				    first = common;
+
 				}
 				var union = []
 				for (var j=0;j<QueryManager.querytoggle.length;j++){
