@@ -296,7 +296,7 @@ var sss=document.getElementsByTagName("g");
 
 
 
-            updateLegend(space, mySelectionState);
+            //updateLegend(space, mySelectionState);
     
           
             
