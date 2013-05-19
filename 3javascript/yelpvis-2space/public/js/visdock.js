@@ -194,10 +194,10 @@ var RectangleTool = {
 			//alert(drawspace)
 	    // Forward the selection
 	    	var box = RectangleTool.getBoundingBox(d3.mouse(RectangleTool.drawspace[0][0]));
-	    	/*Toolbox.select("Rectangle", [[(box[0] - Panel.x), (box[1] -Panel.y)], [(box[0] - Panel.x), (box[1] - Panel.y) + box[3]],
+	    	Toolbox.select("Rectangle", [[(box[0] - Panel.x), (box[1] -Panel.y)], [(box[0] - Panel.x), (box[1] - Panel.y) + box[3]],
 			    	[(box[0] - Panel.x) + box[2], (box[1] - Panel.y) + box[3]],
 			    	[(box[0] - Panel.x) + box[2], (box[1] - Panel.y)]], true);
-	    */
+	    
 	    // Remove the bounding box
 	    	RectangleTool.bbox.remove();
 	    	RectangleTool.bbox = null;
@@ -310,7 +310,7 @@ var EllipseTool = {
 	    	var y = d3.mouse(this)[1] - Panel.y;
 	    	var ellip = EllipseTool.getBoundingEllipse([x,y]);
 
-	    	//Toolbox.select("Ellipse", ellip, true);
+	    	Toolbox.select("Ellipse", ellip, true);
 	    
 	    // Remove the bounding box
 	    	EllipseTool.bellipse.remove();
@@ -459,7 +459,7 @@ var LassoTool = {
 	    //}
 
 	    // Forward the selection
-	    	//Toolbox.select("Lasso", LassoTool.rPoints, true);
+	    	Toolbox.select("Lasso", LassoTool.rPoints, true);
 	    
 	    // Remove the bounding box
 	    	LassoTool.blasso.remove();
@@ -572,11 +572,11 @@ var Straight = {
 
 	    // Remove event handlers
 	    
-	    	Panel.panel.on("mousemove", null);
-	    	Panel.panel.on("mouseup", null);
+	    	Straight.drawspace.on("mousemove", null);
+	    	Straight.drawspace.on("mouseup", null);
 
 	    // Forward the selection
-	    	//Toolbox.select("Straight", [Straight.start, [(d3.mouse(this)[0] - Panel.x), (d3.mouse(this)[1] - Panel.y)]], true);
+	    	Toolbox.select("Straight", [Straight.start, [(d3.mouse(this)[0] - Panel.x), (d3.mouse(this)[1] - Panel.y)]], true);
 	    
 	    // Remove the bounding box
 	    	Straight.Line.remove();
@@ -1189,14 +1189,15 @@ var AnnotatedByPointTool = {
 		annotationArray[numAnno][0] = annotation;
 		annotationArray[numAnno][1] = 0;
 		numAnno ++;
-		annotation.append("circle")
+		
+		/*annotation.append("circle")
 			.attr("cx", AnnotatedByPointTool.start[0])
 			.attr("cy", AnnotatedByPointTool.start[1])
 			.attr("class", "annotation-circle")
 			.attr("r", 2)
 			.attr("fill", "red")
 			.attr("opacity", 0.8);
-			
+			*/
 		annotation.append("line")
 			.attr("x1", AnnotatedByPointTool.start[0])
 			.attr("y1", AnnotatedByPointTool.start[1])
@@ -1213,17 +1214,17 @@ var AnnotatedByPointTool = {
 					.text("label " + numAnno);
 		var divWidth = div.style("width");
 		var divHeight = div.style("height");
-		var span = div.append("xhtml:span").attr("class", "close-btn");
-		span.append("xhtml:a").attr("href", "#").text("x");
+		//var span = div.append("xhtml:span").attr("class", "close-btn");
+		//span.append("xhtml:a").attr("href", "#").text("x");
 		var index = QueryManager.addAnnotation("red", 1, "label " + numAnno);
 		label.attr("class", index);
 		
-		span.on("mousedown", function(){
+		/*span.on("mousedown", function(){
 			d3.event.stopPropagation();
 			AnnotatedByPointTool.drawspace.on("mouseup",null);
 			annotation.remove();
 			QueryManager.annotation[index].remove();
-		});
+		});*/
 		
 		label.on("mousedown", function(){
 			d3.event.stopPropagation();
@@ -1235,7 +1236,7 @@ var AnnotatedByPointTool = {
 					if(div.style("width") != divWidth || div.style("height") != divHeight) {
 						foreignObject.attr("width", parseInt(div.style("width"))+20);
 						foreignObject.attr("height", parseInt(div.style("height")) + 15);
-						span.style("left", (parseInt(div.style("width")) - 32) + "px");
+						//span.style("left", (parseInt(div.style("width")) - 32) + "px");
 						divWidth = div.style("width");
 						divHeight = div.style("height");
 						if(annotation.select("line").attr("x2") < AnnotatedByPointTool.start[0] && annotation.select("line").attr("y2") < AnnotatedByPointTool.start[1]) {
@@ -1269,7 +1270,7 @@ var AnnotatedByPointTool = {
 					if(newText != null && newText != "") {
 						div.text(newText);
 						QueryManager.names[parseInt(this.getAttributeNS(null,"class"))].text(newText);
-						span = div.append("xhtml:span").attr("class", "close-btn").attr("id", this.getAttributeNS(null,"class"));
+						/*span = div.append("xhtml:span").attr("class", "close-btn").attr("id", this.getAttributeNS(null,"class"));
 						span.append("xhtml:a").attr("href", "#").text("x");
 						span.style("left", (parseInt(div.style("width")) - 32) + "px");
 						span.on("mousedown", function(){
@@ -1277,7 +1278,7 @@ var AnnotatedByPointTool = {
 							AnnotatedByPointTool.drawspace.on("mouseup",null);
 							annotation.remove();
 							QueryManager.annotation[parseInt(this.getAttributeNS(null,"id"))].remove();
-						});
+						});*/
 					}
 				}
 				label.on("mousemove", null);
@@ -1296,7 +1297,7 @@ var AnnotatedByPointTool = {
 	
 	changeLabel: function(newname, index) {
 		annotationArray[index][0].select("div").text(newname);
-		var span = annotationArray[index][0].select("div").append("xhtml:span").attr("class", "close-btn").attr("id", index);
+		/*var span = annotationArray[index][0].select("div").append("xhtml:span").attr("class", "close-btn").attr("id", index);
 		span.append("xhtml:a").attr("href", "#").text("x");
 		span.style("left", (parseInt(annotationArray[index][0].select("div").style("width")) - 32) + "px");
 		span.on("mousedown", function(){
@@ -1304,7 +1305,7 @@ var AnnotatedByPointTool = {
 			AnnotatedByPointTool.drawspace.on("mouseup",null);
 			annotationArray[index][0].remove();
 			QueryManager.annotation[index].remove();
-		});
+		});*/
 	},
 	
 	removeLabel: function(index){
@@ -1436,6 +1437,7 @@ var AnnotatedByAreaTool = {
 	    // Update Segment number
 	    	AnnotatedByAreaTool.AnnotatedByAreaToolUpdate(d3.mouse(AnnotatedByAreaTool.drawspace[0][0]));
 	    	AnnotatedByAreaTool.segments += 1;
+	    	var N = AnnotatedByAreaTool.blasso.length-1; 
 	    	var points = AnnotatedByAreaTool.getPoints();
 	    	AnnotatedByAreaTool.blasso[N].attr("points",points);
 			
@@ -1469,13 +1471,15 @@ var AnnotatedByAreaTool = {
 			AnnotatedByAreaTool.areaarray.push(numAnno)
 //alert(AnnotatedByAreaTool.areaarray)
 			numAnno ++;
-			annotation.append("circle")
+			
+			/*annotation.append("circle")
 				.attr("cx", AnnotatedByAreaTool.pointStart[0])
 				.attr("cy", AnnotatedByAreaTool.pointStart[1])
 				.attr("class", "annotation-circle")
 				.attr("r", 2)
 				.attr("fill", "red")
 				.attr("opacity", 0.8);
+			*/
 			
 			annotation.append("line")
 				.attr("x1", AnnotatedByAreaTool.pointStart[0])
@@ -1493,12 +1497,12 @@ var AnnotatedByAreaTool = {
 						.text("label" + numAnno);
 			var divWidth = div.style("width");
 			var divHeight = div.style("height");
-			var span = div.append("xhtml:span").attr("class", "close-btn");
-			span.append("xhtml:a").attr("href", "#").text("x");
+			/*var span = div.append("xhtml:span").attr("class", "close-btn");
+			span.append("xhtml:a").attr("href", "#").text("x");*/
 			var index = QueryManager.addAnnotation("red", 1, "label " + numAnno);
 			label.attr("class", index);
 			
-			span.on("mousedown", function(){
+			/*span.on("mousedown", function(){
 				d3.event.stopPropagation();
 				AnnotatedByAreaTool.drawspace.on("mouseup",null);
 				annotation.remove();
@@ -1506,7 +1510,7 @@ var AnnotatedByAreaTool = {
 		    	AnnotatedByAreaTool.blasso.remove();
 		    	AnnotatedByAreaTool.strpoints = "";
 		    	AnnotatedByAreaTool.points = [];
-			});
+			});*/
 		
 			label.on("mousedown", function(){
 				d3.event.stopPropagation();
@@ -1518,7 +1522,7 @@ var AnnotatedByAreaTool = {
 						if(div.style("width") != divWidth || div.style("height") != divHeight) {
 							foreignObject.attr("width", parseInt(div.style("width"))+20);
 							foreignObject.attr("height", parseInt(div.style("height")) + 15);
-							span.style("left", (parseInt(div.style("width")) - 32) + "px");
+							//span.style("left", (parseInt(div.style("width")) - 32) + "px");
 							divWidth = div.style("width");
 							divHeight = div.style("height");
 							if(annotation.select("line").attr("x2") < AnnotatedByAreaTool.pointStart[0] && annotation.select("line").attr("y2") < AnnotatedByAreaTool.pointStart[1]) {
@@ -1552,7 +1556,7 @@ var AnnotatedByAreaTool = {
 						if(newText != null && newText != "") {
 							div.text(newText);
 							QueryManager.names[parseInt(this.getAttributeNS(null,"class"))].text(newText);
-							span = div.append("xhtml:span").attr("class", "close-btn").attr("id", this.getAttributeNS(null,"class"));
+							/*span = div.append("xhtml:span").attr("class", "close-btn").attr("id", this.getAttributeNS(null,"class"));
 							span.append("xhtml:a").attr("href", "#").text("x");
 							span.style("left", (parseInt(div.style("width")) - 32) + "px");
 							span.on("mousedown", function(){
@@ -1563,7 +1567,7 @@ var AnnotatedByAreaTool = {
 						    	AnnotatedByAreaTool.blasso.remove();
 						    	AnnotatedByAreaTool.strpoints = "";
 						    	AnnotatedByAreaTool.points = [];
-							});
+							});*/
 						}
 					}
 					label.on("mousemove", null);
@@ -1590,7 +1594,8 @@ var AnnotatedByAreaTool = {
 		});
 
 	// Install event handlers
-		AnnotatedByAreaTool.drawspace.on("mousemove", function() {    
+		AnnotatedByAreaTool.drawspace.on("mousemove", function() {   
+			var N = AnnotatedByAreaTool.blasso.length-1; 
 	   		 if (AnnotatedByAreaTool.dragging) {
 		// Update the selection
 				AnnotatedByAreaTool.AnnotatedByAreaToolUpdate(d3.mouse(AnnotatedByAreaTool.drawspace[0][0]));
@@ -1609,7 +1614,7 @@ var AnnotatedByAreaTool = {
 	},
 	changeLabel: function(newname, index) {
 		annotationArray[index][0].select("div").text(newname);
-		var span = annotationArray[index][0].select("div").append("xhtml:span").attr("class", "close-btn").attr("id", index);
+		/*var span = annotationArray[index][0].select("div").append("xhtml:span").attr("class", "close-btn").attr("id", index);
 		span.append("xhtml:a").attr("href", "#").text("x");
 		span.style("left", (parseInt(annotationArray[index][0].select("div").style("width")) - 32) + "px");
 		span.on("mousedown", function(){
@@ -1620,7 +1625,7 @@ var AnnotatedByAreaTool = {
 			AnnotatedByAreaTool.strpoints = "";  //if we need to set it null
 			AnnotatedByAreaTool.points = [];
 			QueryManager.annotation[index].remove();
-		});
+		});*/
 	},
 	
 	removeLabel: function(index){
@@ -1960,7 +1965,9 @@ var Toolbox = {
     },
 
   	select: function(SelectType, polygon, inclusive) {
+  		
 		if (VisDock.selectionHandler != null) {
+
 	    	if (VisDock.numSvgPolygon == 0){
 				VisDock.numSvgPolygon = document.getElementsByTagName("polygon").length;
 	    	}
