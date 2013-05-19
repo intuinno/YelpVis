@@ -3596,6 +3596,7 @@ var VisDock = {
     // VisDock elements
     svg: null,
     captured: [],
+    selectionHandler:null,
     SelectShape: "polygon",
     color: ["red","magenta","orange","yellow","OliveDrab","green","DeepSkyBlue","SlateBlue","cyan","dodgerblue","lightseagreen"],
     opacity: "1",
