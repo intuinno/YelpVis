@@ -128,7 +128,7 @@ var RectangleTool = {
 		return [minX, minY, maxX - minX, maxY - minY];
     },
     mousedown: function() {
-	alert("drawspace")
+	//alert("drawspace")
 	// Prevent Browser's default behaviour
 		d3.event.preventDefault();
 		//alert("h")
@@ -192,10 +192,10 @@ var RectangleTool = {
 			//alert(drawspace)
 	    // Forward the selection
 	    	var box = RectangleTool.getBoundingBox(d3.mouse(RectangleTool.drawspace[0][0]));
-	    	Toolbox.select("Rectangle", [[(box[0] - Panel.x), (box[1] -Panel.y)], [(box[0] - Panel.x), (box[1] - Panel.y) + box[3]],
+	    	/*Toolbox.select("Rectangle", [[(box[0] - Panel.x), (box[1] -Panel.y)], [(box[0] - Panel.x), (box[1] - Panel.y) + box[3]],
 			    	[(box[0] - Panel.x) + box[2], (box[1] - Panel.y) + box[3]],
 			    	[(box[0] - Panel.x) + box[2], (box[1] - Panel.y)]], true);
-	    
+	    */
 	    // Remove the bounding box
 	    	RectangleTool.bbox.remove();
 	    	RectangleTool.bbox = null;
@@ -308,7 +308,7 @@ var EllipseTool = {
 	    	var y = d3.mouse(this)[1] - Panel.y;
 	    	var ellip = EllipseTool.getBoundingEllipse([x,y]);
 
-	    	Toolbox.select("Ellipse", ellip, true);
+	    	//Toolbox.select("Ellipse", ellip, true);
 	    
 	    // Remove the bounding box
 	    	EllipseTool.bellipse.remove();
@@ -457,7 +457,7 @@ var LassoTool = {
 	    //}
 
 	    // Forward the selection
-	    	Toolbox.select("Lasso", LassoTool.rPoints, true);
+	    	//Toolbox.select("Lasso", LassoTool.rPoints, true);
 	    
 	    // Remove the bounding box
 	    	LassoTool.blasso.remove();
@@ -574,7 +574,7 @@ var Straight = {
 	    	Panel.panel.on("mouseup", null);
 
 	    // Forward the selection
-	    	Toolbox.select("Straight", [Straight.start, [(d3.mouse(this)[0] - Panel.x), (d3.mouse(this)[1] - Panel.y)]], true);
+	    	//Toolbox.select("Straight", [Straight.start, [(d3.mouse(this)[0] - Panel.x), (d3.mouse(this)[1] - Panel.y)]], true);
 	    
 	    // Remove the bounding box
 	    	Straight.Line.remove();
@@ -1816,7 +1816,7 @@ var Toolbox = {
 	    	.text("VisDock v" + VERSION);
 	var button = []	
 	//adds the bird's eye view of the visualizatio
-	 BirdView.init(this.dock, dockWidth, height); 		
+	 //BirdView.init(this.dock, dockWidth, height); 		
 	
 	// Figure out the vertical offset
 		var offset = parseInt(title.style("font-size"), 10);
@@ -3652,6 +3652,7 @@ var VisDock = {
 
     // VisDock elements
     svg: null,
+    selectionHandler: null,
     captured: [],
     SelectShape: "polygon",
     color: ["red","magenta","orange","yellow","OliveDrab","green","DeepSkyBlue","SlateBlue","cyan","dodgerblue","lightseagreen"],
