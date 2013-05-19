@@ -189,7 +189,8 @@ getHitsPolygon: function(points, inclusive) {
 		captured = CirclePolygonIntersection(points, shapebound, aa[0][i], inclusive);
 
 
-		if (captured == 1 && CheckNodeConditions(aa[0][i], "class", "movieCircle star")) {
+		if (captured == 1 && CheckNodeConditions(aa[0][i], "class", "star")) {
+
 			
 			//if (isMovieSelected){
 				hits[count] = bb[i];//aa[0][i];
@@ -210,7 +211,7 @@ getHitsPolygon: function(points, inclusive) {
 		if (isMovieSelected) {
 			for (var count = 0; count < userLength; count++) {
 	
-				if (ratings[count][i] >= PSmin && ratings[count][i] <= PSmax) {
+				if (ratings[count][bb[i].index] >= PSmin && ratings[count][bb[i].index] <= PSmax) {
 
 					tempGalaxy[i].push(userData[count]);
 				}
@@ -219,12 +220,18 @@ getHitsPolygon: function(points, inclusive) {
 
 			for (var count = 0; count < movieLength; count++) {
 
-				if (ratings[i][count] >= PSmin && ratings[i][count] <= PSmax) {
+				if (ratings[bb[i].num][count] >= PSmin && ratings[bb[i].num][count] <= PSmax) {
 
-					tempGalaxy.push(movieData[count]);
+					tempGalaxy[i].push(movieData[count]);
 				}
 			}
 		}
+	}
+	var querySpace;
+	if(isMovieSelected) {
+		querySpace = 'movie';
+	} else {
+		querySpace = 'user';
 	}
 
 	if (isUnion) {
@@ -250,7 +257,7 @@ getHitsPolygon: function(points, inclusive) {
 			QueryManager.querybox[i].attr("style", "fill: white;stroke:black")
 		}
 
-		var tempQuerySet = new QuerySets('movie', hits, union, num, 'union', PSmin, PSmax, "", $('input[name=contourMode]:checked').val(), isContourOn);
+		var tempQuerySet = new QuerySets(querySpace, hits, union, num, 'union', PSmin, PSmax, "", $('input[name=contourMode]:checked').val(), isContourOn);
 
 	} else {
 		var common = []
@@ -271,19 +278,24 @@ getHitsPolygon: function(points, inclusive) {
 			//QueryManager.addQuery();
 			VisDock.captured[num - 1] = common;
 		}
-		var tempQuerySet = new QuerySets('movie', hits, common, num, 'common', PSmin, PSmax, "", $('input[name=contourMode]:checked').val(), isContourOn);
+		var tempQuerySet = new QuerySets(querySpace, hits, common, num, 'common', PSmin, PSmax, "", $('input[name=contourMode]:checked').val(), isContourOn);
 
 	}
 
 	//  var textLegend = d.title + " (Ratings " + PSmin + "-" + PSmax + ") " + $('input[name=contourMode]:checked').val();
 
+	if(isMovieSelected) {
 	selectionStatesMovie.add(tempQuerySet);
 
 	x.domain(xDomainExtent);
 	y.domain(yDomainExtent);
 
-
 	updateDisplay('user', selectionStatesMovie);
+	} else {
+		selectionStatesUser.add(tempQuerySet);
+		updateDisplay('movie',selectionStatesUser);
+	}
+	
 	
 	return hits;
 //	updateDisplay('movie', selectionStatesMovie);;
@@ -964,12 +976,8 @@ SelectionStatesSpace.prototype = {
 					})
 					.attr("fill", function(d) {
 						return fillMovieScale(+d.avgReview);
-					})
-					.on('click', function(d, i) {
-
-
 					});
-
+					
 		$('.movieCircle').tipsy({
 			gravity : 'w',
 			html : true,
@@ -1093,70 +1101,7 @@ SelectionStatesSpace.prototype = {
 					.attr("fill", function(d) {
 							
 						return fillUserScale(+d.avgReview);
-					})
-					.on('click', function(d, i) {
-
-						var tempGalaxy = [];
-
-						if(isMovieSelected === true) {
-						
-							
-							isMovieSelected = false;
-							clearSelection();
-						
-						}
-						if (selectionStatesUser.isSelected(d) === false) {
-			                 //Here this star is newly selected 
-			                 //So Add to the Selection
-			                 
-			                 if( isGroupSelectionMode ) {
-			                     //Group mode:  Add to the current selection
-			                     
-			                 } else {
-			                     //Individual mode: Add to the new selection
-			                     
-			                     for (var count = 0; count < movieLength; count++) {
-            
-                                     if (ratings[i][count] >= PSmin && ratings[i][count] <= PSmax) {
-                
-                                        tempGalaxy.push(movieData[count]);
-                                     }
-                                 }
-			                     
-			                     var newClass = selectionStatesUser.newClass(); 
-			                     var newQuery = [d];
-			                     var textLegend = d.name + " (" + d.category + ") " + " (Ratings " + PSmin + "-" + PSmax + ") " + $('input[name=contourMode]:checked').val();
-			                     
-			                     var tempQuerySet = new QuerySets('user',newQuery, tempGalaxy, newClass,'single', PSmin, PSmax, textLegend,$('input[name=contourMode]:checked').val(),isContourOn);
-                                 
-			                     selectionStatesUser.add(tempQuerySet);
-			                     
-			                     xScaleUser.domain(xDomainExtentUser);
-                                 yScaleUser.domain(yDomainExtentUser);
-                                
-                                
-                                 
-                                 
-                               
-			                 }
-			             	
-			
-						} else {
-							
-							//Here this star is already selected
-							//So remove it 
-							
-							
-    							selectionStatesUser.removeEntity(d);
-	
-											
-						}
-						
-						updateDisplay('movie',selectionStatesUser); 
-
-
-					});
-					
+					});					
 														
 		
        
@@ -1164,8 +1109,8 @@ SelectionStatesSpace.prototype = {
 		$('.userCircle').tipsy({
 			gravity : 'w',
 			html : true,
-			fade : true,
-			delayOut : 1000,
+			fade : false,
+			delayOut : 0,
 			title : function() {
 				var d = this.__data__;
 				return d.name;
