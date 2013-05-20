@@ -700,6 +700,10 @@ var sss=document.getElementsByTagName("g");
     }
     },
     removeColor: function(hits, index){
+<<<<<<< HEAD
+    for (var i=0;i<hits.length;i++){
+        hits[i].remove();
+=======
     // for (var i=0;i<hits.length;i++){
         // hits[i].remove();
     // }
@@ -717,10 +721,8 @@ var sss=document.getElementsByTagName("g");
     	
     	str = 'movie';
     	updateDisplay(str, selectionStatesUser);
+>>>>>>> 99afec0fc21d53c9c51a9d2b6241c9a74fc763aa
     }
-    
-    //selectionStatesTemp.remove(index);
-    //updateDisplay(str, selectionStatesTemp);
     }
 }
    
