@@ -338,7 +338,8 @@ getHitsPolygon: function(points, inclusive) {
 		updateDisplay('movie',selectionStatesUser);
 		updateDisplay('user',selectionStatesMovie);		
 	}
-	zoomedMovie();
+	PanZoomTool.zoomMovie();
+	PanZoomTool.zoomUser();
 	
 	return hits;
 //	updateDisplay('movie', selectionStatesMovie);;
