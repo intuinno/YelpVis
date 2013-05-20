@@ -694,27 +694,9 @@ var sss=document.getElementsByTagName("g");
     }
     },
     removeColor: function(hits, index){
-    // for (var i=0;i<hits.length;i++){
-        // hits[i].remove();
-    // }
-    //index = index + 1;
-    var selectionStatesTemp;
-    var str;
-    if(isMovieSelected) {
-    	//selectionStatesTemp = selectionStatesMovie;
-    	selectionStatesMovie.remove(index);
-    	str = 'movie';
-    	updateDisplay(str, selectionStatesMovie);
-    } else {
-    	//selectionStatesTemp = selectionStatesUser;
-    	selectionStatesUser.remove(index);
-    	
-    	str = 'user';
-    	updateDisplay(str, selectionStatesUser);
+    for (var i=0;i<hits.length;i++){
+        hits[i].remove();
     }
-    
-    //selectionStatesTemp.remove(index);
-    //updateDisplay(str, selectionStatesTemp);
     }
 }
    
