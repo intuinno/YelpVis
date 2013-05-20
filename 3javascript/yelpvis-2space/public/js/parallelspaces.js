@@ -326,11 +326,12 @@ getHitsPolygon: function(points, inclusive) {
 	if(isMovieSelected) {
 	selectionStatesMovie.add(tempQuerySet);
 
-	//x.domain(xDomainExtent);
-	//y.domain(yDomainExtent);
 
-	updateDisplay('user', selectionStatesMovie);
-	updateDisplay('movie',selectionStatesUser);
+	x.domain(xDomainExtent);
+	y.domain(yDomainExtent);
+	
+
+
 
 	} else {
 		selectionStatesUser.add(tempQuerySet);
@@ -338,8 +339,10 @@ getHitsPolygon: function(points, inclusive) {
 		updateDisplay('movie',selectionStatesUser);
 		updateDisplay('user',selectionStatesMovie);		
 	}
-	PanZoomTool.zoomMovie();
-	PanZoomTool.zoomUser();
+
+
+	updateDisplay('user', selectionStatesMovie);
+	updateDisplay('movie',selectionStatesUser);		
 	
 	return hits;
 //	updateDisplay('movie', selectionStatesMovie);;
