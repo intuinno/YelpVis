@@ -60,6 +60,22 @@ $('#page1').live('pageinit', function() {
     });
     
     
+     $("input[name=groupMode]").on("change", function(event) {
+
+
+     
+        
+              
+            if($("input[name=groupMode]:checked").val() == "union" ){
+                isUnion = true;
+                
+            } else {
+                isUnion = false;
+            }
+        
+    });
+    
+    
 	var w = 600;
 	var h = 600;
 	var margin = 20;
@@ -745,10 +761,7 @@ var sss=document.getElementsByTagName("g");
                 
                 //Enter + Update 
                 selectionCircle.attr("cx", function(d) {
-<<<<<<< HEAD
-=======
-                	
->>>>>>> bb8701b71c9a26b79e7a91dd36bdca3b45a3b7ab
+
                     return xSelect(d);
                 }).attr("cy", function(d) {
                     return ySelect(d);
