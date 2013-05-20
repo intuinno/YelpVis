@@ -1,0 +1,214 @@
+div#movieCanvas {
+	width:40%;
+	
+	margin:0;
+	padding-bottom:1%
+	
+}
+div#userCanvas {
+	display:inline-block;
+	width:40%;
+	margin:0px 0px 0px 30px;
+	padding: 0;
+	
+}
+div#legend {
+	display:inline-block;
+	padding: 0px 0px 0px 0px;
+	margin:0;
+	background-color:white;
+	width:200px;
+}
+
+div#movieTitle {
+	display:inline;
+	margin:0px 10px 0px 100px;
+}
+
+
+div#wordTitle {
+	display:inline;
+	margin:0px 10px 0px 200px;
+}
+
+div.smallLeft {
+	margin:10px 60px 10px 0px;
+}
+
+
+div.smallRight {
+	margin:10px 0px 10px 60px;
+}
+
+div.searchBox {
+	display: inline-block;
+	margin:0;
+	padding:0;
+	width:200px;
+	
+}
+
+div.smallRightTogether {
+	float:right;
+	margin:10px 0px 10px 60px;
+}
+
+div.smallCenterTogether {
+	float:right;
+	margin:0px auto;
+}
+
+div.SpaceTitle {
+	height:65px;
+}
+#states { fill: none; stroke: #555555; stroke-width: 0.5px; }
+
+
+.selectedCircle {
+
+	opacity: 0.5;
+	stroke-width: 5;
+	stroke-opacity: 0.5;
+}
+
+svg .star {
+
+	
+	stroke-width: 5;
+	stroke-opacity: 0.5;
+	opacity:0.5;
+}
+
+#VisDocksvg {
+	padding: 0px;
+	
+}
+
+#VisDocksvg {
+	padding: 0px;
+	fill:black;
+}
+
+svg {
+	font: 10px sans-serif;
+	padding: 0px;
+	width: 100%;
+}
+
+.axis 
+.frame {
+	shape-rendering: crispEdges;
+}
+
+.axis path,
+.axis line {
+	fill:none;
+	stroke: black;
+	shape-rendering: crispEdges;
+}
+.axis line {
+	stroke: #ddd;
+}
+
+.axis path {
+	fill: none;
+	stroke:black;
+	
+}
+
+.frame {
+	fill: none;
+	strole: #aaa;
+}
+
+.extent {
+	fill:#000;
+	fill-opacity: .125;
+	stroke: #fff;
+}
+
+
+path {
+	opacity: 0.5;
+	stroke:black;
+}
+
+.deok {
+        margin: 10px 60px 10px 60px;
+    }
+
+#VisDocksvg {
+	padding: 0px;
+	
+}
+
+.VisDocksvg {
+	padding: 0px;
+	
+<<<<<<< HEAD
+}
+
+
+/*-facebook and twitter connect-*/
+/*------------------------- Footer ------------------------*/
+.footer {
+	
+}
+
+.footer .connect {
+	clear:both;
+	float:left;
+	margin:0 0 45px;
+	overflow:hidden;
+	padding:34px 0 0;
+}
+.footer .connect a#twitter {
+	background:url(../images/icons.png) no-repeat;
+	color:#8d8d8d;
+	display:block;
+	float:left;
+	font-size:12px;
+	height:21px;
+	letter-spacing:.05em;
+	line-height:24px;
+	margin:0 28px 0 0;
+	padding:0 0 0 35px;
+	text-decoration:none;
+}
+.footer .connect a#twitter:hover {
+	background:url(../images/icons.png) no-repeat 0 -22px;
+}
+.footer .connect a#facebook {
+	background:url(../images/icons.png) no-repeat 0 -44px;
+	color:#8d8d8d;
+	display:block;
+	float:left;
+	font-size:12px;
+	height:21px;
+	letter-spacing:.05em;
+	line-height:24px;
+	padding:0 0 0 17px;
+	text-decoration:none;
+	margin:0 28px 0 0;
+}
+.footer .connect a#facebook:hover {
+	background:url(../images/icons.png) no-repeat 0 -66px;
+}
+
+.footer .connect a#googleplus:hover {
+	background:url(../images/icons.png) no-repeat 0 -110px;
+}
+.footer p.footnote {
+	color:#8d8d8d;
+	float:right;
+	font-size:12px;
+	letter-spacing:.05em;
+	line-height:20px;
+	margin:36px 0 0;
+}
+
+
+
+=======
+}
+>>>>>>> ab8f92e7ecf502ec9d3bd22e187ad0cdc02041de

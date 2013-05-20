@@ -93,15 +93,18 @@ var RectangleTool = {
 		//RectangleTool.panel2.on("mousedown", RectangleTool.mousedown(this.panel2));
 		//IDsvgMovie.on("mousedown", RectangleTool.mousedown());//RectangleTool.panel1));	
 		//RectangleTool.panel2.on("mousedown", RectangleTool.mousedown());//RectangleTool.panel2));
-		//RectangleTool.panel1.selectAll("*").attr("pointer-events", "none");
+		//RectangleTool.panel1.selectAll("*").attr("pointer-events", "none");
+
 		//RectangleTool.panel2.selectAll("*").attr("pointer-events", "none");
 
 
 
 				
 		RectangleTool.panel1.on("mousedown", RectangleTool.mousedown);//RectangleTool.panel1));	
-		RectangleTool.panel2.on("mousedown", RectangleTool.mousedown);//RectangleTool.panel2));		RectangleTool.panel1.on("zoom",null);
-		RectangleTool.panel2.on("zoom",null);
+		RectangleTool.panel2.on("mousedown", RectangleTool.mousedown);//RectangleTool.panel2));
+		RectangleTool.panel1.on("zoom",null);
+		RectangleTool.panel2.on("zoom",null);
+
 				//alert("FJSDKL")	
 
 		//Panel.viewport.selectAll("*").attr("pointer-events", "none");
@@ -195,7 +198,8 @@ var RectangleTool = {
 			//alert(RectangleTool.bbox)
 		});
 		RectangleTool.drawspace.on("mouseup", function() {		
-			//alert(drawspace)
+			//alert(drawspace)
+
 	    // Forward the selection
 	    	var box = RectangleTool.getBoundingBox(d3.mouse(RectangleTool.drawspace[0][0]));
 	    	Toolbox.select("Rectangle", [[(box[0] - Panel.x), (box[1] -Panel.y)], [(box[0] - Panel.x), (box[1] - Panel.y) + box[3]],
@@ -488,7 +492,9 @@ var LassoTool = {
 				LassoTool.segments += 1;
 				var points = LassoTool.getPoints();
 		//Freeselect.segments -= 1;
-	        	LassoTool.blasso.attr("points", points)
+	        	LassoTool.blasso.attr("points", points)
+
+
 	    	}    
 		});
 		console.log("click lasso");
