@@ -1221,8 +1221,12 @@ SelectionStatesSpace.prototype = {
 					.y(y)
 					.on("zoom",zoomedMovie);
 					
-
-
+	PanZoomTool.zoomMovie = zoomMovie;
+	PanZoomTool.nozoomMovie = d3.behavior.zoom()
+					.x(x)
+					.y(y)
+					.on("zoom",null);
+					
 	var svgMovie = d3.select("#movieCanvas").append("svg")
 
     //var svgMovie = VisDock.getViewport();
@@ -1246,7 +1250,7 @@ SelectionStatesSpace.prototype = {
 						
 	var svgMovieBody = svgMovie.append("g")
 							.attr("id","IDsvgMovie")
-							.attr("clip-path","url(#movieClip)");
+							.attr("clip-path","url(#movieClip)")
 						//	.attr("transform", "translate(" + margin + "," + margin + ")")
 							//.call(zoomMovie);
 							
@@ -1355,6 +1359,13 @@ SelectionStatesSpace.prototype = {
 						.y(yScaleUser)
 						.on("zoom", zoomedUser);
 						
+	PanZoomTool.zoomUser = zoomUser;
+	PanZoomTool.nozoomUser = d3.behavior.zoom()
+						.x(xScaleUser)
+						.y(yScaleUser)
+						.on("zoom", null);
+						
+	
 	var svgUser = d3.select("#userCanvas")
 					.append("svg")
 						.attr("height", h)
@@ -1384,7 +1395,7 @@ SelectionStatesSpace.prototype = {
 							.attr("fill","white");
 							
 	
-	 var svgUserContourGroup = svgUserBody.append("svg:g").attr('class','userContourGroup');
+	var svgUserContourGroup = svgUserBody.append("svg:g").attr('class', 'userContourSVGGroup');
 	 
 	var svgUserSelectionGroup = svgUserBody.append("svg:g").attr('class', 'userSelectionSVGGroup');
 
@@ -1470,7 +1481,14 @@ SelectionStatesSpace.prototype = {
 		svgMovie.select(".x.axis").call(xAxis);
 		svgMovie.select(".y.axis").call(yAxis);
 	}
-	
+	PanZoomTool.zoomedMovie=function(){
+		svgMovieContourGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+		svgMovieSelectionGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+		svgMovieGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+		
+		svgMovie.select(".x.axis").call(xAxis);
+		svgMovie.select(".y.axis").call(yAxis);		
+	}
 	function zoomedUser() {
 // 
         svgUserContourGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
@@ -1481,7 +1499,15 @@ SelectionStatesSpace.prototype = {
 		svgUser.select(".y.axis").call(yAxisUser);
 	}
 
-
+	PanZoomTool.zoomedUser = function(){
+        svgUserContourGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+		svgUserSelectionGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+		svgUserGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+		
+		svgUser.select(".x.axis").call(xAxisUser);
+		svgUser.select(".y.axis").call(yAxisUser);		
+	}
+	
 	function clearSelection() {
 
 		selectionStatesMovie = new SelectionStatesSpace() ;
