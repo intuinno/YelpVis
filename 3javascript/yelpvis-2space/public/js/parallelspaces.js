@@ -34,6 +34,7 @@ $('#page1').live('pageinit', function() {
 
 		if (isMovieSelected) {
 
+<<<<<<< HEAD
 			selectionStatesMovie.requeryCriteria(PSmin, PSmax);
 			updateDisplay('user', selectionStatesMovie);
 		} else {
@@ -42,6 +43,88 @@ $('#page1').live('pageinit', function() {
 		}
 
 	});
+=======
+	var drawspace = null;
+	
+	
+		//alert(panel1)		
+		//alert(aa)
+		//Panel.viewport.selectAll("*").attr("pointer-events", "none");
+		//Panel.panel.on("mousedown", EllipseTool.mousedown);
+		//panel1.selectAll("*").attr("pointer-events", "none");
+
+		//EllipseTool.panel1.on("mousedown", EllipseTool.mousedown);	
+		//panel2.selectAll("*").attr("pointer-events", "none");
+		//EllipseTool.panel2.on("mousedown", EllipseTool.mousedown);		    
+    
+    
+    
+    VisDock.selectionHandler = {
+        reset: function(){
+        	
+        	VisDock.captured = [];
+        	VisDock.layers = [];
+        	QueryManager.remove = 0;
+        	for (i=0;i<num;i++){
+        		QueryManager.query[i].remove();
+        	}
+        	var b_width = QueryManager.b_width;
+        	var b_height = QueryManager.b_height;
+        	QueryManager.ScrollHeight = QueryManager.b_height - 2*QueryManager.b_width;
+        	QueryManager.ScrollbHeight = QueryManager.ScrollHeight;
+        	QueryManager.ScrollBar.attr("x",0).attr("y",0)
+        		.attr("width",b_width)
+        		.attr("height",b_height)
+        	num = 0;
+        	/*
+        	for (var j=0;j<num;j++){
+
+			   	QueryManager.remove -= 1;//alert(QueryManager.remove)	
+			   	VisDock.captured.splice(j,1);
+				QueryManager.query[j].remove();
+
+			   	QueryManager.removed.push(j);
+
+				    	//VisDock.selectionHandler.removeColor(QueryManager.layers[j], index);
+				    	
+				    	
+			   	var add = 0;;
+			 	for (var i=0;i<num;i++){
+			        if (QueryManager.removed.indexOf(i) != -1){
+				    add -= 1;
+			        }
+			        var move = ((i+QueryManager.relative+add)*query_box_height);
+			        QueryManager.query[i].attr("transform","translate(0,"+ (move)+")");//alert(move);
+			        if (move <= 7*query_box_height && move >= 0){
+					    QueryManager.query[i].attr("display","inline");
+				    }
+				    else {
+					    QueryManager.query[i].attr("display","none");
+				    }
+				};	
+        		if (QueryManager.ScrollbHeight < QueryManager.ScrollHeight){
+    				    QueryManager.ScrollbHeight = QueryManager.ScrollHeight - (num-8+QueryManager.remove)*QueryManager.ScrollHeight/(num+QueryManager.remove);
+				        if (QueryManager.ScrollbHeight + QueryManager.b_pos_y >= QueryManager.ScrollHeight){
+					    var increment = QueryManager.ScrollHeight/(num+QueryManager.remove)-QueryManager.ScrollHeight/(num+QueryManager.remove-1);
+					//alert(QueryManager.b_pos_y)
+					    QueryManager.Bar.attr("transform","translate(0,"+(b_width+QueryManager.b_pos_y+increment)+")")
+								//var add = 0;
+								//for (var i=0;i<num;i++){
+								
+				        }
+				        QueryManager.Bar.attr("height",QueryManager.ScrollbHeight)
+							    
+				    }
+				    else{
+				        QueryManager.extra = -1*(num-8+QueryManager.remove)*QueryManager.ScrollHeight/(num+QueryManager.remove);
+				    }
+				
+				}
+        	*/
+        	
+        	
+        },
+>>>>>>> 2d0d14137ee81390d7343a35d030f492943fce62
 
 	$("#bandwidth").on("change", function(event) {
 
@@ -308,6 +391,7 @@ $('#page1').live('pageinit', function() {
 				x.domain(xDomainExtent);
 				y.domain(yDomainExtent);
 
+<<<<<<< HEAD
 				updateDisplay('user', selectionStatesMovie);
 			} else {
 				selectionStatesUser.add(tempQuerySet);
@@ -316,6 +400,25 @@ $('#page1').live('pageinit', function() {
 
 			return hits;
 			//	updateDisplay('movie', selectionStatesMovie);;
+=======
+	//x.domain(xDomainExtent);
+	//y.domain(yDomainExtent);
+
+	updateDisplay('user', selectionStatesMovie);
+	updateDisplay('movie',selectionStatesUser);
+
+	} else {
+		selectionStatesUser.add(tempQuerySet);
+
+		updateDisplay('movie',selectionStatesUser);
+		updateDisplay('user',selectionStatesMovie);		
+	}
+	PanZoomTool.zoomMovie();
+	PanZoomTool.zoomUser();
+	
+	return hits;
+//	updateDisplay('movie', selectionStatesMovie);;
+>>>>>>> 2d0d14137ee81390d7343a35d030f492943fce62
 
 		},
 
@@ -557,10 +660,15 @@ $('#page1').live('pageinit', function() {
 
 						if (ratings[count][bb[i].index] >= PSmin && ratings[count][bb[i].index] <= PSmax) {
 
+<<<<<<< HEAD
 							tempGalaxy[i].push(userData[count]);
 						}
 					}
 				} else {
+=======
+	//x.domain(xDomainExtent);
+	//y.domain(yDomainExtent);
+>>>>>>> 2d0d14137ee81390d7343a35d030f492943fce62
 
 					for (var count = 0; count < movieLength; count++) {
 
@@ -666,7 +774,279 @@ $('#page1').live('pageinit', function() {
 		}
 	}
 
+<<<<<<< HEAD
 	function updateDisplay(space, selectionState) {
+=======
+	//  var textLegend = d.title + " (Ratings " + PSmin + "-" + PSmax + ") " + $('input[name=contourMode]:checked').val();
+
+	if(isMovieSelected) {
+	selectionStatesMovie.add(tempQuerySet);
+
+	//x.domain(xDomainExtent);
+	//y.domain(yDomainExtent);
+
+	updateDisplay('user', selectionStatesMovie);
+	} else {
+		selectionStatesUser.add(tempQuerySet);
+		updateDisplay('movie',selectionStatesUser);
+	}    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+/*
+    var aa = getCircles();
+//alert("hits = " +aa)
+    for (var i=0;i<hits.length;i++){
+        addCircleLayer(aa[hits[i]]);
+    }*/
+    },
+    changeColor: function(color, query, index){
+    var visibility = getQueryVisibility(index); 
+    for (var i=0;i<query.length;i++){
+        query[i].attr("style","opacity:" + visibility + ";fill: " +color)
+    }
+    },
+    changeVisibility: function(vis, query, index){
+    var color = getQueryColor(index);
+    for (var i=0;i<query.length;i++){
+        query[i].attr("style","opacity:" + vis + ";fill: " +color)
+    }
+    },
+    removeColor: function(hits, index){
+<<<<<<< HEAD
+    for (var i=0;i<hits.length;i++){
+        hits[i].remove();
+=======
+    // for (var i=0;i<hits.length;i++){
+        // hits[i].remove();
+    // }
+    //index = index + 1;
+    var selectionStatesTemp;
+    var str;
+    if(isMovieSelected) {
+    	//selectionStatesTemp = selectionStatesMovie;
+    	selectionStatesMovie.remove(index);
+    	str = 'user';
+    	updateDisplay(str, selectionStatesMovie);
+    } else {
+    	//selectionStatesTemp = selectionStatesUser;
+    	selectionStatesUser.remove(index);
+    	
+    	str = 'movie';
+    	updateDisplay(str, selectionStatesUser);
+>>>>>>> 99afec0fc21d53c9c51a9d2b6241c9a74fc763aa
+    }
+    }
+}
+   
+
+ function updateDisplay(space, selectionState) {
+
+
+            var mySelectionState = selectionState;
+            
+            var mySelectionGroup, myQueryGroup, xSelect, ySelect, rSelect, xQuery,yQuery, rQuery;
+            
+
+            if ( space === "movie") {
+                mySelectionGroup = svgMovieSelectionGroup;
+                myQueryGroup = svgUserSelectionGroup;
+                xSelect = xValue;
+                ySelect = yValue;
+                rSelect = rMovieScale;
+                
+                xQuery = xValueUser;
+                yQuery = yValueUser;
+                rQuery = rUserScale;
+                
+                
+            } else if (space === 'user') {
+                mySelectionGroup = svgUserSelectionGroup;
+                myQueryGroup = svgMovieSelectionGroup;
+                
+                xSelect = xValueUser;
+                 ySelect = yValueUser;
+                rSelect = rUserScale;
+                
+                xQuery = xValue;
+                yQuery = yValue;
+                rQuery = rMovieScale;
+                
+                 }
+        
+            //Selection Space Halo
+            //Update + enter
+            //Bind            
+            if( (mySelectionGroup.selectAll(".selectionG")[0].length !== 0 ) || (mySelectionState.querySetsList.length !== 0 )) { 
+                
+                var selectedEntity = mySelectionGroup.selectAll(".selectionG").data(mySelectionState.querySetsList, function(d) { 
+                    return +d.assignedClass;
+                    
+            });
+            
+            //Enter 
+            selectedEntity.enter().append("g").classed("selectionG",true);
+            
+            //Enter + Update
+            selectedEntity.each(function(d, i) {
+
+                var color = ordinalColor(d.assignedClass);
+                
+                //Bind
+                var selectionCircle = d3.select(this).selectAll("circle").data(d.selection);
+                
+                //Enter Append
+                selectionCircle.enter().append("circle");
+                
+                //Enter + Update 
+                selectionCircle.attr("cx", function(d) {
+
+                    return xSelect(d);
+                }).attr("cy", function(d) {
+                    return ySelect(d);
+                }).attr("r", function(d) {
+                    return rSelect(+d.numReview);
+                }).attr("fill", color).attr("stroke", color).classed("selectedCircle", true);
+                
+                //Exit Remove
+                selectionCircle.exit().remove();
+
+            });
+            
+            //Exit Remove
+            selectedEntity.exit().remove();
+
+                }
+            
+            
+            //Query Space Halo
+            //Bind
+           
+            if( (myQueryGroup.selectAll(".queryG")[0].length !== 0 ) || (mySelectionState.querySetsList.length !== 0 )) { 
+           
+            var queryEntity = myQueryGroup.selectAll(".queryG").data(mySelectionState.querySetsList, function(d) {
+                return +d.assignedClass;
+            });
+            
+            //Enter Append
+            queryEntity.enter().append("g").classed("queryG",true);
+                       
+            //Enter + Update            
+            queryEntity.each(function(d, i) {
+
+                var color = ordinalColor(d.assignedClass);
+                
+                //Bind
+                var selectionCircle = d3.select(this).selectAll("circle").data(d.query);
+                
+                //Enter Append
+                selectionCircle.enter().append("circle");
+                
+                //Enter + Update
+                selectionCircle.attr("cx", function(d) {
+                	//return d.getAttributeNS(null,"cx")
+                    return xQuery(d);
+                }).attr("cy", function(d) {
+                    return yQuery(d);
+                    //return d.getAttributeNS(null,"cy")
+                }).attr("r", function(d) {
+                	//return d.getAttributeNS(null,"r")
+                    return rQuery(+d.numReview);
+                }).attr("fill", color).attr("stroke", color).classed("selectedCircle", true);
+                
+                selectionCircle.exit().remove();
+
+
+            });
+            
+            //Exit Remove
+            queryEntity.exit().remove();
+            
+            }
+            
+   
+            updateContour(space, mySelectionState);
+    
+
+
+           // updateLegend(space, mySelectionState);
+   
+            
+        }     
+        
+function updateLegend(space, selectionState) {
+    
+   
+    
+    var myImage;
+    
+    if(space === 'movie') { 
+        
+        myImage = "images/left_arrow_bg.svg";
+        
+    } else if(space === 'user') {
+        
+        myImage = "images/right_arrow_bg.svg";
+        
+    }
+                
+
+    var mySVGImage =  svgLegend.selectAll("image");
+    
+    if (mySVGImage[0].length === 0 ) {
+        
+        mySVGImage = svgLegend.append("image");
+    }
+    
+    mySVGImage.attr("xlink:href",myImage)
+                .attr("x",60)
+                .attr("width","50px")
+                .attr("height","50px");
+                
+    if(selectionState.querySetsList.length === 0 ) {
+        
+        mySVGImage.remove();
+        
+    }
+                
+    var myLegendRect = svgLegend.selectAll("rect")
+                            .data(selectionState.querySetsList, function (d) { return d.legend;});
+                            
+    myLegendRect.enter().append("rect");
+    
+    myLegendRect.attr("x", "0px")
+                .attr("y",function(d,i) { 
+                    return i * 20 + 100;
+                })
+                .attr("width",10)
+                .attr("height",10)
+                .attr("fill", function(d,i) { return ordinalColor(+d.assignedClass);});
+                
+    myLegendRect.exit().remove();
+    
+    var myLegendText = svgLegend.selectAll(".legendText")
+                            .data(selectionState.querySetsList, function (d) { return +d.assignedClass;});
+                            
+    myLegendText.enter().append("text");
+    
+    myLegendText.attr("x", "12px")
+                .attr("y",function(d,i) { 
+                    return i * 20 + 108;
+                }) 
+                .attr("font-size","10px")
+                .classed("legendText",true)
+                .text( function(d,i) { return d.legend;});
+                
+    myLegendText.exit().remove();
+        
+    
+   
+}
+>>>>>>> 2d0d14137ee81390d7343a35d030f492943fce62
 
 		var mySelectionState = selectionState;
 
@@ -761,6 +1141,7 @@ $('#page1').live('pageinit', function() {
 				//Bind
 				var selectionCircle = d3.select(this).selectAll("circle").data(d.query);
 
+<<<<<<< HEAD
 				//Enter Append
 				selectionCircle.enter().append("circle");
 
@@ -779,6 +1160,73 @@ $('#page1').live('pageinit', function() {
 				selectionCircle.exit().remove();
 
 			});
+=======
+	var y = d3.scale.linear().range([ h - margin, margin]);
+	
+	var rMovieScale = d3.scale.linear().range([minStarRadius, maxStarRadius]);
+	
+
+	
+	var xAxis	= d3.svg.axis()
+					.scale(x)
+					.orient("bottom")
+					.ticks(5);
+					
+	var yAxis	= d3.svg.axis()
+					.scale(y)
+					.orient("left")
+					.ticks(5);	
+					
+	var zoomMovie = d3.behavior.zoom()
+					.x(x)
+					.y(y)
+					.on("zoom",zoomedMovie);
+					
+	PanZoomTool.zoomMovie = zoomMovie;
+	PanZoomTool.nozoomMovie = d3.behavior.zoom()
+					.x(x)
+					.y(y)
+					.on("zoom",null);
+					
+	var svgMovie = d3.select("#movieCanvas").append("svg")
+
+    //var svgMovie = VisDock.getViewport();
+
+	svgMovie.attr("height", h)
+						.attr("viewBox", "0 0 " + w + " " +h)
+						.attr("title", "Movie Space")
+						.attr("transform", "translate(" + margin + "," + margin + ")")
+					.append("svg:g");
+						//.attr("transform", "translate(" + margin + "," + margin + ")");	
+						
+	var clip = svgMovie.append("defs")
+						.append("svg:clipPath")
+						.attr("id","movieClip")
+						.append("svg:rect")
+						.attr("id","clip-rect")
+						.attr("x",margin)
+						.attr("y",margin)
+						.attr("width",w-2*margin)
+						.attr("height",h-2*margin);
+						
+	var svgMovieBody = svgMovie.append("g")
+							.attr("id","IDsvgMovie")
+							.attr("clip-path","url(#movieClip)")
+						//	.attr("transform", "translate(" + margin + "," + margin + ")")
+							//.call(zoomMovie);
+							
+	var rect = svgMovieBody.append("svg:rect")
+							.attr("width",w-margin)
+							.attr("height",h-margin)
+							.attr("fill","white");
+						
+	Panel.panel = svgMovieBody;					
+						
+
+    var svgMovieContourGroup = svgMovieBody.append("svg:g").attr('class','movieContourGroup');
+    
+	var svgMovieSelectionGroup = svgMovieBody.append("svg:g").attr('class', 'movieSelectionSVGGroup');
+>>>>>>> 2d0d14137ee81390d7343a35d030f492943fce62
 
 			//Exit Remove
 			queryEntity.exit().remove();
@@ -809,8 +1257,71 @@ $('#page1').live('pageinit', function() {
 
 		if (mySVGImage[0].length === 0) {
 
+<<<<<<< HEAD
 			mySVGImage = svgLegend.append("image");
 		}
+=======
+	var xScaleUser = d3.scale.linear().range([margin, w-margin]);
+	var yScaleUser = d3.scale.linear().range([h-margin,margin]);
+	
+	var rUserScale = d3.scale.linear().range([minStarRadius, maxStarRadius]);
+	
+	
+	var xAxisUser = d3.svg.axis()
+						.scale(xScaleUser)
+						.orient("bottom")
+						.ticks(5);
+						
+	var yAxisUser = d3.svg.axis()
+						.scale(yScaleUser)
+						.orient("left")
+						.ticks(5);
+						
+	var zoomUser = d3.behavior.zoom()
+						.x(xScaleUser)
+						.y(yScaleUser)
+						.on("zoom", zoomedUser);
+						
+	PanZoomTool.zoomUser = zoomUser;
+	PanZoomTool.nozoomUser = d3.behavior.zoom()
+						.x(xScaleUser)
+						.y(yScaleUser)
+						.on("zoom", null);
+						
+	
+	var svgUser = d3.select("#userCanvas")
+					.append("svg")
+						.attr("height", h)
+						.attr("viewBox", "0 0 " + w + " " +h)
+						.attr("title", "User Space")
+						.attr("transform", "translate(" + margin + "," + margin + ")")
+					.append("svg:g");
+					
+	var clip = svgUser.append("defs")
+						.append("svg:clipPath")
+						.attr("id","userClip")
+						.append("svg:rect")
+						.attr("id","clip-rect")
+						.attr("x",margin)
+						.attr("y",margin)
+						.attr("width",w-2*margin)
+						.attr("height",h-2*margin);
+						
+	var svgUserBody = svgUser.append("g")
+							.attr("id","IDsvgUser")
+							.attr("clip-path","url(#userClip)");
+							//.call(zoomUser);
+							
+	var rect = svgUserBody.append("svg:rect")
+							.attr("width",w-margin)
+							.attr("height",h-margin)
+							.attr("fill","white");
+							
+	
+	var svgUserContourGroup = svgUserBody.append("svg:g").attr('class', 'userContourSVGGroup');
+	 
+	var svgUserSelectionGroup = svgUserBody.append("svg:g").attr('class', 'userSelectionSVGGroup');
+>>>>>>> 2d0d14137ee81390d7343a35d030f492943fce62
 
 		mySVGImage.attr("xlink:href", myImage).attr("x", 60).attr("width", "50px").attr("height", "50px");
 
@@ -1280,11 +1791,25 @@ $('#page1').live('pageinit', function() {
 
 	})
 	function zoomedMovie() {
+<<<<<<< HEAD
 		//svgMovieContourGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
 		//svgMovieSelectionGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+=======
+// 
+		//svgMovieContourGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+		//svgMovieSelectionGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+		
+		PanZoomTool.zoomMovieScale = d3.event.scale;
+		PanZoomTool.zoomMovieTranslate = d3.event.translate;
+		
+		svgMovieContourGroup.attr("transform", "scale(" + d3.event.scale + ")");
+		svgMovieSelectionGroup.attr("transform", "scale(" + d3.event.scale + ")");		
+		
+>>>>>>> 2d0d14137ee81390d7343a35d030f492943fce62
 		svgMovieGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
 		svgMovie.select(".x.axis").call(xAxis);
 		svgMovie.select(".y.axis").call(yAxis);
+<<<<<<< HEAD
 
 		updateDisplay('movie', new SelectionStatesSpace());
 
@@ -1296,9 +1821,45 @@ $('#page1').live('pageinit', function() {
 		//
 		//svgUserContourGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
 		//svgUserSelectionGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+=======
+		updateDisplay('user',selectionStatesMovie);
+		updateDisplay('movie',selectionStatesUser);		
+	}
+	PanZoomTool.zoomedMovie=function(){
+		//svgMovieContourGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+		//svgMovieSelectionGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+		
+		PanZoomTool.zoomMovieScale = d3.event.scale;
+		PanZoomTool.zoomMovieTranslate = d3.event.translate;		
+		
+		svgMovieContourGroup.attr("transform", "scale(" + d3.event.scale + ")");
+		svgMovieSelectionGroup.attr("transform", "scale(" + d3.event.scale + ")");			
+		
+		
+		svgMovieGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+		
+		svgMovie.select(".x.axis").call(xAxis);
+		svgMovie.select(".y.axis").call(yAxis);		
+		
+		updateDisplay('movie',selectionStatesUser);
+		updateDisplay('user',selectionStatesMovie);		
+	}
+	function zoomedUser() {
+// 
+        //svgUserContourGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+		//svgUserSelectionGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+		
+		PanZoomTool.zoomUserScale = d3.event.scale;
+		PanZoomTool.zoomMovieTranslate = d3.event.translate;		
+		
+		svgMovieContourGroup.attr("transform", "scale(" + d3.event.scale + ")");
+		svgMovieSelectionGroup.attr("transform", "scale(" + d3.event.scale + ")");			
+		
+>>>>>>> 2d0d14137ee81390d7343a35d030f492943fce62
 		svgUserGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
 		svgUser.select(".x.axis").call(xAxisUser);
 		svgUser.select(".y.axis").call(yAxisUser);
+<<<<<<< HEAD
 
 		updateDisplay('user', new SelectionStatesSpace());
 
@@ -1604,6 +2165,32 @@ $('#page1').live('pageinit', function() {
 				break;
 
 			case 'cool':
+=======
+		updateDisplay('movie',selectionStatesUser);
+		updateDisplay('user',selectionStatesMovie);
+	}
+
+	PanZoomTool.zoomedUser = function(){
+        //svgUserContourGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+		//svgUserSelectionGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+		
+		PanZoomTool.zoomUserScale = d3.event.scale;
+		PanZoomTool.zoomUserTranslate = d3.event.translate;			
+		
+		svgMovieContourGroup.attr("transform", "scale(" + d3.event.scale + ")");
+		svgMovieSelectionGroup.attr("transform", "scale(" + d3.event.scale + ")");			
+		
+		svgUserGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+		
+		svgUser.select(".x.axis").call(xAxisUser);
+		svgUser.select(".y.axis").call(yAxisUser);	
+		
+		updateDisplay('movie',selectionStatesUser);
+		updateDisplay('user',selectionStatesMovie);
+	}
+	
+	function clearSelection() {
+>>>>>>> 2d0d14137ee81390d7343a35d030f492943fce62
 
 				x = d3.scale.linear().range([margin, w - margin]);
 

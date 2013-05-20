@@ -86,6 +86,11 @@ function PolygonInit(points,t){
  strpoints=[strpoints + (points[0][0]-t[0]) + "," + (points[0][1]-t[1])];
  shapebound.setAttributeNS(null,"points",strpoints)
  
+
+ 
+ 
+ 
+ //shapebound.attr("transform","scale(" + PanZoomTool)")
  return shapebound;
 }
 
@@ -261,11 +266,34 @@ function CirclePolygonIntersection(points,shapebound,circle){
   cx = parseFloat(cx);
   cy = parseFloat(cy);
   r = parseFloat(r);
+
+		var tool = d3.select("#legend").selectAll("g")
+		//alert(tool)
+		var det = d3.mouse(tool[0][0])
+		if (det[0]<0){
+			cx = cx + PanZoomTool.zoomMovieTranslate[0]
+			cy = cy + PanZoomTool.zoomMovieTranslate[1]
+			//RectangleTool.drawspace = RectangleTool.panel1;
+		//	alert("meh")
+		}
+		else{
+			cx = cx + PanZoomTool.zoomUserTranslate[0]
+			cy = cy + PanZoomTool.zoomUserTranslate[1]			
+			//RectangleTool.drawspace = RectangleTool.panel2;
+		//	alert("meh2")
+		} 
+
+
   var p = new Point2D(cx,cy);
 
   if (bound.pointInPolygon(p)){
    return 1;
   }
+  
+  
+  
+  
+  
   var result = Intersection.intersectCirclePolygon(p, r, vector_points)
   if (result.status == "Intersection") {
    return 1;

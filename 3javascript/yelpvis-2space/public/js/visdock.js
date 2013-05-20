@@ -95,9 +95,13 @@ var RectangleTool = {
 		//RectangleTool.panel2.on("mousedown", RectangleTool.mousedown());//RectangleTool.panel2));
 		//RectangleTool.panel1.selectAll("*").attr("pointer-events", "none");
 		//RectangleTool.panel2.selectAll("*").attr("pointer-events", "none");
+
+
+
 				
 		RectangleTool.panel1.on("mousedown", RectangleTool.mousedown);//RectangleTool.panel1));	
-		RectangleTool.panel2.on("mousedown", RectangleTool.mousedown);//RectangleTool.panel2));
+		RectangleTool.panel2.on("mousedown", RectangleTool.mousedown);//RectangleTool.panel2));		RectangleTool.panel1.on("zoom",null);
+		RectangleTool.panel2.on("zoom",null);
 				//alert("FJSDKL")	
 
 		//Panel.viewport.selectAll("*").attr("pointer-events", "none");
@@ -230,7 +234,10 @@ var EllipseTool = {
 
 		EllipseTool.panel1.on("mousedown", EllipseTool.mousedown);	
 		//panel2.selectAll("*").attr("pointer-events", "none");
-		EllipseTool.panel2.on("mousedown", EllipseTool.mousedown);			
+		EllipseTool.panel2.on("mousedown", EllipseTool.mousedown);		
+		
+		EllipseTool.panel1.on("zoom",null);
+		EllipseeTool.panel2.on("zoom",null);
 			
     },
     uninstall: function() {
@@ -348,6 +355,9 @@ var LassoTool = {
 
 		this.panel1.on("mousedown", LassoTool.mousedown);	
 		this.panel2.on("mousedown", LassoTool.mousedown);	
+		
+		LassoTool.panel1.on("zoom",null);
+		LassoTool.panel2.on("zoom",null);		
 		
 		//Panel.viewport.selectAll("*").attr("pointer-events", "none");
 		//Panel.panel.on("mousedown", EllipseTool.mousedown);
@@ -505,6 +515,9 @@ var Straight = {
 
 		this.panel1.on("mousedown", Straight.mousedown);	
 		this.panel2.on("mousedown", Straight.mousedown);	
+
+		Straight.panel1.on("zoom",null);
+		Straight.panel2.on("zoom",null);	
 	
 		//Panel.viewport.selectAll("*").attr("pointer-events", "none");
 		//Panel.panel.on("mousedown", Straight.mousedown);
@@ -613,6 +626,9 @@ var Polyline = {
 
 		this.panel1.on("mousedown", Polyline.mousedown);	
 		this.panel2.on("mousedown", Polyline.mousedown);	
+		
+		Polyline.panel1.on("zoom",null);
+		Polyline.panel2.on("zoom",null);		
 	
 		//Panel.viewport.selectAll("*").attr("pointer-events", "none");
 		//Panel.panel.on("mousedown", Polyline.mousedown);
@@ -765,6 +781,9 @@ var Freeselect = {
 
 		this.panel1.on("mousedown", Freeselect.mousedown);	
 		this.panel2.on("mousedown", Freeselect.mousedown);	
+		
+		Freeselect.panel1.on("zoom",null);
+		Freeselect.panel2.on("zoom",null);		
 	
 		//Panel.viewport.selectAll("*").attr("pointer-events", "none");
 		//Panel.panel.on("mousedown", Freeselect.mousedown);
@@ -914,6 +933,9 @@ var PolygonTool = {
 
 		this.panel1.on("mousedown", PolygonTool.mousedown);	
 		this.panel2.on("mousedown", PolygonTool.mousedown);	
+		
+		PolygonTool.panel1.on("zoom",null);
+		PolygonTool.panel2.on("zoom",null);		
 	
 		//Panel.viewport.selectAll("*").attr("pointer-events", "none");
 		//Panel.panel.on("mousedown", PolygonTool.mousedown);
@@ -1053,31 +1075,129 @@ var PanZoomTool = {
     start: null,
 	panel1: null,
 	panel2: null,
-	drawspace: null,
+	zoomUserScale: 1,
+	zoomUserTranslate: [0,0],
+	zoomMovieScale: 1,
+	zoomMovieTranslate: [0,0],
 	
+	drawspace: null,
+	scale: 1,
+	zoomScale: 0.8,
+	x: 0,
+	y: 0,
+	
+	zoomMovie:[],
+	nozoomMovie: [],
+	zoomUser:[],
+	nozoomUser: [],
+	zoomedMovie:[],
+	zoomedUser:[],
     select: function() {
 		console.log("select: " + PanZoomTool.name);
 		Toolbox.setTool(PanZoomTool);
     },
+
+		
+ 
+    
     install: function() {
+    	
+		var w = 600;
+		var h = 600;
+		var margin = 20;
+		//var svgUserContourGroup = d3.select('userContourGroup');
+		var x = d3.scale.linear().range([margin, w - margin]);
+
+		var y = d3.scale.linear().range([ h - margin, margin]);
+
+    /*	
+	var zoomMovie = d3.behavior.zoom()
+					.x(x)
+					.y(y)
+					.on("zoom",PanZoomTool.zoomedMovie);
+					
+	var zoomUser = d3.behavior.zoom()
+						.x(xScaleUser)
+						.y(yScaleUser)
+						.on("zoom", PanZoomTool.zoomedUser);					  */   	
     	
 		PanZoomTool.panel1 = d3.selectAll("#IDsvgMovie")//document.getElementById("IDsvgMovie")
 		PanZoomTool.panel2 = d3.selectAll("#IDsvgUser")//document.getElementById("IDsvgUser")    	
+    
+		//PanZoomTool.panel1.on("mousedown",PanZoomTool.zoomMovie);
+		//PanZoomTool.panel2.on("mousedown",PanZoomTool.zoomUser);      	
+    	
+    	//PanZoomTool.panel1.on("mousedown",PanZoomTool.mousedown);
+		//PanZoomTool.panel2.on("mousedown",PanZoomTool.mousedown);
+		//PanZoomTool.panel1.on("mousewheel",PanZoomTool.mousewheel);
+		//PanZoomTool.panel2.on("mousewheel",PanZoomTool.mousewheel); 		
+		 
+    	
+		PanZoomTool.panel1.call(PanZoomTool.zoomMovie);
+		PanZoomTool.panel2.call(PanZoomTool.zoomUser);       	
+    	
+		//PanZoomTool.panel1.on("zoom",PanZoomTool.zoomMovie);
+		//PanZoomTool.panel2.on("zoom",PanZoomTool.zoomUser);    	
+    	
+    	
+		//PanZoomTool.panel1 = d3.selectAll("#IDsvgMovie")//document.getElementById("IDsvgMovie")
+		//PanZoomTool.panel2 = d3.selectAll("#IDsvgUser")//document.getElementById("IDsvgUser")    	
 
-		PanZoomTool.panel1.on("mousedown", PanZoomTool.mousedown);
- 		PanZoomTool.panel2.on("mousedown", PanZoomTool.mousedown);   	
+		//PanZoomTool.panel1.on("mousedown", PanZoomTool.mousedown);
+ 		//PanZoomTool.panel2.on("mousedown", PanZoomTool.mousedown);   	
     	
 		//Panel.viewport.selectAll("*").attr("pointer-events", "none");
 		//Panel.panel.on("mousedown", PanZoomTool.mousedown);
-		window.addEventListener("mousewheel", PanZoomTool.mousewheel, false);
-		window.addEventListener("DOMMouseScroll", PanZoomTool.mousewheel, false);
+		//window.addEventListener("mousewheel", PanZoomTool.mousewheel, false);
+		//window.addEventListener("DOMMouseScroll", PanZoomTool.mousewheel, false);
     },
     uninstall: function() {
-		Panel.panel.on("mousedown", null);
-		window.removeEventListener("mousewheel", PanZoomTool.mousewheel, false);
-		window.removeEventListener("DOMMouseScroll", PanZoomTool.mousewheel, false);
-		Panel.viewport.selectAll("*").attr("pointer-events", "visiblePainted");
+    	
+    	/*if (PanZoomTool.nozoomMovie == []){
+    		PanZoomTool.nozoomMovie = PanZoomTool.zoomMovie;
+    	}
+    	if (PanZoomTool.nozoomUser == []){
+    		PanZoomTool.nozoomUser = PanZoomTool.zoomUser;
+    	}
+    	PanZoomTool.zoomMovie = [];
+    	PanZoomTool.zoomUser = [];*/    	
+    	PanZoomTool.panel1.call(PanZoomTool.nozoomMovie);
+    	PanZoomTool.panel2.call(PanZoomTool.nozoomUser);
+    	
+
+    	
+    	//alert(this.scale)
+    	//alert("x = " + this.x + " y = " + this.y)
+    	//alert(PanZoomTool.zoomMovie.x())
+    	
+		//PanZoomTool.panel1.call(null);
+		//PanZoomTool.panel2.call(null);         	
+		//Panel.panel.on("mousedown", null);
+		//window.removeEventListener("mousewheel", PanZoomTool.mousewheel, false);
+		//window.removeEventListener("DOMMouseScroll", PanZoomTool.mousewheel, false);
+		//Panel.viewport.selectAll("*").attr("pointer-events", "visiblePainted");
     },
+    pan: function(dx, dy){
+		this.x += dx / this.scale;
+		this.y += dy / this.scale;
+		this.setTransform();    	
+    	
+    },
+    zoom: function(px, py, delta){
+    	var dz = Math.pow(1 + this.zoomScale, delta);
+		this.x -= px / this.scale - px / (this.scale * dz);
+		this.y -= py / this.scale - py / (this.scale * dz);
+		this.scale *= dz;
+		this.setTransform();
+    },
+    setTransform: function() {
+		/*this.viewport.attr("transform",
+			   "scale(" + this.scale + ")" +
+			   "translate(" + this.x + " " + this.y + ") " +
+			   "rotate(" + this.rotation + ")");
+		var invTransform = Panel.viewport[0][0].getCTM().inverse();
+		BirdView.applyInverse(invTransform);*/
+    },    
     mousedown: function() {
     	
 		var tool = d3.select("#legend").selectAll("g")
@@ -1095,15 +1215,9 @@ var PanZoomTool = {
 	    	var curr = d3.mouse(PanZoomTool.drawspace[0][0]);
 	    	
 	    	
-	    	Panel.pan(curr[0] - PanZoomTool.start[0],
+	    	PanZoomTool.pan(curr[0] - PanZoomTool.start[0],
 		      	curr[1] - PanZoomTool.start[1]);
-		      	
-		      	
-		      	
-		      	
-		      	
-		      	
-		      	
+
 	    	PanZoomTool.start = curr;
 		});
 		PanZoomTool.drawspace.on("mouseup", function() {
@@ -1111,7 +1225,7 @@ var PanZoomTool = {
 	    	PanZoomTool.drawspace.on("mouseup", null);
 		});
     },
-    mousewheel: function(evt) {
+    mousewheel: function(evt) {/*
 	// Prevent default behavior (scrolling)
 		if (evt.preventDefault) evt.preventDefault();
 		evt.returnValue = false;
@@ -1122,8 +1236,9 @@ var PanZoomTool = {
         else delta = evt.detail / -9; // Mozilla
 
 	// @@@ Still need to determine exact mouse position wrt viewport!
-		Panel.zoom(evt.clientX - 8, evt.clientY - 8, delta);
+		PanZoomTool.zoom(evt.clientX - 8, evt.clientY - 8, delta);*/
     }
+    
 };
 
 var RotateTool = {
@@ -3039,12 +3154,21 @@ var QueryManager = {
 		        .attr("width",e_width)
 		        .attr("style","fill: white; stroke: black")
 			.on("click", function(){var index = parseInt(this.getAttributeNS(null,"class"));
+							var ind2 = index;
+							for (i=0;i<QueryManager.removed.length;i++){
+								if (QueryManager.removed[i]<index){
+									ind2--;
+								}
+								
+							}
+							
+							//var ind2 = index+QueryManager.remove;
 							QueryManager.remove -= 1;//alert(QueryManager.remove)	
 							VisDock.captured[index] = [];//.splice(index,1);
 							QueryManager.query[index].remove();
 
 							QueryManager.removed.push(index);
-							VisDock.selectionHandler.removeColor(QueryManager.layers[index], index);
+							VisDock.selectionHandler.removeColor(QueryManager.layers[index], ind2);
 							var index2 = 0;
 							var add = 0;
 							var i = 0; //alert(num+numAnno-1);
@@ -3108,18 +3232,26 @@ var QueryManager = {
 		    QueryManager.query[num-1].append("svg:line")
 			.attr("transform","translate("+x3 + "," + margin + ")")
 			.attr("class",num-1)
-			.attr("x1",0)
-			.attr("y1",0)
-			.attr("x2",e_width)
-			.attr("y2",query_box_height-margin*2) //query_box_height-margin*2)
+			//.attr("x1",0)
+			//.attr("y1",0)
+			//.attr("x2",e_width)
+			//.attr("y2",query_box_height-margin*2) //query_box_height-margin*2)
 			.attr("style","stroke: black; stroke-width:2")
 			.on("click", function(){var index = parseInt(this.getAttributeNS(null,"class"));
+							var ind2 = index;
+							for (i=0;i<QueryManager.removed.length;i++){
+								if (QueryManager.removed[i]<index){
+									ind2--;
+								}
+								
+							}
+							
 							QueryManager.remove -= 1;//alert(QueryManager.remove)	
 							VisDock.captured[index] = [];//.splice(index,1);
 							QueryManager.query[index].remove();
 
 							QueryManager.removed.push(index);
-							VisDock.selectionHandler.removeColor(QueryManager.layers[index], index);
+							VisDock.selectionHandler.removeColor(QueryManager.layers[index], ind2);
 							var index2 = 0;
 							var add = 0;
 							var i = 0; //alert(num+numAnno-1);
@@ -3183,18 +3315,26 @@ var QueryManager = {
 		    QueryManager.query[num-1].append("svg:line")
 			.attr("transform","translate("+x3 + "," + margin + ")")
 			.attr("class",num-1)
-			.attr("x1",0)
-			.attr("y1",query_box_height-margin*2)
-			.attr("x2",e_width)
-			.attr("y2",0) //query_box_height-margin*2)
+			//.attr("x1",0)
+			//.attr("y1",query_box_height-margin*2)
+			//.attr("x2",e_width)
+			//.attr("y2",0) //query_box_height-margin*2)
 			.attr("style","stroke: black; stroke-width:2")
 			.on("click", function(){var index = parseInt(this.getAttributeNS(null,"class"));
+							var ind2 = index;
+							for (i=0;i<QueryManager.removed.length;i++){
+								if (QueryManager.removed[i]<index){
+									ind2--;
+								}
+								
+							}
+							
 							QueryManager.remove -= 1;//alert(QueryManager.remove)	
 							VisDock.captured[index] = [];//.splice(index,1);
 							QueryManager.query[index].remove();
 
 							QueryManager.removed.push(index);
-							VisDock.selectionHandler.removeColor(QueryManager.layers[index], index);
+							VisDock.selectionHandler.removeColor(QueryManager.layers[index], ind2);
 							var index2 = 0;
 							var add = 0;
 							var i = 0; //alert(num+numAnno-1);
