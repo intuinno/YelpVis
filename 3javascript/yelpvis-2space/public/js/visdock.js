@@ -1075,7 +1075,17 @@ var PanZoomTool = {
     start: null,
 	panel1: null,
 	panel2: null,
+	zoomUserScale: 1,
+	zoomUserTranslate: [0,0],
+	zoomMovieScale: 1,
+	zoomMovieTranslate: [0,0],
+	
 	drawspace: null,
+	scale: 1,
+	zoomScale: 0.8,
+	x: 0,
+	y: 0,
+	
 	zoomMovie:[],
 	nozoomMovie: [],
 	zoomUser:[],
@@ -1117,7 +1127,11 @@ var PanZoomTool = {
 		//PanZoomTool.panel1.on("mousedown",PanZoomTool.zoomMovie);
 		//PanZoomTool.panel2.on("mousedown",PanZoomTool.zoomUser);      	
     	
-    	
+    	//PanZoomTool.panel1.on("mousedown",PanZoomTool.mousedown);
+		//PanZoomTool.panel2.on("mousedown",PanZoomTool.mousedown);
+		//PanZoomTool.panel1.on("mousewheel",PanZoomTool.mousewheel);
+		//PanZoomTool.panel2.on("mousewheel",PanZoomTool.mousewheel); 		
+		 
     	
 		PanZoomTool.panel1.call(PanZoomTool.zoomMovie);
 		PanZoomTool.panel2.call(PanZoomTool.zoomUser);       	
@@ -1150,6 +1164,12 @@ var PanZoomTool = {
     	PanZoomTool.panel1.call(PanZoomTool.nozoomMovie);
     	PanZoomTool.panel2.call(PanZoomTool.nozoomUser);
     	
+
+    	
+    	//alert(this.scale)
+    	//alert("x = " + this.x + " y = " + this.y)
+    	//alert(PanZoomTool.zoomMovie.x())
+    	
 		//PanZoomTool.panel1.call(null);
 		//PanZoomTool.panel2.call(null);         	
 		//Panel.panel.on("mousedown", null);
@@ -1157,6 +1177,27 @@ var PanZoomTool = {
 		//window.removeEventListener("DOMMouseScroll", PanZoomTool.mousewheel, false);
 		//Panel.viewport.selectAll("*").attr("pointer-events", "visiblePainted");
     },
+    pan: function(dx, dy){
+		this.x += dx / this.scale;
+		this.y += dy / this.scale;
+		this.setTransform();    	
+    	
+    },
+    zoom: function(px, py, delta){
+    	var dz = Math.pow(1 + this.zoomScale, delta);
+		this.x -= px / this.scale - px / (this.scale * dz);
+		this.y -= py / this.scale - py / (this.scale * dz);
+		this.scale *= dz;
+		this.setTransform();
+    },
+    setTransform: function() {
+		/*this.viewport.attr("transform",
+			   "scale(" + this.scale + ")" +
+			   "translate(" + this.x + " " + this.y + ") " +
+			   "rotate(" + this.rotation + ")");
+		var invTransform = Panel.viewport[0][0].getCTM().inverse();
+		BirdView.applyInverse(invTransform);*/
+    },    
     mousedown: function() {
     	
 		var tool = d3.select("#legend").selectAll("g")
@@ -1174,13 +1215,9 @@ var PanZoomTool = {
 	    	var curr = d3.mouse(PanZoomTool.drawspace[0][0]);
 	    	
 	    	
-	    	Panel.pan(curr[0] - PanZoomTool.start[0],
+	    	PanZoomTool.pan(curr[0] - PanZoomTool.start[0],
 		      	curr[1] - PanZoomTool.start[1]);
-		      	
-		      	
-		      	
-		      	
-		      	
+
 	    	PanZoomTool.start = curr;
 		});
 		PanZoomTool.drawspace.on("mouseup", function() {
@@ -1188,7 +1225,7 @@ var PanZoomTool = {
 	    	PanZoomTool.drawspace.on("mouseup", null);
 		});
     },
-    mousewheel: function(evt) {
+    mousewheel: function(evt) {/*
 	// Prevent default behavior (scrolling)
 		if (evt.preventDefault) evt.preventDefault();
 		evt.returnValue = false;
@@ -1199,8 +1236,9 @@ var PanZoomTool = {
         else delta = evt.detail / -9; // Mozilla
 
 	// @@@ Still need to determine exact mouse position wrt viewport!
-		Panel.zoom(evt.clientX - 8, evt.clientY - 8, delta);
+		PanZoomTool.zoom(evt.clientX - 8, evt.clientY - 8, delta);*/
     }
+    
 };
 
 var RotateTool = {
