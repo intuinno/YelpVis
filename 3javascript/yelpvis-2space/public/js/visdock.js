@@ -72,7 +72,7 @@ var RectangleTool = {
 	//alert(svgMovieBody)
 		//svgMovieBody.selectAll("*").attr("pointer-events", "none");
 		//svgMovieBody.on("mousedown", RectangleTool.mousedown);
-
+		
 		Panel.viewport.selectAll("*").attr("pointer-events", "none");
 		Panel.panel.on("mousedown", RectangleTool.mousedown);
     },
@@ -140,17 +140,8 @@ var EllipseTool = {
     },
     install: function() {
 	//VisDock.selectionHandler = true;
-		var panel1 = document.getElementById("IDsvgMovie")
-		var panel2 = document.getElementById("IDsvgUser")		
-		//alert(aa)
-		//Panel.viewport.selectAll("*").attr("pointer-events", "none");
-		//Panel.panel.on("mousedown", EllipseTool.mousedown);
-		//panel1.selectAll("*").attr("pointer-events", "none");
-
-		panel1.on("mousedown", EllipseTool.mousedown);	
-		//panel2.selectAll("*").attr("pointer-events", "none");
-		panel2.on("mousedown", EllipseTool.mousedown);			
-			
+		Panel.viewport.selectAll("*").attr("pointer-events", "none");
+		Panel.panel.on("mousedown", EllipseTool.mousedown);
     },
     uninstall: function() {
 	//VisDock.selectionHandler = null;
@@ -229,19 +220,8 @@ var LassoTool = {
     },
     install: function() {
 	//VisDock.selectionHandler = true;
-		var panel1 = document.getElementById("IDsvgMovie")
-		var panel2 = document.getElementById("IDsvgUser")		
-		
-		//Panel.viewport.selectAll("*").attr("pointer-events", "none");
-		//Panel.panel.on("mousedown", EllipseTool.mousedown);
-		alert(panel2)
-		panel1.selectAll("*").attr("pointer-events", "none");
-		panel1.on("mousedown", LassoTool.mousedown);	
-		panel2.selectAll("*").attr("pointer-events", "none");
-		panel2.on("mousedown", LassoTool.mousedown);		
-	
-		//Panel.viewport.selectAll("*").attr("pointer-events", "none");
-		//Panel.panel.on("mousedown", LassoTool.mousedown);
+		Panel.viewport.selectAll("*").attr("pointer-events", "none");
+		Panel.panel.on("mousedown", LassoTool.mousedown);
     },
     uninstall: function() {
 	//VisDock.selectionHandler = null;
