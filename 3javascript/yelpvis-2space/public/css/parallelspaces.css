@@ -146,3 +146,65 @@ path {
 	padding: 0px;
 	
 }
+
+
+/*-facebook and twitter connect-*/
+/*------------------------- Footer ------------------------*/
+.footer {
+	
+}
+
+.footer .connect {
+	clear:both;
+	float:left;
+	margin:0 0 45px;
+	overflow:hidden;
+	padding:34px 0 0;
+}
+.footer .connect a#twitter {
+	background:url(../images/icons.png) no-repeat;
+	color:#8d8d8d;
+	display:block;
+	float:left;
+	font-size:12px;
+	height:21px;
+	letter-spacing:.05em;
+	line-height:24px;
+	margin:0 28px 0 0;
+	padding:0 0 0 35px;
+	text-decoration:none;
+}
+.footer .connect a#twitter:hover {
+	background:url(../images/icons.png) no-repeat 0 -22px;
+}
+.footer .connect a#facebook {
+	background:url(../images/icons.png) no-repeat 0 -44px;
+	color:#8d8d8d;
+	display:block;
+	float:left;
+	font-size:12px;
+	height:21px;
+	letter-spacing:.05em;
+	line-height:24px;
+	padding:0 0 0 17px;
+	text-decoration:none;
+	margin:0 28px 0 0;
+}
+.footer .connect a#facebook:hover {
+	background:url(../images/icons.png) no-repeat 0 -66px;
+}
+
+.footer .connect a#googleplus:hover {
+	background:url(../images/icons.png) no-repeat 0 -110px;
+}
+.footer p.footnote {
+	color:#8d8d8d;
+	float:right;
+	font-size:12px;
+	letter-spacing:.05em;
+	line-height:20px;
+	margin:36px 0 0;
+}
+
+
+
