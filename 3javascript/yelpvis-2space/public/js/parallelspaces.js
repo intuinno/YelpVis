@@ -102,6 +102,7 @@ $('#page1').live('pageinit', function() {
         reset: function(){
         	
         	VisDock.captured = [];
+        	VisDock.layers = [];
         	QueryManager.remove = 0;
         	for (i=0;i<num;i++){
         		QueryManager.query[i].remove();
@@ -703,13 +704,13 @@ var sss=document.getElementsByTagName("g");
     if(isMovieSelected) {
     	//selectionStatesTemp = selectionStatesMovie;
     	selectionStatesMovie.remove(index);
-    	str = 'movie';
+    	str = 'user';
     	updateDisplay(str, selectionStatesMovie);
     } else {
     	//selectionStatesTemp = selectionStatesUser;
     	selectionStatesUser.remove(index);
     	
-    	str = 'user';
+    	str = 'movie';
     	updateDisplay(str, selectionStatesUser);
     }
     

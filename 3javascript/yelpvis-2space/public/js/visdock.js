@@ -3039,12 +3039,13 @@ var QueryManager = {
 		        .attr("width",e_width)
 		        .attr("style","fill: white; stroke: black")
 			.on("click", function(){var index = parseInt(this.getAttributeNS(null,"class"));
+							var ind2 = index+QueryManager.remove;
 							QueryManager.remove -= 1;//alert(QueryManager.remove)	
 							VisDock.captured[index] = [];//.splice(index,1);
 							QueryManager.query[index].remove();
 
 							QueryManager.removed.push(index);
-							VisDock.selectionHandler.removeColor(QueryManager.layers[index], index);
+							VisDock.selectionHandler.removeColor(QueryManager.layers[index], ind2);
 							var index2 = 0;
 							var add = 0;
 							var i = 0; //alert(num+numAnno-1);
@@ -3114,12 +3115,13 @@ var QueryManager = {
 			.attr("y2",query_box_height-margin*2) //query_box_height-margin*2)
 			.attr("style","stroke: black; stroke-width:2")
 			.on("click", function(){var index = parseInt(this.getAttributeNS(null,"class"));
+							var ind2 = index+QueryManager.remove;
 							QueryManager.remove -= 1;//alert(QueryManager.remove)	
 							VisDock.captured[index] = [];//.splice(index,1);
 							QueryManager.query[index].remove();
 
 							QueryManager.removed.push(index);
-							VisDock.selectionHandler.removeColor(QueryManager.layers[index], index);
+							VisDock.selectionHandler.removeColor(QueryManager.layers[index], ind2);
 							var index2 = 0;
 							var add = 0;
 							var i = 0; //alert(num+numAnno-1);
@@ -3183,18 +3185,19 @@ var QueryManager = {
 		    QueryManager.query[num-1].append("svg:line")
 			.attr("transform","translate("+x3 + "," + margin + ")")
 			.attr("class",num-1)
-			.attr("x1",0)
-			.attr("y1",query_box_height-margin*2)
-			.attr("x2",e_width)
-			.attr("y2",0) //query_box_height-margin*2)
+			//.attr("x1",0)
+			//.attr("y1",query_box_height-margin*2)
+			//.attr("x2",e_width)
+			//.attr("y2",0) //query_box_height-margin*2)
 			.attr("style","stroke: black; stroke-width:2")
 			.on("click", function(){var index = parseInt(this.getAttributeNS(null,"class"));
+							var ind2 = index+QueryManager.remove;
 							QueryManager.remove -= 1;//alert(QueryManager.remove)	
 							VisDock.captured[index] = [];//.splice(index,1);
 							QueryManager.query[index].remove();
 
 							QueryManager.removed.push(index);
-							VisDock.selectionHandler.removeColor(QueryManager.layers[index], index);
+							VisDock.selectionHandler.removeColor(QueryManager.layers[index], ind2);
 							var index2 = 0;
 							var add = 0;
 							var i = 0; //alert(num+numAnno-1);
