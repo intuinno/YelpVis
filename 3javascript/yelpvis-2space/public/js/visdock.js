@@ -1064,8 +1064,8 @@ var PanZoomTool = {
 		PanZoomTool.panel1 = d3.selectAll("#IDsvgMovie")//document.getElementById("IDsvgMovie")
 		PanZoomTool.panel2 = d3.selectAll("#IDsvgUser")//document.getElementById("IDsvgUser")    	
 
-
-    	
+		PanZoomTool.panel1.on("mousedown", PanZoomTool.mousedown);
+ 		PanZoomTool.panel2.on("mousedown", PanZoomTool.mousedown);   	
     	
 		//Panel.viewport.selectAll("*").attr("pointer-events", "none");
 		//Panel.panel.on("mousedown", PanZoomTool.mousedown);
@@ -1083,10 +1083,10 @@ var PanZoomTool = {
 		var tool = d3.select("#legend").selectAll("g")
 		var det = d3.mouse(tool[0][0])
 		if (det[0]<0){
-			this.drawspace = this.panel1;
+			PanZoomTool.drawspace = PanZoomTool.panel1;
 		}
 		else{
-			this.drawspace = this.panel2;
+			PanZoomTool.drawspace = PanZoomTool.panel2;
 		//	alert("meh2")
 		}    	
     	
@@ -2574,10 +2574,12 @@ var QueryManager = {
 				    QueryManager.querybox[i].attr("style","fill: white;stroke:black")
 				}
 
-				union.attr("style","fill: yellow; stroke: black");})
+				//union.attr("style","fill: yellow; stroke: black");
+				})
 				//common.attr("style","fill: white; stroke: black");
 				//xor.attr("style","fill: white; stroke: black");})
-	    .on("mouseup", function(){union.attr("style","fill: white; stroke: black") })
+	    .on("mouseup", function(){//union.attr("style","fill: white; stroke: black")
+	     })
 
 	uniontool.append("svg:image")
 				.attr("x", (7))
@@ -2592,18 +2594,18 @@ var QueryManager = {
 				//QueryManager.xortoggle=0;
 				//trash.attr("style","fill: white; stroke: black");
 				var union = []
-				alert(QueryManager.querytoggle.length)
+				//alert(QueryManager.querytoggle.length)
 				for (var j=0;j<QueryManager.querytoggle.length;j++){
 //alert("failed")
-				alert(QueryManager.querytoggle)
-				alert(VisDock.captured[QueryManager.querytoggle[j]].length)
+				//alert(QueryManager.querytoggle)
+				//alert(VisDock.captured[QueryManager.querytoggle[j]].length)
 				    for (var k=0;k<VisDock.captured[QueryManager.querytoggle[j]].length;k++){
 					if (union.indexOf(VisDock.captured[QueryManager.querytoggle[j]][k]) == -1){
 					    union.push(VisDock.captured[QueryManager.querytoggle[j]][k]);
 					}
 				    }
 				}
-				alert(union)
+				//alert(union)
 				num++;
 				QueryManager.addQuery();
 				VisDock.captured[num] = union;
@@ -2615,7 +2617,8 @@ var QueryManager = {
 				    QueryManager.querybox[i].attr("style","fill: white;stroke:black")
 				}
 
-				union.attr("style","fill: yellow; stroke: black");})
+				//union.attr("style","fill: yellow; stroke: black");
+				})
 				//common.attr("style","fill: white; stroke: black");
 				//xor.attr("style","fill: white; stroke: black");})
 	    .on("mouseup", function(){union.attr("style","fill: white; stroke: black") })
@@ -2658,10 +2661,12 @@ var QueryManager = {
 				    QueryManager.querybox[i].attr("style","fill: white;stroke:black")
 				}
 
-				common.attr("style","fill: yellow; stroke: black");})
+				//common.attr("style","fill: yellow; stroke: black");
+				})
 				//common.attr("style","fill: white; stroke: black");
 				//xor.attr("style","fill: white; stroke: black");})
-	    .on("mouseup", function(){union.attr("style","fill: white; stroke: black") })
+	    .on("mouseup", function(){//union.attr("style","fill: white; stroke: black") 
+	    })
 
 		commontool.append("svg:image")
 				.attr("x", (7))
@@ -2699,10 +2704,12 @@ var QueryManager = {
 				    QueryManager.querybox[i].attr("style","fill: white;stroke:black")
 				}
 
-				common.attr("style","fill: yellow; stroke: black");})
+				//common.attr("style","fill: yellow; stroke: black");
+				})
 				//common.attr("style","fill: white; stroke: black");
 				//xor.attr("style","fill: white; stroke: black");})
-	    .on("mouseup", function(){union.attr("style","fill: white; stroke: black") })
+	    .on("mouseup", function(){//union.attr("style","fill: white; stroke: black") 
+	    })
 
 	var xortool = operator_bar.append("g")
 	    .attr("transform","translate(" + (3*queryWidth/4+this.margin) + "," + this.margin + ")")
@@ -2757,10 +2764,12 @@ var QueryManager = {
 				    QueryManager.querybox[i].attr("style","fill: white;stroke:black")
 				}
 
-				common.attr("style","fill: yellow; stroke: black");})
+				//common.attr("style","fill: yellow; stroke: black");
+				})
 				//common.attr("style","fill: white; stroke: black");
 				//xor.attr("style","fill: white; stroke: black");})
-	    .on("mouseup", function(){union.attr("style","fill: white; stroke: black") })
+	    .on("mouseup", function(){//union.attr("style","fill: white; stroke: black")
+			})
 		xortool.append("svg:image")
 				.attr("x", (7))
 				.attr("y", (-2))
@@ -2812,10 +2821,12 @@ var QueryManager = {
 				    QueryManager.querybox[i].attr("style","fill: white;stroke:black")
 				}
 
-				common.attr("style","fill: yellow; stroke: black");})
+				//common.attr("style","fill: yellow; stroke: black");
+				})
 				//common.attr("style","fill: white; stroke: black");
 				//xor.attr("style","fill: white; stroke: black");})
-	    .on("mouseup", function(){union.attr("style","fill: white; stroke: black") })
+	    .on("mouseup", function(){//union.attr("style","fill: white; stroke: black")
+	     })
 	},
     addQuery: function(){
 		if (VisDock.color[num-1] == undefined){
@@ -3788,7 +3799,7 @@ var Panel = {
     },
 
     setTransform: function() {
-		PanZoomTool.drawspace[0][0].attr("transform",
+		PanZoomTool.drawspace.attr("transform",
 			   "scale(" + this.scale + ")" +
 			   "translate(" + this.x + " " + this.y + ") " +
 			   "rotate(" + this.rotation + ")");

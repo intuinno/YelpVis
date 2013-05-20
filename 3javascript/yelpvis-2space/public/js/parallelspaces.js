@@ -546,12 +546,121 @@ var sss=document.getElementsByTagName("g");
     return hits;
     },
     setColor: function(hits){
+    	
+    	
+	if (isMovieSelected == 1) {
+		var aa = d3.selectAll(".movieCircle");   	
+	}
+	else{
+		var aa = d3.selectAll(".userCircle");		
+	}
+    	
+    var bb = aa.data();
+	var tempGalaxy = [];
+	//var count2 = 0;
+	for ( i = 0; i < hits.length; i++) {
+		tempGalaxy[i] = [];
+		//Group mode:  Add to the current selection
+		if (isMovieSelected) {
+			for (var count = 0; count < userLength; count++) {
+	
+				if (ratings[count][bb[i].index] >= PSmin && ratings[count][bb[i].index] <= PSmax) {
 
+					tempGalaxy[i].push(userData[count]);
+				}
+			}
+		} else {
+
+			for (var count = 0; count < movieLength; count++) {
+
+				if (ratings[bb[i].num][count] >= PSmin && ratings[bb[i].num][count] <= PSmax) {
+
+					tempGalaxy[i].push(movieData[count]);
+				}
+			}
+		}
+	}
+	var querySpace;
+	if(isMovieSelected) {
+		querySpace = 'movie';
+	} else {
+		querySpace = 'user';
+	}
+
+	if (isUnion) {
+
+		var union = []
+
+		for (var j = 0; j < tempGalaxy.length; j++) {
+
+			for (var k = 0; k < tempGalaxy[j].length; k++) {
+				if (union.indexOf(tempGalaxy[j][k]) == -1) {
+					union.push(tempGalaxy[j][k]);
+				}
+			}
+		}
+
+		//num++;
+		//QueryManager.addQuery();
+		VisDock.captured[num] = union;
+		//VisDock.selectionHandler.setColor(union);
+		QueryManager.querytoggle = [];
+		for (var i = 0; i < num; i++) {
+
+			QueryManager.querybox[i].attr("style", "fill: white;stroke:black")
+		}
+
+		var tempQuerySet = new QuerySets(querySpace, hits, union, num, 'union', PSmin, PSmax, "", $('input[name=contourMode]:checked').val(), isContourOn);
+
+	} else {
+		var common = []
+		var first = tempGalaxy[0];
+		for ( i = 0; i < tempGalaxy.length; i++) {
+			var valid = 1;
+			common = [];
+			for (var j = 0; j < tempGalaxy[i].length; j++) {
+				if (first.indexOf(tempGalaxy[i][j]) != -1) {
+					common.push(tempGalaxy[i][j])
+				}
+			}
+			first = common;
+
+		}
+		if (common.length != 0) {
+			num++;
+			//QueryManager.addQuery();
+			VisDock.captured[num] = common;
+		}
+		var tempQuerySet = new QuerySets(querySpace, hits, common, num, 'common', PSmin, PSmax, "", $('input[name=contourMode]:checked').val(), isContourOn);
+		
+	}
+
+	//  var textLegend = d.title + " (Ratings " + PSmin + "-" + PSmax + ") " + $('input[name=contourMode]:checked').val();
+
+	if(isMovieSelected) {
+	selectionStatesMovie.add(tempQuerySet);
+
+	x.domain(xDomainExtent);
+	y.domain(yDomainExtent);
+
+	updateDisplay('user', selectionStatesMovie);
+	} else {
+		selectionStatesUser.add(tempQuerySet);
+		updateDisplay('movie',selectionStatesUser);
+	}    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+/*
     var aa = getCircles();
 //alert("hits = " +aa)
     for (var i=0;i<hits.length;i++){
         addCircleLayer(aa[hits[i]]);
-    }
+    }*/
     },
     changeColor: function(color, query, index){
     var visibility = getQueryVisibility(index); 
