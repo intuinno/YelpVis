@@ -2206,12 +2206,12 @@ $('#page1').live('pageinit', function() {
 				media.push({
 					'type' : 'image',
 					'src' : 'data:image/svg+xml;base64,\n" + image1 + "',
-					'href' : 'Link to webpage'
+					'href' : 'http://yelpvis-rev3.herokuapp.com/'
 				});
 				media.push({
 					'type' : 'image',
 					'src' : 'data:image/svg+xml;base64,\n" + image2 + "',
-					'href' : 'Link to webpage'
+					'href' : 'http://yelpvis-rev3.herokuapp.com/'
 				});
 
 				var attachment = {
