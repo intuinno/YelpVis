@@ -5,7 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
-		<title>Movievis</title>
+		<title>YelpVis</title>
 		<link rel="stylesheet" href="css/my.css" />
 		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.0-rc.1/jquery.mobile-1.3.0-rc.1.min.css" />
 		
@@ -41,16 +41,20 @@
 	</head>
 	<body>
 		<!-- Home -->
+		<div class="fb-root">
+			 <script src="//connect.facebook.net/en_US/all.js"></script>
+		</div>
+		<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
 		<div data-role="page" id="page1">
 			<div data-theme="b" data-role="header" data-position="fixed">
 				<a data-role="button" id="resetButton" class="ui-btn-left"> Reset </a>
 				<a data-role="button" href="http://www.intuinno.com/parallelspaces.html" class="ui-btn-right"> Help </a>
 				<h3> YelpVis  - 	
 				Publish your findings   
-				<a data-role="button" data-inline="true" href="#page1">
+				<a data-role="button" id="facebook" data-inline="true" >
             FaceBook
         </a>
-        <a data-role="button" data-inline="true" href="#page1">
+        <a data-role="button" id="twitter" href="http://twitter.com/share" data-inline="true" href="#page1">
             Twitter
         </a></h3>
 			</div>
@@ -239,7 +243,7 @@
                           </div>
                           <div class="ui-grid-a">
                               <div class="ui-block-a">
-                                  <div>	
+                                  <div>
                                       <p>
                                           <b>
                                               Use optimal bandwidth

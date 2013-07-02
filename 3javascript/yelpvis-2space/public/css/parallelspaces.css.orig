@@ -145,6 +145,7 @@ path {
 .VisDocksvg {
 	padding: 0px;
 	
+<<<<<<< HEAD
 }
 
 
@@ -208,3 +209,6 @@ path {
 
 
 
+=======
+}
+>>>>>>> ab8f92e7ecf502ec9d3bd22e187ad0cdc02041de

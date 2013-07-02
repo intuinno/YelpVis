@@ -93,18 +93,21 @@ var RectangleTool = {
 		//RectangleTool.panel2.on("mousedown", RectangleTool.mousedown(this.panel2));
 		//IDsvgMovie.on("mousedown", RectangleTool.mousedown());//RectangleTool.panel1));	
 		//RectangleTool.panel2.on("mousedown", RectangleTool.mousedown());//RectangleTool.panel2));
-		//RectangleTool.panel1.selectAll("*").attr("pointer-events", "none");
-
+		//RectangleTool.panel1.selectAll("*").attr("pointer-events", "none");
 		//RectangleTool.panel2.selectAll("*").attr("pointer-events", "none");
+<<<<<<< HEAD
 
 
 
 				
 		RectangleTool.panel1.on("mousedown", RectangleTool.mousedown);//RectangleTool.panel1));	
-		RectangleTool.panel2.on("mousedown", RectangleTool.mousedown);//RectangleTool.panel2));
-		RectangleTool.panel1.on("zoom",null);
-		RectangleTool.panel2.on("zoom",null);
-
+		RectangleTool.panel2.on("mousedown", RectangleTool.mousedown);//RectangleTool.panel2));		RectangleTool.panel1.on("zoom",null);
+		RectangleTool.panel2.on("zoom",null);
+=======
+				
+		RectangleTool.panel1.on("mousedown", RectangleTool.mousedown);//RectangleTool.panel1));	
+		RectangleTool.panel2.on("mousedown", RectangleTool.mousedown);//RectangleTool.panel2));
+>>>>>>> ab8f92e7ecf502ec9d3bd22e187ad0cdc02041de
 				//alert("FJSDKL")	
 
 		//Panel.viewport.selectAll("*").attr("pointer-events", "none");
@@ -198,8 +201,7 @@ var RectangleTool = {
 			//alert(RectangleTool.bbox)
 		});
 		RectangleTool.drawspace.on("mouseup", function() {		
-			//alert(drawspace)
-
+			//alert(drawspace)
 	    // Forward the selection
 	    	var box = RectangleTool.getBoundingBox(d3.mouse(RectangleTool.drawspace[0][0]));
 	    	Toolbox.select("Rectangle", [[(box[0] - Panel.x), (box[1] -Panel.y)], [(box[0] - Panel.x), (box[1] - Panel.y) + box[3]],
@@ -238,10 +240,14 @@ var EllipseTool = {
 
 		EllipseTool.panel1.on("mousedown", EllipseTool.mousedown);	
 		//panel2.selectAll("*").attr("pointer-events", "none");
+<<<<<<< HEAD
 		EllipseTool.panel2.on("mousedown", EllipseTool.mousedown);		
 		
 		EllipseTool.panel1.on("zoom",null);
 		EllipseeTool.panel2.on("zoom",null);
+=======
+		EllipseTool.panel2.on("mousedown", EllipseTool.mousedown);			
+>>>>>>> ab8f92e7ecf502ec9d3bd22e187ad0cdc02041de
 			
     },
     uninstall: function() {
@@ -360,9 +366,12 @@ var LassoTool = {
 		this.panel1.on("mousedown", LassoTool.mousedown);	
 		this.panel2.on("mousedown", LassoTool.mousedown);	
 		
+<<<<<<< HEAD
 		LassoTool.panel1.on("zoom",null);
 		LassoTool.panel2.on("zoom",null);		
 		
+=======
+>>>>>>> ab8f92e7ecf502ec9d3bd22e187ad0cdc02041de
 		//Panel.viewport.selectAll("*").attr("pointer-events", "none");
 		//Panel.panel.on("mousedown", EllipseTool.mousedown);
 		//alert(panel2)
@@ -492,9 +501,7 @@ var LassoTool = {
 				LassoTool.segments += 1;
 				var points = LassoTool.getPoints();
 		//Freeselect.segments -= 1;
-	        	LassoTool.blasso.attr("points", points)
-
-
+	        	LassoTool.blasso.attr("points", points)
 	    	}    
 		});
 		console.log("click lasso");
@@ -521,9 +528,12 @@ var Straight = {
 
 		this.panel1.on("mousedown", Straight.mousedown);	
 		this.panel2.on("mousedown", Straight.mousedown);	
+<<<<<<< HEAD
 
 		Straight.panel1.on("zoom",null);
 		Straight.panel2.on("zoom",null);	
+=======
+>>>>>>> ab8f92e7ecf502ec9d3bd22e187ad0cdc02041de
 	
 		//Panel.viewport.selectAll("*").attr("pointer-events", "none");
 		//Panel.panel.on("mousedown", Straight.mousedown);
@@ -632,9 +642,12 @@ var Polyline = {
 
 		this.panel1.on("mousedown", Polyline.mousedown);	
 		this.panel2.on("mousedown", Polyline.mousedown);	
+<<<<<<< HEAD
 		
 		Polyline.panel1.on("zoom",null);
 		Polyline.panel2.on("zoom",null);		
+=======
+>>>>>>> ab8f92e7ecf502ec9d3bd22e187ad0cdc02041de
 	
 		//Panel.viewport.selectAll("*").attr("pointer-events", "none");
 		//Panel.panel.on("mousedown", Polyline.mousedown);
@@ -787,9 +800,12 @@ var Freeselect = {
 
 		this.panel1.on("mousedown", Freeselect.mousedown);	
 		this.panel2.on("mousedown", Freeselect.mousedown);	
+<<<<<<< HEAD
 		
 		Freeselect.panel1.on("zoom",null);
 		Freeselect.panel2.on("zoom",null);		
+=======
+>>>>>>> ab8f92e7ecf502ec9d3bd22e187ad0cdc02041de
 	
 		//Panel.viewport.selectAll("*").attr("pointer-events", "none");
 		//Panel.panel.on("mousedown", Freeselect.mousedown);
@@ -939,9 +955,12 @@ var PolygonTool = {
 
 		this.panel1.on("mousedown", PolygonTool.mousedown);	
 		this.panel2.on("mousedown", PolygonTool.mousedown);	
+<<<<<<< HEAD
 		
 		PolygonTool.panel1.on("zoom",null);
 		PolygonTool.panel2.on("zoom",null);		
+=======
+>>>>>>> ab8f92e7ecf502ec9d3bd22e187ad0cdc02041de
 	
 		//Panel.viewport.selectAll("*").attr("pointer-events", "none");
 		//Panel.panel.on("mousedown", PolygonTool.mousedown);
@@ -1081,12 +1100,11 @@ var PanZoomTool = {
     start: null,
 	panel1: null,
 	panel2: null,
+<<<<<<< HEAD
 	zoomUserScale: 1,
 	zoomUserTranslate: [0,0],
 	zoomMovieScale: 1,
 	zoomMovieTranslate: [0,0],
-	
-	str: [],
 	
 	drawspace: null,
 	scale: 1,
@@ -1100,10 +1118,15 @@ var PanZoomTool = {
 	nozoomUser: [],
 	zoomedMovie:[],
 	zoomedUser:[],
+=======
+	drawspace: null,
+	
+>>>>>>> ab8f92e7ecf502ec9d3bd22e187ad0cdc02041de
     select: function() {
 		console.log("select: " + PanZoomTool.name);
 		Toolbox.setTool(PanZoomTool);
     },
+<<<<<<< HEAD
 
 		
  
@@ -1132,8 +1155,8 @@ var PanZoomTool = {
 		PanZoomTool.panel1 = d3.selectAll("#IDsvgMovie")//document.getElementById("IDsvgMovie")
 		PanZoomTool.panel2 = d3.selectAll("#IDsvgUser")//document.getElementById("IDsvgUser")    	
     
-		PanZoomTool.panel1.on("mousedown",PanZoomTool.mousedown);
-		PanZoomTool.panel2.on("mousedown",PanZoomTool.mousedown);      	
+		//PanZoomTool.panel1.on("mousedown",PanZoomTool.zoomMovie);
+		//PanZoomTool.panel2.on("mousedown",PanZoomTool.zoomUser);      	
     	
     	//PanZoomTool.panel1.on("mousedown",PanZoomTool.mousedown);
 		//PanZoomTool.panel2.on("mousedown",PanZoomTool.mousedown);
@@ -1206,51 +1229,71 @@ var PanZoomTool = {
 		var invTransform = Panel.viewport[0][0].getCTM().inverse();
 		BirdView.applyInverse(invTransform);*/
     },    
+=======
+    install: function() {
+    	
+		PanZoomTool.panel1 = d3.selectAll("#IDsvgMovie")//document.getElementById("IDsvgMovie")
+		PanZoomTool.panel2 = d3.selectAll("#IDsvgUser")//document.getElementById("IDsvgUser")    	
+
+		PanZoomTool.panel1.on("mousedown", PanZoomTool.mousedown);
+ 		PanZoomTool.panel2.on("mousedown", PanZoomTool.mousedown);   	
+    	
+		//Panel.viewport.selectAll("*").attr("pointer-events", "none");
+		//Panel.panel.on("mousedown", PanZoomTool.mousedown);
+		window.addEventListener("mousewheel", PanZoomTool.mousewheel, false);
+		window.addEventListener("DOMMouseScroll", PanZoomTool.mousewheel, false);
+    },
+    uninstall: function() {
+		Panel.panel.on("mousedown", null);
+		window.removeEventListener("mousewheel", PanZoomTool.mousewheel, false);
+		window.removeEventListener("DOMMouseScroll", PanZoomTool.mousewheel, false);
+		Panel.viewport.selectAll("*").attr("pointer-events", "visiblePainted");
+    },
+>>>>>>> ab8f92e7ecf502ec9d3bd22e187ad0cdc02041de
     mousedown: function() {
     	
 		var tool = d3.select("#legend").selectAll("g")
 		var det = d3.mouse(tool[0][0])
 		if (det[0]<0){
 			PanZoomTool.drawspace = PanZoomTool.panel1;
-			
 		}
 		else{
 			PanZoomTool.drawspace = PanZoomTool.panel2;
+		//	alert("meh2")
 		}    	
-		
-		//alert(selectionStatesMovie)
-			//updateDisplay('user', VisDock.selectionStatesMovie);
-			//updateDisplay('movie', VisDock.selectionStatesUser);    	
     	
 		PanZoomTool.start = d3.mouse(PanZoomTool.drawspace[0][0]);
 		PanZoomTool.drawspace.on("mousemove", function() {
-	    	//var curr = d3.mouse(PanZoomTool.drawspace[0][0]);
+	    	var curr = d3.mouse(PanZoomTool.drawspace[0][0]);
 	    	
 	    	
-	    	//PanZoomTool.pan(curr[0] - PanZoomTool.start[0],
-		    //  	curr[1] - PanZoomTool.start[1]);
+<<<<<<< HEAD
+	    	PanZoomTool.pan(curr[0] - PanZoomTool.start[0],
+		      	curr[1] - PanZoomTool.start[1]);
 
-	    	//PanZoomTool.start = curr;
-	    	//alert(updateDisplay)
-	    	selectionStatesMovie = VisDock.selectioinStatesMovie;
-	    	selectionStatesUser = VisDock.selectionStatesUser;
-			//updateDisplay('user', selectionStatesMovie);
-			//updateDisplay('movie', selectionStatesUser);
-  			
-	    	
-	    	
+=======
+	    	Panel.pan(curr[0] - PanZoomTool.start[0],
+		      	curr[1] - PanZoomTool.start[1]);
+		      	
+		      	
+		      	
+		      	
+		      	
+		      	
+		      	
+>>>>>>> ab8f92e7ecf502ec9d3bd22e187ad0cdc02041de
+	    	PanZoomTool.start = curr;
 		});
 		PanZoomTool.drawspace.on("mouseup", function() {
-			selectionStatesMovie = VisDock.selectioinStatesMovie;
-	    	selectionStatesUser = VisDock.selectionStatesUser;
-			//updateDisplay('user', selectionStatesMovie);
-			//updateDisplay('movie', selectionStatesUser);			
 			PanZoomTool.drawspace.on("mousemove", null);
 	    	PanZoomTool.drawspace.on("mouseup", null);
 		});
-		
     },
+<<<<<<< HEAD
     mousewheel: function(evt) {/*
+=======
+    mousewheel: function(evt) {
+>>>>>>> ab8f92e7ecf502ec9d3bd22e187ad0cdc02041de
 	// Prevent default behavior (scrolling)
 		if (evt.preventDefault) evt.preventDefault();
 		evt.returnValue = false;
@@ -1261,9 +1304,14 @@ var PanZoomTool = {
         else delta = evt.detail / -9; // Mozilla
 
 	// @@@ Still need to determine exact mouse position wrt viewport!
+<<<<<<< HEAD
 		PanZoomTool.zoom(evt.clientX - 8, evt.clientY - 8, delta);*/
     }
     
+=======
+		Panel.zoom(evt.clientX - 8, evt.clientY - 8, delta);
+    }
+>>>>>>> ab8f92e7ecf502ec9d3bd22e187ad0cdc02041de
 };
 
 var RotateTool = {
@@ -4004,9 +4052,6 @@ var VisDock = {
     panel1: {annotation: null},
     panel2: {annotation: null},
     annotation: null,
-    selectionStatesMovie: null,
-    selectionStatesUser: null,
-    updateDisplay: null,
     // Selection handler - provided by host visualization:
     //
     // getHits(polygon, inclusive : boolean) - returns a list of

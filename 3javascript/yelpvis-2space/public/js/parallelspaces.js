@@ -1,3 +1,4 @@
+
 if ( typeof Object.create !== 'function') {
 
 	Object.create = function(o) {
@@ -9,9 +10,6 @@ if ( typeof Object.create !== 'function') {
 		return new F();
 	};
 }
-
-
-
 
 $('#page1').live('pageinit', function() {
 
@@ -25,11 +23,9 @@ $('#page1').live('pageinit', function() {
 
 			selectionStatesMovie.requeryCriteria(PSmin, PSmax);
 			updateDisplay('user', selectionStatesMovie);
-			VisDock.selectionStatesMovie = selectionStatesMovie
 		} else {
 			selectionStatesUser.requeryCriteria(PSmin, PSmax);
 			updateDisplay('movie', selectionStatesUser);
-			VisDock.selectionStatesUser = selectionStatesUser;
 		}
 	});
 
@@ -41,11 +37,9 @@ $('#page1').live('pageinit', function() {
 
 			selectionStatesMovie.requeryCriteria(PSmin, PSmax);
 			updateDisplay('user', selectionStatesMovie);
-			VisDock.selectionStatesMovie = selectionStatesMovie
 		} else {
 			selectionStatesUser.requeryCriteria(PSmin, PSmax);
 			updateDisplay('movie', selectionStatesUser);
-			VisDock.selectionStatesUser = selectionStatesUser
 		}
 
 	});
@@ -311,19 +305,16 @@ $('#page1').live('pageinit', function() {
 			//  var textLegend = d.title + " (Ratings " + PSmin + "-" + PSmax + ") " + $('input[name=contourMode]:checked').val();
 
 			if (isMovieSelected) {
-
 				selectionStatesMovie.add(tempQuerySet);
-				x.domain(xDomainExtent);
-				y.domain(yDomainExtent);
-				VisDock.selectionStatesMovie = selectionStatesMovie
-			} else {
 
-				selectionStatesUser.add(tempQuerySet);
 				x.domain(xDomainExtent);
 				y.domain(yDomainExtent);
-				VisDock.selectionStatesUser = selectionStatesUser
-				//updateDisplay('movie',selectionStatesUser);
-				//updateDisplay('user',selectionStatesMovie);
+
+			} else {
+				selectionStatesUser.add(tempQuerySet);
+
+				updateDisplay('movie', selectionStatesUser);
+				updateDisplay('user', selectionStatesMovie);
 			}
 
 			updateDisplay('user', selectionStatesMovie);
@@ -493,21 +484,13 @@ $('#page1').live('pageinit', function() {
 			if (isMovieSelected) {
 				selectionStatesMovie.add(tempQuerySet);
 
-				x.domain(xDomainExtent);
-				y.domain(yDomainExtent);
+				//x.domain(xDomainExtent);
+				//y.domain(yDomainExtent);
 
 				updateDisplay('user', selectionStatesMovie);
-				VisDock.selectionStatesMovie = selectionStatesMovie
 			} else {
-				
-				
 				selectionStatesUser.add(tempQuerySet);
-				
-				x.domain(xDomainExtent);
-				y.domain(yDomainExtent);				
-				
 				updateDisplay('movie', selectionStatesUser);
-				VisDock.selectionStatesUser = selectionStatesUser
 			}
 
 			return hits;
@@ -658,11 +641,9 @@ $('#page1').live('pageinit', function() {
 				//y.domain(yDomainExtent);
 
 				updateDisplay('user', selectionStatesMovie);
-				VisDock.selectionStatesMovie = selectionStatesMovie
 			} else {
 				selectionStatesUser.add(tempQuerySet);
 				updateDisplay('movie', selectionStatesUser);
-				VisDock.selectionStatesUser = selectionStatesUser
 			}
 
 			/*
@@ -697,19 +678,17 @@ $('#page1').live('pageinit', function() {
 				selectionStatesMovie.remove(index);
 				str = 'user';
 				updateDisplay(str, selectionStatesMovie);
-				VisDock.selectionStatesMovie = selectionStatesMovie
 			} else {
 				//selectionStatesTemp = selectionStatesUser;
 				selectionStatesUser.remove(index);
 
 				str = 'movie';
 				updateDisplay(str, selectionStatesUser);
-				VisDock.selectionStatesUser = selectionStatesUser
 
 			}
 		}
 	}
-	
+
 	function updateDisplay(space, selectionState) {
 
 		var mySelectionState = selectionState;
@@ -874,7 +853,6 @@ $('#page1').live('pageinit', function() {
 		// updateLegend(space, mySelectionState);
 
 	}
-	VisDock.updateDisplay = updateDisplay;
 
 	function updateLegend(space, selectionState) {
 
@@ -1126,9 +1104,7 @@ $('#page1').live('pageinit', function() {
 	//selectionStatesMovie is for when movies are selected
 	//selectionStatesUser is for when users are selected
 	var selectionStatesMovie = new SelectionStatesSpace();
-	//VisDock.selectionStatesMovie = selectionStatesMovie
 	var selectionStatesUser = new SelectionStatesSpace();
-	//VisDock.selectionStatesUser = selectionStatesUser
 
 	//Parameters for Tuning
 	var numStepForKDE = 20;
@@ -1455,7 +1431,7 @@ alert(d3.event.translate + "  and  " + d3.event.scale)
 		svgMovieSelectionGroup.attr("transform", "scale(" + d3.event.scale + ")");
 
 		svgUserGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
-alert(d3.event.translate + "   and   " + d3.event.scale)
+
 		svgUser.select(".x.axis").call(xAxisUser);
 		svgUser.select(".y.axis").call(yAxisUser);
 		updateDisplay('movie', selectionStatesUser);
@@ -1487,9 +1463,7 @@ alert(d3.event.translate + "   and   " + d3.event.scale)
 	function clearSelection() {
 
 		selectionStatesMovie = new SelectionStatesSpace();
-		VisDock.selectionStatesMovie = selectionStatesMovie;
 		selectionStatesUser = new SelectionStatesSpace();
-		VisDock.selectionStatesUser = selectionStatesUser;
 
 		updateDisplay('movie', selectionStatesUser);
 		updateDisplay('user', selectionStatesMovie);
@@ -2249,5 +2223,92 @@ alert(d3.event.translate + "   and   " + d3.event.scale)
 			}
 		}).transition().duration(500).style("opacity", 1);
 	};
+	d3.select("#twitter").on("click", postTwitter);
+	function postTwitter() {
+		$("svg").attr({
+			version : '1.1',
+			xmlns : "http://www.w3.org/2000/svg"
+		});
+		var movieSvg = $("#movieCanvas").html();
+		var image1 = btoa(movieSvg);
 
+		var userSvg = $("#userCanvas").html();
+		var image2 = btoa(userSvg);
+		$('.popup').click(function(event) {
+			var width = 575, height = 400, left = ($(window).width() - width) / 2, top = ($(window).height() - height) / 2, url = this.href, opts = 'status=1' + ',width=' + width + ',height=' + height + ',top=' + top + ',left=' + left;
+
+			window.open(url, 'twitter', opts);
+
+			return false;
+		});
+	};
+
+	d3.select("#facebook").on("click", postFacebook);
+	function postFacebook() {
+		$("svg").attr({
+			version : '1.1',
+			xmlns : "http://www.w3.org/2000/svg"
+		});
+		var movieSvg = $("#movieCanvas").html();
+		var image1 = btoa(movieSvg);
+
+		var userSvg = $("#userCanvas").html();
+		var image2 = btoa(userSvg);
+
+		$().ready(FB.init({
+			appId : "147567282094128",
+			status : true,
+			cookie : true
+		}));
+
+		FB.login(function(response) {
+			if (response.authResponse) {
+				var access_token = FB.getAuthResponse()['accessToken'];
+				console.log('Access Token = ' + access_token);
+				// FB.api('me/feed', 'post', {
+				// message : 'made a interesting observation with YelpVis',
+				// status : 'success',
+				// access_token : access_token,
+				// picture : 'data:image/svg+xml;base64,\n" + image1 + "',
+				// }, function(response) {
+				// if (!response || response.error) {
+				// alert('Error occured:' + response);
+				// } else {
+				// alert('Post ID: ' + response.id);
+				// }
+				//
+				// });
+
+				var media = [];
+				media.push({
+					'type' : 'image',
+					'src' : 'data:image/svg+xml;base64,\n" + image1 + "',
+					'href' : 'yelpvis-rev3.herokuapp.com'
+				});
+				media.push({
+					'type' : 'image',
+					'src' : 'data:image/svg+xml;base64,\n" + image2 + "',
+					'href' : 'yelpvis-rev3.herokuapp.com'
+				});
+
+				var attachment = {
+					'name' : 'YelpVis',
+					'media' : media
+				};
+
+				FB.ui({
+					method : 'stream.publish',
+					message : 'made a interesting observation with YelpVis',
+					attachment : attachment,
+					user_message_prompt : 'post this to your wall?'
+				});
+
+			} else {
+				console.log('User cancelled login or did not fully authorize.');
+			}
+		}, {
+			scope : 'user_photos,photo_upload,publish_stream,offline_access'
+		});
+
+	};
 });
