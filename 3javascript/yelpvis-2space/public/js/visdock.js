@@ -1080,6 +1080,8 @@ var PanZoomTool = {
 	zoomMovieScale: 1,
 	zoomMovieTranslate: [0,0],
 	
+	str: [],
+	
 	drawspace: null,
 	scale: 1,
 	zoomScale: 0.8,
@@ -1124,8 +1126,8 @@ var PanZoomTool = {
 		PanZoomTool.panel1 = d3.selectAll("#IDsvgMovie")//document.getElementById("IDsvgMovie")
 		PanZoomTool.panel2 = d3.selectAll("#IDsvgUser")//document.getElementById("IDsvgUser")    	
     
-		//PanZoomTool.panel1.on("mousedown",PanZoomTool.zoomMovie);
-		//PanZoomTool.panel2.on("mousedown",PanZoomTool.zoomUser);      	
+		PanZoomTool.panel1.on("mousedown",PanZoomTool.mousedown);
+		PanZoomTool.panel2.on("mousedown",PanZoomTool.mousedown);      	
     	
     	//PanZoomTool.panel1.on("mousedown",PanZoomTool.mousedown);
 		//PanZoomTool.panel2.on("mousedown",PanZoomTool.mousedown);
@@ -1204,26 +1206,43 @@ var PanZoomTool = {
 		var det = d3.mouse(tool[0][0])
 		if (det[0]<0){
 			PanZoomTool.drawspace = PanZoomTool.panel1;
+			
 		}
 		else{
 			PanZoomTool.drawspace = PanZoomTool.panel2;
-		//	alert("meh2")
 		}    	
+		
+		//alert(selectionStatesMovie)
+			//updateDisplay('user', VisDock.selectionStatesMovie);
+			//updateDisplay('movie', VisDock.selectionStatesUser);    	
     	
 		PanZoomTool.start = d3.mouse(PanZoomTool.drawspace[0][0]);
 		PanZoomTool.drawspace.on("mousemove", function() {
-	    	var curr = d3.mouse(PanZoomTool.drawspace[0][0]);
+	    	//var curr = d3.mouse(PanZoomTool.drawspace[0][0]);
 	    	
 	    	
-	    	PanZoomTool.pan(curr[0] - PanZoomTool.start[0],
-		      	curr[1] - PanZoomTool.start[1]);
+	    	//PanZoomTool.pan(curr[0] - PanZoomTool.start[0],
+		    //  	curr[1] - PanZoomTool.start[1]);
 
-	    	PanZoomTool.start = curr;
+	    	//PanZoomTool.start = curr;
+	    	//alert(updateDisplay)
+	    	selectionStatesMovie = VisDock.selectioinStatesMovie;
+	    	selectionStatesUser = VisDock.selectionStatesUser;
+			//updateDisplay('user', selectionStatesMovie);
+			//updateDisplay('movie', selectionStatesUser);
+  			
+	    	
+	    	
 		});
 		PanZoomTool.drawspace.on("mouseup", function() {
+			selectionStatesMovie = VisDock.selectioinStatesMovie;
+	    	selectionStatesUser = VisDock.selectionStatesUser;
+			//updateDisplay('user', selectionStatesMovie);
+			//updateDisplay('movie', selectionStatesUser);			
 			PanZoomTool.drawspace.on("mousemove", null);
 	    	PanZoomTool.drawspace.on("mouseup", null);
 		});
+		
     },
     mousewheel: function(evt) {/*
 	// Prevent default behavior (scrolling)
@@ -3979,6 +3998,9 @@ var VisDock = {
     panel1: {annotation: null},
     panel2: {annotation: null},
     annotation: null,
+    selectionStatesMovie: null,
+    selectionStatesUser: null,
+    updateDisplay: null,
     // Selection handler - provided by host visualization:
     //
     // getHits(polygon, inclusive : boolean) - returns a list of

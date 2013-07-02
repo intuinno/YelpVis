@@ -271,14 +271,16 @@ function CirclePolygonIntersection(points,shapebound,circle){
 		//alert(tool)
 		var det = d3.mouse(tool[0][0])
 		if (det[0]<0){
-			cx = cx + PanZoomTool.zoomMovieTranslate[0]
-			cy = cy + PanZoomTool.zoomMovieTranslate[1]
+			cx = PanZoomTool.zoomMovieScale*cx + PanZoomTool.zoomMovieTranslate[0]
+			cy = PanZoomTool.zoomMovieScale*cy + PanZoomTool.zoomMovieTranslate[1]
+			//r = r / PanZoomTool.zoomMovieScale;
 			//RectangleTool.drawspace = RectangleTool.panel1;
 		//	alert("meh")
 		}
 		else{
-			cx = cx + PanZoomTool.zoomUserTranslate[0]
-			cy = cy + PanZoomTool.zoomUserTranslate[1]			
+			cx = PanZoomTool.zoomUserScale*cx + PanZoomTool.zoomUserTranslate[0]
+			cy = PanZoomTool.zoomUserScale*cy + PanZoomTool.zoomUserTranslate[1]			
+			//r = r  PanZoomTool.zoomUserScale;			
 			//RectangleTool.drawspace = RectangleTool.panel2;
 		//	alert("meh2")
 		} 
