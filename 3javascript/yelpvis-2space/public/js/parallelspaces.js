@@ -710,6 +710,10 @@ $('#page1').live('pageinit', function() {
 			
 			transx = PanZoomTool.zoomMovieTranslate[0];
 			transy = PanZoomTool.zoomMovieTranslate[1];
+			if (~isMovieSelected){
+				transx=0;
+				transy=0;
+			}
 			
 
 		} else if (space === 'user') {
@@ -726,7 +730,10 @@ $('#page1').live('pageinit', function() {
 			
 			transx = PanZoomTool.zoomUserTranslate[0];
 			transy = PanZoomTool.zoomUserTranslate[1];			
-
+			if (~isMovieSelected){
+				transx=0;
+				transy=0;
+			}
 		}
 
 		//Selection Space Halo
@@ -749,7 +756,7 @@ $('#page1').live('pageinit', function() {
 
 				//Bind
 				var selectionCircle = d3.select(this).selectAll("circle").data(d.selection);
-//alert(this)
+
 				//Enter Append
 				selectionCircle.enter().append("circle");
 
@@ -760,8 +767,7 @@ $('#page1').live('pageinit', function() {
 				}).attr("cy", function(d) {
 					return ySelect(d);
 				}).attr("r", function(d) {
-					//var k = rSelect(+d.numReview);
-					//return 1/k;					
+					
 					return rSelect(+d.numReview);
 				}).attr("fill", color).attr("stroke", color).classed("selectedCircle", true)
 				
@@ -803,20 +809,10 @@ $('#page1').live('pageinit', function() {
 				selectionCircle.attr("cx", function(d) {
 					//return d.getAttributeNS(null,"cx")
 					return xQuery(d)
-					//
-					/*if (PanZoomTool.zoomMovieTranslate[0] == 0 && PanZoomTool.zoomMovieTranslate[1] == 0){
-						return xQuery(d)+(PanZoomTool.zoomMovieTranslate[0]/PanZoomTool.zoomMovieScale);
-					}else{
-						return (PanZoomTool.zoomMovieTranslate[0]/PanZoomTool.zoomMovieScale);
-					}*/
+
 					
 					//return xQuery(d);
 				}).attr("cy", function(d) {
-					/*if (PanZoomTool.zoomMovieTranslate[0] == 0 && PanZoomTool.zoomMovieTranslate[1] == 0){
-						return yQuery(d)+(PanZoomTool.zoomMovieTranslate[1]/PanZoomTool.zoomMovieScale);
-					}else{
-						return (PanZoomTool.zoomMovieTranslate[1]/PanZoomTool.zoomMovieScale);
-					}*/
 					return yQuery(d)
 									
 					//return yQuery(d)+(PanZoomTool.zoomMovieTranslate[1]/PanZoomTool.zoomMovieScale);
@@ -1363,31 +1359,44 @@ $('#page1').live('pageinit', function() {
 		//svgMovieContourGroup.attr("transform", "scale(" + PanZoomTool.zoomMovieScale/2 + ")");
 		//svgMovieSelectionGroup.attr("transform", "scale(" + PanZoomTool.zoomMovieScale/2 + ")");		
 
+		//movieSelectionSVGgroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")")
+
 		svgMovieGroup.attr("transform", "translate(" + d3.event.translate + "),scale(" + d3.event.scale + ")");
-alert(d3.event.translate + "  and  " + d3.event.scale)
 		svgMovie.select(".x.axis").call(xAxis);
 		svgMovie.select(".y.axis").call(yAxis);
 		
 		
-		//alert("h")
+//alert("hello movie")
+
 		var tool = d3.select("#legend").selectAll("g")
 		//alert(tool)
+		
 		var det = d3.mouse(tool[0][0])
+		
 		if (det[0]<0){
 			
-			updateDisplay('user', selectionStatesMovie);
+			//updateDisplay('user', selectionStatesMovie);
 			//RectangleTool.drawspace = RectangleTool.panel1;
-		//	alert("meh")
+			//alert("user")
 		}
 		else{
-			updateDisplay('movie', selectionStatesUser);
+			//updateDisplay('movie', selectionStatesUser);
 			//RectangleTool.drawspace = RectangleTool.panel2;
-		//	alert("meh2")
+			//alert("movie")
 		}
 		//		
+		if (isMovieSelected){
+			//updateDisplay('user', selectionStatesMovie);
+		}else{
+			//updateDisplay('user',)
+		}
 		
-		//updateDisplay('user', selectionStatesMovie);
-		//updateDisplay('movie', selectionStatesUser);
+		//alert(selectionStatesMovie);
+		//if (~isMovieSelected){
+		updateDisplay('user', selectionStatesMovie);
+		//}		
+		
+		updateDisplay('movie', selectionStatesUser);
 		
 	}
 
@@ -1420,25 +1429,50 @@ alert(d3.event.translate + "  and  " + d3.event.scale)
 		//
 		//svgUserContourGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
 		//svgUserSelectionGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
-
+//alert("hello user")
 		var panel1 = d3.selectAll("#IDsvgMovie")//document.getElementById("IDsvgMovie")
 		var panel2 = d3.selectAll("#IDsvgUser")//document.getElementById("IDsvgUser")
 
 		PanZoomTool.zoomUserScale = d3.event.scale;
 		PanZoomTool.zoomUserTranslate = d3.event.translate;
 
-		svgMovieContourGroup.attr("transform", "scale(" + d3.event.scale + ")");
-		svgMovieSelectionGroup.attr("transform", "scale(" + d3.event.scale + ")");
+		//svgMovieContourGroup.attr("transform", "scale(" + d3.event.scale + ")");
+		//svgMovieSelectionGroup.attr("transform", "scale(" + d3.event.scale + ")");
 
+		//userSelectionSVGgroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")")
+	
 		svgUserGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
-
+		
 		svgUser.select(".x.axis").call(xAxisUser);
 		svgUser.select(".y.axis").call(yAxisUser);
+		
+		var tool = d3.select("#legend").selectAll("g")
+		//alert(tool)
+		var det = d3.mouse(tool[0][0])
+		if (det[0]<0){
+			
+			//updateDisplay('user', selectionStatesMovie);
+			//RectangleTool.drawspace = RectangleTool.panel1;
+			//alert("user2")
+		}
+		else{
+			//updateDisplay('movie', selectionStatesUser);
+			
+			//RectangleTool.drawspace = RectangleTool.panel2;
+			//alert("movie2")
+		}		
+		
+		//        updateDisplay('movie', selectionStatesUser);
+		//alert(selectionStatesUser);
+		//if (isMovieSelected){
 		updateDisplay('movie', selectionStatesUser);
+		//}
 		updateDisplay('user', selectionStatesMovie);
+		
+		
 	}
 
-
+/*
 	PanZoomTool.zoomedUser = function() {
 		//svgUserContourGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
 		//svgUserSelectionGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
@@ -1458,8 +1492,8 @@ alert(d3.event.translate + "  and  " + d3.event.scale)
 		svgUser.select(".y.axis").call(yAxisUser);
 
 		updateDisplay('movie', selectionStatesUser);
-		updateDisplay('user', selectionStatesMovie);
-	}
+		//updateDisplay('user', selectionStatesMovie);
+	}*/
 	function clearSelection() {
 
 		selectionStatesMovie = new SelectionStatesSpace();

@@ -140,7 +140,7 @@ var RectangleTool = {
 	
 	   
 		d3.event.preventDefault();
-		//alert("h")
+
 		var tool = d3.select("#legend").selectAll("g")
 		//alert(tool)
 		var det = d3.mouse(tool[0][0])
