@@ -241,7 +241,7 @@ var EllipseTool = {
 		EllipseTool.panel2.on("mousedown", EllipseTool.mousedown);		
 		
 		EllipseTool.panel1.on("zoom",null);
-		EllipseeTool.panel2.on("zoom",null);
+		EllipseTool.panel2.on("zoom",null);
 			
     },
     uninstall: function() {
@@ -1594,6 +1594,9 @@ var AnnotatedByAreaTool = {
 	        	AnnotatedByAreaTool.blasso[N] = AnnotatedByAreaTool.drawspace.append("polygon")
 	            	.attr("id", "selection")
 	            	.attr("points", points)
+	            	.attr("fill", "yellow")
+	            	.attr("stroke","orange")
+	            	.attr("opacity","0.5")
 	            	.attr("class", "selection");
 	    		}
 	    		else {
@@ -1649,21 +1652,33 @@ var AnnotatedByAreaTool = {
 				.attr("fill", "red")
 				.attr("opacity", 0.8);
 			*/
-			
+
 			annotation.append("line")
 				.attr("x1", AnnotatedByAreaTool.pointStart[0])
 				.attr("y1", AnnotatedByAreaTool.pointStart[1])
 				.attr("x2", AnnotatedByAreaTool.end[0])
 				.attr("y2", AnnotatedByAreaTool.end[1])
+				.attr("stroke-width","2px")
+				.attr("stroke","red")
 				.attr("class", "annotation-line");
+			//alert(AnnotatedByAreaTool.drawspace)
 			
-			var label = annotation.append("g").attr("pointer-events", "visiblePainted");;
+			/*AnnotatedByAreaTool.drawspace.append("line")
+				.attr("x1", AnnotatedByAreaTool.pointStart[0])
+				.attr("y1", AnnotatedByAreaTool.pointStart[1])
+				.attr("x2", AnnotatedByAreaTool.end[0])
+				.attr("y2", AnnotatedByAreaTool.end[1])
+				.attr("class", "annotation-line");
+			*/
+			var label = annotation.append("g").attr("pointer-events", "visiblePainted")
+							.attr("font-size", "10px");
 	
 			var foreignObject = label.append("foreignObject").attr("x",AnnotatedByAreaTool.end[0])
 									.attr("y",AnnotatedByAreaTool.end[1])
 									.attr("width", "120px").attr("height", "45px");
 			var div = foreignObject.append("xhtml:div")
-						.text("label" + numAnno);
+						.text("label" + numAnno)
+						.attr("font-size", "10px");
 			var divWidth = div.style("width");
 			var divHeight = div.style("height");
 			/*var span = div.append("xhtml:span").attr("class", "close-btn");
@@ -2167,7 +2182,7 @@ var Toolbox = {
 
 	// Uninstall old tool
 		if (this.currTool != null) this.currTool.uninstall();
-
+//alert(this.currTool)
 	// Install new tool
 		tool.install();
 
@@ -2175,6 +2190,7 @@ var Toolbox = {
 		this.currTool = tool;
 		this.dock.selectAll(".button").attr("style", "fill: white;");
 		this.dock.selectAll("#" + tool.name).attr("style", "fill: khaki;");
+		//alert("CDSKL")
     },
 
   	select: function(SelectType, polygon, inclusive) {

@@ -1,3 +1,16 @@
+var canvas;
+		window.onload = function() {
+		canvas = document.createElement('canvas');
+         canvas.width = 1400;
+         canvas.height = 700;
+         document.body.appendChild(canvas)
+			//canvas = document.getElementById("canvas");
+			//svg = document.getElementById("svg");
+			//alert(canvas)
+			PixelCanvas.init(canvas);
+		}
+
+
 
 if ( typeof Object.create !== 'function') {
 
@@ -74,6 +87,11 @@ $('#page1').live('pageinit', function() {
 	var categoryList = ['Mexican', 'Vegetarian', 'Breakfast & Brunch', 'American', 'Asian', 'Italian', 'Hotels & Travel', 'Arts & Entertainment', 'Nightlife', 'etc'];
 
 	var drawspace = null;
+
+	// json variables
+	var MovieStarMap;
+	var UserStarMap;
+
 
 	//alert(panel1)
 	//alert(aa)
@@ -695,7 +713,7 @@ $('#page1').live('pageinit', function() {
 
 		var mySelectionGroup, myQueryGroup, xSelect, ySelect, rSelect, xQuery, yQuery, rQuery;
 
-		var transx, transy, scalx, scaly;
+		var transx, transy, scalxy, transx2, transy2, scalxy2;
 		
 		if (space === "movie") {
 			mySelectionGroup = svgMovieSelectionGroup;
@@ -708,12 +726,19 @@ $('#page1').live('pageinit', function() {
 			yQuery = yValueUser;
 			rQuery = rUserScale;
 			
-			transx = PanZoomTool.zoomMovieTranslate[0];
-			transy = PanZoomTool.zoomMovieTranslate[1];
+			transx = PanZoomTool.zoomUserTranslate[0];
+			transy = PanZoomTool.zoomUserTranslate[1];
+			scalxy = PanZoomTool.zoomUserScale;
+			
+			transx2 = PanZoomTool.zoomMovieTranslate[0];
+			transy2 = PanZoomTool.zoomMovieTranslate[1];
+			scalxy2 = PanZoomTool.zoomMovieScale;			
+			/*
 			if (~isMovieSelected){
 				transx=0;
 				transy=0;
-			}
+				scalxy=1;
+			}*/
 			
 
 		} else if (space === 'user') {
@@ -728,12 +753,19 @@ $('#page1').live('pageinit', function() {
 			yQuery = yValue;
 			rQuery = rMovieScale;
 			
-			transx = PanZoomTool.zoomUserTranslate[0];
-			transy = PanZoomTool.zoomUserTranslate[1];			
+			transx = PanZoomTool.zoomMovieTranslate[0];
+			transy = PanZoomTool.zoomMovieTranslate[1];
+			scalxy = PanZoomTool.zoomMovieScale;	
+			
+			transx2 = PanZoomTool.zoomUserTranslate[0];
+			transy2 = PanZoomTool.zoomUserTranslate[1];
+			scalxy2 = PanZoomTool.zoomUserScale;			
+			/*
 			if (~isMovieSelected){
 				transx=0;
 				transy=0;
-			}
+				scalxy=1;
+			}*/
 		}
 
 		//Selection Space Halo
@@ -770,9 +802,16 @@ $('#page1').live('pageinit', function() {
 					
 					return rSelect(+d.numReview);
 				}).attr("fill", color).attr("stroke", color).classed("selectedCircle", true)
+				.attr("opacity", "0.5")
+				.attr("stroke-width", "5")
+				.attr("stroke-opacity","0.5")
+				//.attr("style","opacity: 0.5; stroke-width: 5; stroke-opacity: 0.5")
+				//.attr("transform","translate(" + ((transx)/PanZoomTool.zoomMovieScale)
+				//+ "," + (transy/PanZoomTool.zoomMovieScale) + ")")
+
+				//.attr("transform","translate(" + ((transx2))
+				//	+ "," + (transy2) + ")scale("+scalxy2+")")
 				
-				//.attr("transform","translate("+PanZoomTool.zoomMovieTranslate +")")
-				//Exit Remove
 				selectionCircle.exit().remove();
 
 			});
@@ -784,7 +823,6 @@ $('#page1').live('pageinit', function() {
 
 		//Query Space Halo
 		//Bind
-
 		if ((myQueryGroup.selectAll(".queryG")[0].length !== 0 ) || (mySelectionState.querySetsList.length !== 0 )) {
 
 			var queryEntity = myQueryGroup.selectAll(".queryG").data(mySelectionState.querySetsList, function(d) {
@@ -825,6 +863,9 @@ $('#page1').live('pageinit', function() {
 					//return 1/k;
 					return rQuery(+d.numReview);
 				}).attr("fill", color).attr("stroke", color).classed("selectedCircle", true)
+				.attr("opacity", "0.5")
+				.attr("stroke-width", "5")
+				.attr("stroke-opacity","0.5")
 				/*.attr("transform", function(d){
 					return "translate("+(PanZoomTool.zoomMovieTranslate[0]/PanZoomTool.zoomMovieScale)
 					 + "," + (PanZoomTool.zoomMovieTranslate[1]/PanZoomTool.zoomMovieScale) + ")";
@@ -832,8 +873,14 @@ $('#page1').live('pageinit', function() {
 					//return "translate("+(xQuery(d)/PanZoomTool.zoomMovieScale)
 					// +","+(yQuery(d)/PanZoomTool.zoomMovieScale)+ ")"
 				})*/
-				.attr("transform","translate(" + ((transx)/PanZoomTool.zoomMovieScale)
-				+ "," + (transy/PanZoomTool.zoomMovieScale) + ")")
+				//.attr("transform","translate(" + ((transx))
+				//+ "," + (transy) + ")scale("+scalxy+")")
+				.attr("transform","translate(" + ((1*transx))
+				+ "," + (1*transy) + ")scale("+scalxy+")")
+
+								
+				//.attr("transform","translate(" + ((transx)/PanZoomTool.zoomMovieScale)
+				//+ "," + (transy/PanZoomTool.zoomMovieScale) + ")")
 				
 				selectionCircle.exit().remove();
 
@@ -843,6 +890,7 @@ $('#page1').live('pageinit', function() {
 			queryEntity.exit().remove();
 
 		}
+
 
 		updateContour(space, mySelectionState);
 
@@ -1209,6 +1257,9 @@ $('#page1').live('pageinit', function() {
 
 	svgMovie.append("svg:g").attr("class", "y axis").attr("transform", "translate(" + margin + ",0)").call(yAxis);
 
+	svgMovie.selectAll("line").attr("fill","none")
+	.attr("stroke","black")
+
 	d3.csv("data/business_word.csv", function(ratingsCSV) {
 
 		ratings = ratingsCSV;
@@ -1248,7 +1299,10 @@ $('#page1').live('pageinit', function() {
 			return rMovieScale(+d.numReview);
 		}).attr("fill", function(d) {
 			return fillMovieScale(+d.avgReview);
-		});
+		})
+		.attr("opacity", "0.5")
+		.attr("stroke-width", "5")
+		.attr("stroke-opacity","0.5");
 
 		$('.movieCircle').tipsy({
 			gravity : 'w',
@@ -1272,12 +1326,17 @@ $('#page1').live('pageinit', function() {
 
 	var yAxisUser = d3.svg.axis().scale(yScaleUser).orient("left").ticks(5);
 
+	//var scaleticks = d3.select("tick major");
+
 	var zoomUser = d3.behavior.zoom().x(xScaleUser).y(yScaleUser).on("zoom", zoomedUser);
 
 	PanZoomTool.zoomUser = zoomUser;
 	PanZoomTool.nozoomUser = d3.behavior.zoom().x(xScaleUser).y(yScaleUser).on("zoom", null);
 
 	var svgUser = d3.select("#userCanvas").append("svg").attr("height", h).attr("viewBox", "0 0 " + w + " " + h).attr("title", "User Space").attr("transform", "translate(" + margin + "," + margin + ")").append("svg:g");
+	
+	//svgUser.select(".x.axis").attr("stroke","black")
+	
 
 	var clip = svgUser.append("defs").append("svg:clipPath").attr("id", "userClip").append("svg:rect").attr("id", "clip-rect").attr("x", margin).attr("y", margin).attr("width", w - 2 * margin).attr("height", h - 2 * margin);
 
@@ -1351,26 +1410,30 @@ $('#page1').live('pageinit', function() {
 
 		PanZoomTool.zoomMovieScale = d3.event.scale;
 		PanZoomTool.zoomMovieTranslate = d3.event.translate;
-
-		svgMovieContourGroup.attr("transform", "scale(" + d3.event.scale + ")");
-
-
+		//svgMovieContourGroup.attr("transform", "scale(" + d3.event.scale + ")");
 		//svgMovieSelectionGroup.attr("transform", "scale(" + d3.event.scale + ")");
 		//svgMovieContourGroup.attr("transform", "scale(" + PanZoomTool.zoomMovieScale/2 + ")");
 		//svgMovieSelectionGroup.attr("transform", "scale(" + PanZoomTool.zoomMovieScale/2 + ")");		
 
 		//movieSelectionSVGgroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")")
 
+		for (i=0;i<AnnotatedByAreaTool.blasso.length;i++){
+			AnnotatedByAreaTool.blasso[i][0][0].setAttributeNS(null,
+				"transform", "translate(" + d3.event.translate + "),scale(" + d3.event.scale + ")");
+		}
+		var Lines = document.getElementsByClassName("annotation-line")
+		for (i=0;i<Lines.length;i++){
+			Lines[i].setAttributeNS(null,
+				"transform", "translate(" + d3.event.translate + "),scale(" + d3.event.scale + ")");
+		} 
+
 		svgMovieGroup.attr("transform", "translate(" + d3.event.translate + "),scale(" + d3.event.scale + ")");
 		svgMovie.select(".x.axis").call(xAxis);
 		svgMovie.select(".y.axis").call(yAxis);
 		
-		
-//alert("hello movie")
 
 		var tool = d3.select("#legend").selectAll("g")
-		//alert(tool)
-		
+
 		var det = d3.mouse(tool[0][0])
 		
 		if (det[0]<0){
@@ -1503,16 +1566,22 @@ $('#page1').live('pageinit', function() {
 		updateDisplay('user', selectionStatesMovie);
 
 	}
-
+	
+		var data_2D = null;
+		var SumContour = null;	
 	function updateContour(Space, SelectionStates) {
-
+		data_2D = null;
+		SumContour = null;
 			var mySelectionStates = SelectionStates;
-
+		numLevelForContour = numLevelForContour;
 		if (Space === 'movie') {
 
 			myContourGroup = svgMovieContourGroup;
 			myX = xValue;
 			myY = yValue;
+
+//			myX = PanZoomTool.zoomMovieTranslate[0]/PanZoomTool.zoomMovieScale;
+//			myY = PanZoomTool.zoomMovieTranslate[1]/PanZoomTool.zoomMovieScale;
 
 			myXScale = x;
 			myYScale = y;
@@ -1602,7 +1671,18 @@ $('#page1').live('pageinit', function() {
 			}
 
 			var data2D = science.stats.kde2D(tempDataX, tempDataY, tempDataZ, XCoord, YCoord, XStep / bandwidth, YStep / bandwidth);
+			if (data_2D == null){
+				data_2D = data2D;
 
+			} else{
+				for (var i=0;i<data_2D.length;i++){
+					for (var j=0;j<data_2D.length;j++){
+						data_2D[i][j] = data_2D[i][j] + data2D[i][j];
+					}
+				}
+				
+			}
+			
 			var minTemp = d3.min(data2D, function(d) {
 				return d3.min(d);
 			});
@@ -1625,7 +1705,7 @@ $('#page1').live('pageinit', function() {
 			return data2D;
 
 		});
-
+		/*
 		selectedData2D.map(function(data2D, i) {
 
 			var c = new Conrec(), zs = d3.range(min, max, (max - min) / numLevelForContour);
@@ -1633,6 +1713,24 @@ $('#page1').live('pageinit', function() {
 			c.contour(data2D, 0, XCoord.length - 1, 0, YCoord.length - 1, XCoord, YCoord, zs.length, zs);
 
 			mySelectionStates.querySetsList[i].contourList = c.contourList();
+
+		}); */
+		
+		selectedData2D.map(function(data_2D, i) {
+
+			var c = new Conrec(), zs = d3.range(min, max, (max - min) / numLevelForContour);
+
+			c.contour(data_2D, 0, XCoord.length - 1, 0, YCoord.length - 1, XCoord, YCoord, zs.length, zs);
+			var l = numLevelForContour;
+			
+			while (c.contourList().length <= 5 && l < 100){
+				l = l *2;
+				var c = new Conrec(), zs = d3.range(min, max, (max - min) / (l));
+
+				c.contour(data_2D, 0, XCoord.length - 1, 0, YCoord.length - 1, XCoord, YCoord, zs.length, zs);				
+			}
+			
+			SumContour = c.contourList();
 
 		});
 
@@ -1642,34 +1740,89 @@ $('#page1').live('pageinit', function() {
 		var contourGroup = myContourGroup.selectAll("g").data(mySelectionStates.querySetsList, function(d) {
 			return d.assignedClass;
 		});
+		
+		//var contourPath = myContourGroup.append("g")
+		
+		//contourPath.enter().append("g");
 
 		contourGroup.enter().append("g");
+		/*
+		var transx, transy; 
+		if (Space == 'user'){
+			//Scalexy = PanZoomTool.zoomMovieScale;
 
-		contourGroup.each(function(d, i) {
-
-			var f = d.assignedClass;
-
-			var paths = d3.select(this).selectAll("path").data(d.contourList, function(d) {
-				return d.level;
-			});
-
-			paths.enter().append("path");
-
-			paths.style("fill", function(d) {
-
-				return colourCategory[f](d.level);
-			}).transition().delay(200).duration(300).attr("d", d3.svg.line().x(function(d) {
+			transx = PanZoomTool.zoomUserTranslate[0];
+			transy = PanZoomTool.zoomUserTranslate[1];
+		} else {
+			transx = PanZoomTool.zoomMovieTranslate[0];
+			transy = PanZoomTool.zoomMovieTranslate[1];
+		}*/
+		
+		/////////////////////////
+		// Doug's Original Code
+		////////////////////////
+		
+		/*var contour_paths = myContourGroup.append("g")//select(contourGroup).append("path").data(SumContour, function(d){
+			return d.level;
+		})*/
+		
+		//var contour_Paths = contourPath.selectAll("path").data(SumContour, function(d){
+			
+		/*	
+		var contour_Paths = d3.select(this).selectAll("path").data(SumContour, function(d){	
+			return d.level;
+		})
+		
+		contour_Paths.enter().append("path")
+		contour_Paths.style("fill",function(d){
+			return colourCategory[0](d.level);
+					}).transition().delay(200).duration(300).attr("d", d3.svg.line().x(function(d) {
 				return +(d.x);
+				//return (transx/PanZoomTool.zoomMovieScale);
 			}).y(function(d) {
 				return +(d.y);
-			})).attr("fill-opacity", 0.01).transition().duration(300).attr("fill-opacity", 0.8);
+				//return (transy/PanZoomTool.zoomMovieScale);
+			})).attr("fill-opacity", 0.01).transition().duration(300).attr("fill-opacity", 0.8)
+			*/
+		var k = 0;	
+		contourGroup.each(function(d, i) {
+			//if (k == 0){
+			var f = d.assignedClass;
 
+			var paths = d3.select(this).selectAll("path").data(SumContour, function(d) {
+				return d.level;
+			});
+			
+			/*var paths = d3.select(this).selectAll("path").data(d.contourList, function(d) {
+				return d.level;
+			});*/
+			paths.enter().append("path")
+			//.attr("transform","translate("+ (transx/PanZoomTool.zoomMovieScale) + "," + (transy/PanZoomTool.zoomMovieScale) + ")");;
+
+			paths.style("fill", function(d) {
+				return colourCategory[8](d.level);
+				//return colourCategory[f](d.level);
+			}).transition().delay(200).duration(300).attr("d", d3.svg.line().x(function(d) {
+				return +(d.x);
+				//return (transx/PanZoomTool.zoomMovieScale);
+			}).y(function(d) {
+				return +(d.y);
+				//return (transy/PanZoomTool.zoomMovieScale);
+			})).attr("fill-opacity", 0.01).transition().duration(300).attr("fill-opacity", 0.8)
+			.attr("opacity","0.5")
+			.attr("stroke","black")
+
+			//.attr("transform","translate("+ (transx) + "," + (transy) + ")");
+			
+			k++;
 			paths.exit().remove();
-
+			//}
 		});
-
+		
+		
 		contourGroup.exit().remove();
-
+		
+		
 	}
 
 	$(function() {
@@ -2245,8 +2398,72 @@ $('#page1').live('pageinit', function() {
 	});
 
 	d3.select("#saveas").on("click", writeDownloadLink);
+	
+	d3.select("#savejson").on("click", SaveAsJson);
+		function SaveAsJson() {
+		//alert("1")
+		var test1 = document.getElementById("IDsvgMovie")
+
+		};
+	d3.select("#loadjson").on("click", LoadJson);
+		function LoadJson() {
+		//alert("1")
+		var test1 = document.getElementById("IDsvgMovie")
+
+		};	
+///////////////////
+///////////////////
+//////////////////
+
+		function export_img(data_url) {
+			$("#export_img").attr("src", data_url);
+		}
+		
+		function export_window(data_url) {
+			window.open(data_url);
+		}
+		
+		function break_now(klass) {
+			// TODO: efekti
+			$("." + klass).addClass("broken");
+		}
+
+		function will_break(klass) {
+			// TODO: efekti
+			$("." + klass).addClass("will_break_canvas");
+			$("." + klass).each(function(a) {
+				this.href += " break_now('will_read_canvas');";
+			})
+		}
+
 
 	function writeDownloadLink() {
+		//alert("1")
+		var test1 = document.getElementById("IDsvgMovie")
+		//alert(SVGToCanvas)
+		//alert(canvas)
+		
+		//svgMovie.selectAll("path")[0][0].setAttributeNS(null,"display","none")
+		//svgMovie.selectAll("path")[0][1].setAttributeNS(null,"display","none")
+		var L = d3.selectAll("path")[0].length;
+		d3.selectAll("path")[0][L-1].setAttributeNS(null,"fill","none")
+		d3.selectAll("path")[0][L-2].setAttributeNS(null,"fill","none")
+		d3.selectAll("path")[0][L-3].setAttributeNS(null,"fill","none")
+		d3.selectAll("path")[0][L-4].setAttributeNS(null,"fill","none")
+
+		//d3.selectAll("path").remove()
+		var svg = svgMovie;
+		SVGToCanvas.convertCanvg(svgMovie, canvas)
+		//SVGToCanvas.exportPNGcanvg(svgMovie, export_img)
+		//SVGToCanvas.exportSVG(svgMovie,export_window);
+		//SVGToCanvas.exportSVG(svgMovie, export_img)
+		//SVGToCanvas.exportPNGcanvg(svgMovie, export_img)
+		
+		//SVGToCanvas.exportPNGserver(svgMovie, export_img)
+		//alert("3")
+		//svgMovie.selectAll("path")[0][0].setAttributeNS(null,"display","inline")
+		//svgMovie.selectAll("path")[0][1].setAttributeNS(null,"display","inline")
+		
 		var html = d3.select("svg").attr("title", "test2").attr("version", 1.1).attr("xmlns", "http://www.w3.org/2000/svg").node().parentNode.innerHTML;
 
 		d3.select("body").append("div").attr("id", "download").style("top", event.clientY + 20 + "px").style("left", event.clientX + "px").html("Right-click on this preview and choose Save as<br />Left-Click to dismiss<br />").append("img").attr("src", "data:image/svg+xml;base64," + btoa(html));

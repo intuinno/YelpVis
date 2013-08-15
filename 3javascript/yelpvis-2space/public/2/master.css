@@ -1,0 +1,49 @@
+body { margin-right: 1em; }
+	 
+/* 2010 demo list */
+#demolist {
+	margin-right: 2em;
+	/* this will fix the background-colors flooding over floats */
+	overflow: hidden;
+	clear: left;
+}
+
+/* main vs. area for svg and canvas */
+svg, canvas { border: 1px solid silver; }
+#svgarea, #canvasarea {
+	float: right;
+	clear: right;
+	margin-left: 2em;
+}
+
+/* for the smaller demo.xhtml */
+#svgarea_flow, #canvasarea_flow {
+	float: left;
+	margin-left: 2em;
+}
+
+/* toolbars */
+.toolbar { height: 1.5em; }
+.toolbar a { margin-right: 1em; }
+
+/* legacy */
+.tool { float: left; margin-right: 1em; }
+.color { float: left; width: 2em; height: 2em; }
+.brush { float: left; background: black; margin-right: 1em; }
+
+/* 2010 mind game */
+.might_break_canvas,
+.might_break_canvas_legend { background-color: #fed; }
+.will_break_canvas { background-color: orange; }
+.broken { background-color: silver; }
+
+/* list numbering to match google docs */
+ol { list-style-type: decimal; }
+ol ol { list-style-type: lower-alpha; }
+ol ol ol { list-style-type: lower-roman; }
+ol ol ol ol { list-style-type: decimal; }
+
+/* img for exporting data urls to */
+#export_img {
+	border: solid silver thick;
+}
