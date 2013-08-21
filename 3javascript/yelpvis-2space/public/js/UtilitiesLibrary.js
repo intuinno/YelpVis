@@ -407,7 +407,8 @@ function CircleLineIntersection(points,circle){
 }
 
 function CircleEllipseIntersection(points,circle){
-
+ //var translate = transform[0];
+ //var scale = transofrm[1];
  var vector_points=[];
  var ecx=points[0];
  var ecy=points[1];
@@ -418,8 +419,8 @@ function CircleEllipseIntersection(points,circle){
  var r=circle.getAttributeNS(null,"r");
  var cc = new Point2D(cx,cy);
  if (cx != null && cy != null && r != null){
-  cx = parseFloat(cx);
-  cy = parseFloat(cy);
+  cx = parseFloat(cx)//+translate[0];
+  cy = parseFloat(cy)//+translate[1];
   var ec = new Point2D(ecx,ecy);
   if (Math.pow((cx-ecx)/rx,2) + Math.pow((cy-ecy)/ry,2) <= 1){
    return 1;

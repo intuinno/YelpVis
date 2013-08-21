@@ -1168,10 +1168,18 @@ var PanZoomTool = {
     		PanZoomTool.nozoomUser = PanZoomTool.zoomUser;
     	}
     	PanZoomTool.zoomMovie = [];
-    	PanZoomTool.zoomUser = [];*/    	
+    	PanZoomTool.zoomUser = [];*/  
+    	this.panel1.on("mousedown", null);	
+		this.panel2.on("mousedown", null);		
+		
+		this.panel1.on("mousemove", null);	
+		this.panel2.on("mousemove", null);		
+		
+		this.panel1.on("mouseup", null);	
+		this.panel2.on("mouseup", null);
     	PanZoomTool.panel1.call(PanZoomTool.nozoomMovie);
     	PanZoomTool.panel2.call(PanZoomTool.nozoomUser);
-    	
+	    	
 
     	
     	//alert(this.scale)
@@ -1490,6 +1498,9 @@ var AnnotatedByAreaTool = {
     dragging: 0,
     points: [],
     blasso: [],
+    pathArray: [],
+    translate: [],
+    scale: [],
     areaarray: [],
     count: 0,
     strpoints: [],
@@ -1501,6 +1512,11 @@ var AnnotatedByAreaTool = {
 	panel1: null,
 	panel2: null,
 	drawspace: null,
+	direction: [],
+	translate: [],
+	scale: [],
+	lines: [],
+	text: [],
 	
     select: function() {
 		console.log("select: " + AnnotatedByAreaTool.name);
@@ -1565,16 +1581,23 @@ var AnnotatedByAreaTool = {
     mousedown: function() {
 	// Prevent Browser's default behaviour
 		d3.event.preventDefault();
-		
+
+		//var movieSVGGroup = d3.selectAll(".movieSVGGroup");//document.getElementsByClassName("movieSVGGroup")[0];
+		//var userSVGGroup = d3.selectAll(".userSVGGroup");//document.getElementsByClassName("userSVGGroup")[0];
 		var tool = d3.select("#legend").selectAll("g")
 		var det = d3.mouse(tool[0][0])
+		
 		if (det[0]<0){
+			//AnnotatedByAreaTool.drawspace = movieSVGGroup;//AnnotatedByAreaTool.panel1;
 			AnnotatedByAreaTool.drawspace = AnnotatedByAreaTool.panel1;
+			//var annotation = AnnotatedByAreaTool.drawspace//VisDock.panel1.annotation.append("g");
 			var annotation = VisDock.panel1.annotation.append("g");
 			//alert(annotation)
 		}
 		else{
+			//AnnotatedByAreaTool.drawspace = userSVGGroup;//AnnotatedByAreaTool.panel2;
 			AnnotatedByAreaTool.drawspace = AnnotatedByAreaTool.panel2;
+			//var annotation = AnnotatedByAreaTool.drawspace;//VisDock.panel2.annotation.append("g");
 			var annotation = VisDock.panel2.annotation.append("g");
 			//alert(annotation)
 		//	alert("meh2")
@@ -1612,6 +1635,25 @@ var AnnotatedByAreaTool = {
 	    	var N = AnnotatedByAreaTool.blasso.length-1; 
 	    	var points = AnnotatedByAreaTool.getPoints();
 	    	AnnotatedByAreaTool.blasso[N].attr("points",points);
+	    	
+			var det = d3.mouse(tool[0][0])
+		
+			if (det[0]<0){
+				AnnotatedByAreaTool.direction[N] = 'movie'
+	    		AnnotatedByAreaTool.translate[N] = PanZoomTool.zoomMovieTranslate;
+	    		AnnotatedByAreaTool.scale[N] = PanZoomTool.zoomMovieScale;			
+			} else{
+				AnnotatedByAreaTool.direction[N] = 'user'
+	    		AnnotatedByAreaTool.translate[N] = PanZoomTool.zoomUserTranslate;
+	    		AnnotatedByAreaTool.scale[N] = PanZoomTool.zoomUserScale;					
+			}	    	
+   	
+	    	//AnnotatedByAreaTool.direction =
+	    	//if (isMovieSelected){
+
+	    	//} else {
+    		
+	    	//}
 			
 			var maxLeft = 0, maxRight = 0, maxUp = 0, maxBottom = 0;
 			for (var i=0;i<AnnotatedByAreaTool.segments;i++) {
@@ -1661,6 +1703,9 @@ var AnnotatedByAreaTool = {
 				.attr("stroke-width","2px")
 				.attr("stroke","red")
 				.attr("class", "annotation-line");
+				
+			AnnotatedByAreaTool.lines.push([AnnotatedByAreaTool.pointStart[0],AnnotatedByAreaTool.pointStart[1]
+				,AnnotatedByAreaTool.end[0],AnnotatedByAreaTool.end[1]]);	
 			//alert(AnnotatedByAreaTool.drawspace)
 			
 			/*AnnotatedByAreaTool.drawspace.append("line")
@@ -1679,6 +1724,7 @@ var AnnotatedByAreaTool = {
 			var div = foreignObject.append("xhtml:div")
 						.text("label" + numAnno)
 						.attr("font-size", "10px");
+			AnnotatedByAreaTool.text.push("label" + numAnno)
 			var divWidth = div.style("width");
 			var divHeight = div.style("height");
 			/*var span = div.append("xhtml:span").attr("class", "close-btn");
@@ -2358,6 +2404,18 @@ var QueryManager = {
     remove: 0,
     extra: 0,
     removed: [],
+    reset: function(){
+    	this.removed = [];
+    	this.remove = 0;
+    	this.extra = 0;
+    	this.relative = 0;
+    	this.trashtoggle = 0;
+    	this.uniontoggle = 0;
+    	this.commontoggle = 0;
+    	this.xortoggle = 0;
+    	numAnno = 0;
+    },
+
     init: function(svg, width, height) {
 	// Create a group
 	this.dock = svg.append("g")
@@ -4003,6 +4061,7 @@ var VisDock = {
     svg: null,
     selectionHandler: null,
     captured: [],
+    layers: [],
     selectionHandler:null,
     SelectShape: "polygon",
     color: ["red","magenta","orange","yellow","OliveDrab","green","DeepSkyBlue","SlateBlue","cyan","dodgerblue","lightseagreen"],

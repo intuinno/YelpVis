@@ -10,7 +10,29 @@ var canvas;
 			PixelCanvas.init(canvas);
 		}
 
-
+	//var json_class = null;
+var json_class = {
+    num: 0,
+    querySpace: 'movie',
+    isMovie: true,
+    isUnion: false,
+    UserXvar: 'avgReview',
+    UserYvar: 'sim1',
+    MovieXvar: 'numReview',
+    MovieYvar: 'sim2',
+    zoomMovieScale: 0.7,
+    zoomMovieTranslate: [0,0],
+    zoomUserScale: 2,
+    zoomUserTranslate: [0,0],  
+    selectedObject: [],
+    queryObject: [],
+    annotated: [],
+    annotatedlasso: [],
+    annotationlines: [],
+    annotationtext: [],
+    annotatedpoints: [],
+    direction: []
+}
 
 if ( typeof Object.create !== 'function') {
 
@@ -91,7 +113,7 @@ $('#page1').live('pageinit', function() {
 	// json variables
 	var MovieStarMap;
 	var UserStarMap;
-
+	var isPanZoom = 0;
 
 	//alert(panel1)
 	//alert(aa)
@@ -324,20 +346,43 @@ $('#page1').live('pageinit', function() {
 
 			if (isMovieSelected) {
 				selectionStatesMovie.add(tempQuerySet);
-
-				x.domain(xDomainExtent);
-				y.domain(yDomainExtent);
-
+				//svgMovieGroup.attr('transform','translate('+PanZoomTool.zoomMovieTranslate+")scale("+PanZoomTool.zoomMovieScale+")")
+				//svgMovieSelectionGroup.attr('transform','translate(0,0)scale(1)')
+				//alert("here")
+				
+				
+				updateDisplay('movie', selectionStatesUser);
+				updateDisplay('user', selectionStatesMovie);
+				if (PanZoomTool.zoomUserScale != 1){
+					var correction = document.getElementsByClassName("userSelectionSVGGroup");
+					//correction[0].setAttributeNS(null,"transform","translate(0,0)scale(1)")
+				}					
+				//updateDisplay('user', selectionStatesMovie);
+				
 			} else {
 				selectionStatesUser.add(tempQuerySet);
 
-				updateDisplay('movie', selectionStatesUser);
+
 				updateDisplay('user', selectionStatesMovie);
+				updateDisplay('movie', selectionStatesUser);
+				if (PanZoomTool.zoomMovieScale != 1){
+					var correction = document.getElementsByClassName("movieSelectionSVGGroup");
+					//correction[0].setAttributeNS(null,"transform","translate(0,0)scale(1)")
+				}				
+				//updateDisplay('movie', selectionStatesUser);
+				
+
 			}
 
-			updateDisplay('user', selectionStatesMovie);
-			updateDisplay('movie', selectionStatesUser);
+			//updateDisplay('user', selectionStatesMovie);
+			//updateDisplay('movie', selectionStatesUser);
+			
+			SelectedData[num] = VisDock.captured[num];
+			VisDock.layers[num] = hits;
+			
 
+			//var correction2 = document.getElementsByClassName("movieSelectionSVGGroup");
+			//correction2[0].setAttributeNS(null,"transform","translate(0,0)scale(1)")
 			return hits;
 			//	updateDisplay('movie', selectionStatesMovie);;
 
@@ -347,6 +392,8 @@ $('#page1').live('pageinit', function() {
 
 			//var bb = d3.selectAll(".userCircle");
 			//isMovieSelected = 0;
+			var translate;
+			var scale;
 			var tool = d3.select("#legend").selectAll("g")
 			var det = d3.mouse(tool[0][0])
 			if (det[0] < 0) {
@@ -365,8 +412,10 @@ $('#page1').live('pageinit', function() {
 
 				drawspace = panel1;
 				isMovieSelected = 1;
+				translate = PanZoomTool.zoomMovieTranslate;
+				scale = PanZoomTool.zoomMovieScale;				
 				var aa = d3.selectAll(".movieCircle");
-
+				
 			} else {
 
 				if (isMovieSelected == 1) {
@@ -382,10 +431,15 @@ $('#page1').live('pageinit', function() {
 
 				drawspace = panel2;
 				isMovieSelected = 0;
+				translate = PanZoomTool.zoomUserTranslate;
+				scale = PanZoomTool.zoomUserScale;					
 				var aa = d3.selectAll(".userCircle");
 				//	alert("meh2")
 			}
-
+			points[0] = (points[0]/scale - translate[0]/scale) *1;
+			points[1] = (points[1]/scale - translate[1]/scale) *1;
+			points[2] = points[2] / scale;
+			points[3] = points[3] / scale;
 			var nElements = aa[0].length;
 			//getNumberOfCircles();
 
@@ -403,7 +457,7 @@ $('#page1').live('pageinit', function() {
 
 				captured = 0;
 
-				captured = CircleEllipseIntersection(points, aa[0][i]);
+				captured = CircleEllipseIntersection(points, aa[0][i])//, transform);
 
 				if (captured == 1 && CheckNodeConditions(aa[0][i], "class", "star")) {
 
@@ -502,15 +556,34 @@ $('#page1').live('pageinit', function() {
 			if (isMovieSelected) {
 				selectionStatesMovie.add(tempQuerySet);
 
-				//x.domain(xDomainExtent);
-				//y.domain(yDomainExtent);
+				x.domain(xDomainExtent);
+				y.domain(yDomainExtent);
+				//updateDisplay('movie', selectionStatesUser);
 
+				var correction = document.getElementsByClassName("movieSelectionSVGGroup")[0]
+				correction.setAttributeNS(null,"transform","translate("+
+				PanZoomTool.zoomMovieTranslate+")scale("+PanZoomTool.zoomMovieScale+")")
 				updateDisplay('user', selectionStatesMovie);
+				updateDisplay('movie', selectionStatesUser);				
 			} else {
 				selectionStatesUser.add(tempQuerySet);
-				updateDisplay('movie', selectionStatesUser);
-			}
+				
+				x.domain(xDomainExtent);
+				y.domain(yDomainExtent);				
+				//updateDisplay('user', selectionStatesMovie);
 
+				var correction = document.getElementsByClassName("userSelectionSVGGroup")[0]
+			
+				//correction.setAttributeNS(null,"transform","translate("+
+				//PanZoomTool.zoomUserTranslate+")scale("+PanZoomTool.zoomUserScale+")")		
+				
+				updateDisplay('movie', selectionStatesUser);
+				//updateDisplay('user', selectionStatesMovie);					
+						
+			}
+			
+			
+			VisDock.layers[num] = hits;
 			return hits;
 			//	updateDisplay('movie', selectionStatesMovie);;
 
@@ -560,6 +633,7 @@ $('#page1').live('pageinit', function() {
 					count++;
 				}
 			}
+			VisDock.layers[num] = hits;
 			return hits;
 		},
 		setColor : function(hits) {
@@ -713,8 +787,21 @@ $('#page1').live('pageinit', function() {
 
 		var mySelectionGroup, myQueryGroup, xSelect, ySelect, rSelect, xQuery, yQuery, rQuery;
 
-		var transx, transy, scalxy, transx2, transy2, scalxy2;
-		
+		var transQx, transQy, scalQxy, transSx, transSy2, scalSxy;
+
+		var tool = d3.select("#legend").selectAll("g")
+
+		var det = d3.mouse(tool[0][0])
+		var isMovie;
+		if (det[0]<0){
+			isMovie=true;
+
+		}
+		else{
+			isMovie=false;
+		}
+
+				
 		if (space === "movie") {
 			mySelectionGroup = svgMovieSelectionGroup;
 			myQueryGroup = svgUserSelectionGroup;
@@ -725,22 +812,34 @@ $('#page1').live('pageinit', function() {
 			xQuery = xValueUser;
 			yQuery = yValueUser;
 			rQuery = rUserScale;
+			//if (isPanZoom == 0){
+								transQx = 0;
+				transQy = 0;
+				transQx = PanZoomTool.zoomUserTranslate[0];
+				transQy = PanZoomTool.zoomUserTranslate[1];
+				scalQxy = PanZoomTool.zoomUserScale;
 			
-			transx = PanZoomTool.zoomUserTranslate[0];
-			transy = PanZoomTool.zoomUserTranslate[1];
-			scalxy = PanZoomTool.zoomUserScale;
-			
-			transx2 = PanZoomTool.zoomMovieTranslate[0];
-			transy2 = PanZoomTool.zoomMovieTranslate[1];
-			scalxy2 = PanZoomTool.zoomMovieScale;			
-			/*
-			if (~isMovieSelected){
-				transx=0;
-				transy=0;
-				scalxy=1;
-			}*/
-			
+				transSx = PanZoomTool.zoomMovieTranslate[0];
+				transSy = PanZoomTool.zoomMovieTranslate[1];
+				//				transSx = 0;
+				//transSy = 0;
+				scalSxy = PanZoomTool.zoomMovieScale;				
+			/*}else {
+				transQx = 0;
+				transQy = 0;
+				scalQxy = 1;
+				
+				transSx = 0;
+				transSy = 0;
+				scalSxy = 1;
+			//}*/
+		/*	
+		svgMovieSelectionGroup.attr("transform","translate(" + ((transSx))
+			+ "," + (transSy) + ")scale("+scalSxy+")")
 
+		svgUserSelectionGroup.attr("transform","translate(" + ((transQx))
+			+ "," + (transQy) + ")scale("+scalQxy+")")
+		*/	
 		} else if (space === 'user') {
 			mySelectionGroup = svgUserSelectionGroup;
 			myQueryGroup = svgMovieSelectionGroup;
@@ -753,20 +852,50 @@ $('#page1').live('pageinit', function() {
 			yQuery = yValue;
 			rQuery = rMovieScale;
 			
-			transx = PanZoomTool.zoomMovieTranslate[0];
-			transy = PanZoomTool.zoomMovieTranslate[1];
-			scalxy = PanZoomTool.zoomMovieScale;	
+			if (isMovieSelected){
+				
+			}
 			
-			transx2 = PanZoomTool.zoomUserTranslate[0];
-			transy2 = PanZoomTool.zoomUserTranslate[1];
-			scalxy2 = PanZoomTool.zoomUserScale;			
-			/*
-			if (~isMovieSelected){
-				transx=0;
-				transy=0;
-				scalxy=1;
-			}*/
+			
+			//if (isPanZoom == 0){
+							transQx = 0;
+				transQy = 0;
+				transQx = PanZoomTool.zoomMovieTranslate[0];
+				transQy = PanZoomTool.zoomMovieTranslate[1];
+				scalQxy = PanZoomTool.zoomMovieScale;	
+					transSx = 0;
+				transSy = 0;		
+				transSx = PanZoomTool.zoomUserTranslate[0];
+				transSy = PanZoomTool.zoomUserTranslate[1];
+				scalSxy = PanZoomTool.zoomUserScale;
+			//}else {
+				//transQx = 0;
+				//transQy = 0;
+				//scalQxy = 1;
+				
+				//transSx = 0;
+				//transSy = 0;
+				//scalSxy = 1;
+			//}	
+		/*	
+		svgMovieSelectionGroup.attr("transform","translate(" + ((transQx))
+			+ "," + (transQy) + ")scale("+scalQxy+")")
+
+		svgUserSelectionGroup.attr("transform","translate(" + ((transSx))
+			+ "," + (transSy) + ")scale("+scalSxy+")")					
+		*/
 		}
+/*
+		svgMovieContourGroup.attr("transform", "translate(" + 
+		PanZoomTool.zoomMovieTranslate + ")scale(" + PanZoomTool.zoomMovieScale  + ")");
+		svgMovieSelectionGroup.attr("transform", "translate(" + 
+		PanZoomTool.zoomMovieTranslate + ")scale(" + PanZoomTool.zoomMovieScale + ")");
+
+		svgUserContourGroup.attr("transform", "translate(" + 
+		PanZoomTool.zoomUserTranslate + ")scale(" + PanZoomTool.zoomUserScale + ")");
+		svgUserSelectionGroup.attr("transform", "translate(" +
+		 PanZoomTool.zoomUserScale + ")scale(" + PanZoomTool.zoomUserScale + ")");*/
+
 
 		//Selection Space Halo
 		//Update + enter
@@ -791,13 +920,13 @@ $('#page1').live('pageinit', function() {
 
 				//Enter Append
 				selectionCircle.enter().append("circle");
-
+				//selectionCircle.attr("transform","translate(0,0)scale(1)")
 				//Enter + Update
 				selectionCircle.attr("cx", function(d) {
 
-					return xSelect(d);
+					return (xSelect(d))//+transSx);
 				}).attr("cy", function(d) {
-					return ySelect(d);
+					return (ySelect(d))//+transSy);
 				}).attr("r", function(d) {
 					
 					return rSelect(+d.numReview);
@@ -805,17 +934,21 @@ $('#page1').live('pageinit', function() {
 				.attr("opacity", "0.5")
 				.attr("stroke-width", "5")
 				.attr("stroke-opacity","0.5")
+				//.attr("transform","scale("+scalSxy+")")
 				//.attr("style","opacity: 0.5; stroke-width: 5; stroke-opacity: 0.5")
 				//.attr("transform","translate(" + ((transx)/PanZoomTool.zoomMovieScale)
 				//+ "," + (transy/PanZoomTool.zoomMovieScale) + ")")
 
-				//.attr("transform","translate(" + ((transx2))
-				//	+ "," + (transy2) + ")scale("+scalxy2+")")
+				//.attr("transform","translate(" + ((transSx))
+				//	+ "," + (transSy) + ")scale("+scalSxy+")")
+				
+				//.attr("transform","translate(" + ((transx))
+				//	+ "," + (transy) + ")")
 				
 				selectionCircle.exit().remove();
 
 			});
-
+			
 			//Exit Remove
 			selectedEntity.exit().remove();
 
@@ -839,19 +972,19 @@ $('#page1').live('pageinit', function() {
 
 				//Bind
 				var selectionCircle = d3.select(this).selectAll("circle").data(d.query);
-
+				
 				//Enter Append
 				selectionCircle.enter().append("circle");
 
 				//Enter + Update
 				selectionCircle.attr("cx", function(d) {
 					//return d.getAttributeNS(null,"cx")
-					return xQuery(d)
+					return (xQuery(d))//+transQx)
 
 					
 					//return xQuery(d);
 				}).attr("cy", function(d) {
-					return yQuery(d)
+					return (yQuery(d))//+transQy)
 									
 					//return yQuery(d)+(PanZoomTool.zoomMovieTranslate[1]/PanZoomTool.zoomMovieScale);
 					
@@ -866,6 +999,7 @@ $('#page1').live('pageinit', function() {
 				.attr("opacity", "0.5")
 				.attr("stroke-width", "5")
 				.attr("stroke-opacity","0.5")
+				//.attr("transform","scale("+scalQxy+")")
 				/*.attr("transform", function(d){
 					return "translate("+(PanZoomTool.zoomMovieTranslate[0]/PanZoomTool.zoomMovieScale)
 					 + "," + (PanZoomTool.zoomMovieTranslate[1]/PanZoomTool.zoomMovieScale) + ")";
@@ -873,10 +1007,11 @@ $('#page1').live('pageinit', function() {
 					//return "translate("+(xQuery(d)/PanZoomTool.zoomMovieScale)
 					// +","+(yQuery(d)/PanZoomTool.zoomMovieScale)+ ")"
 				})*/
-				//.attr("transform","translate(" + ((transx))
-				//+ "," + (transy) + ")scale("+scalxy+")")
-				.attr("transform","translate(" + ((1*transx))
-				+ "," + (1*transy) + ")scale("+scalxy+")")
+				//.attr("transform","translate(" + ((transQx)*scalQxy)
+				//+ "," + (transQy*scalQxy) + ")scale("+scalQxy+")")
+				
+				//.attr("transform","translate(" + ((1*transx))
+				//+ "," + (1*transy) + ")scale("+scalxy+")")
 
 								
 				//.attr("transform","translate(" + ((transx)/PanZoomTool.zoomMovieScale)
@@ -890,10 +1025,14 @@ $('#page1').live('pageinit', function() {
 			queryEntity.exit().remove();
 
 		}
+		updateContour(space, mySelectionState)
+		/*
+				svgMovieSelectionGroup.attr("transform","translate(" + ((0))
+			+ "," + (0) + ")scale("+1+")")
 
-
-		updateContour(space, mySelectionState);
-
+		svgUserSelectionGroup.attr("transform","translate(" + ((0))
+			+ "," + (0) + ")scale("+1+")")		
+		updateContour(space, mySelectionState);*/
 		// updateLegend(space, mySelectionState);
 
 	}
@@ -1260,6 +1399,13 @@ $('#page1').live('pageinit', function() {
 	svgMovie.selectAll("line").attr("fill","none")
 	.attr("stroke","black")
 
+	var UserXvar;
+	var UserYvar;
+	var MovieXvar;
+	var MovieYvar;
+	var SelectedData = [];
+
+
 	d3.csv("data/business_word.csv", function(ratingsCSV) {
 
 		ratings = ratingsCSV;
@@ -1407,30 +1553,52 @@ $('#page1').live('pageinit', function() {
 		//
 		//svgMovieContourGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
 		//svgMovieSelectionGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
-
+		d3.selectAll(".movieSelectionSVGGroup").attr("transform","translate(0,0)scale("+1+")")
 		PanZoomTool.zoomMovieScale = d3.event.scale;
 		PanZoomTool.zoomMovieTranslate = d3.event.translate;
 		//svgMovieContourGroup.attr("transform", "scale(" + d3.event.scale + ")");
 		//svgMovieSelectionGroup.attr("transform", "scale(" + d3.event.scale + ")");
-		//svgMovieContourGroup.attr("transform", "scale(" + PanZoomTool.zoomMovieScale/2 + ")");
-		//svgMovieSelectionGroup.attr("transform", "scale(" + PanZoomTool.zoomMovieScale/2 + ")");		
+		//svgMovieContourGroup.attr("transform", "scale(" + PanZoomTool.zoomMovieScale + ")"
+		//+"translate("+PanZoomTool.zoomMovieTranslate+")")
+		
+		//svgMovieSelectionGroup.attr("transform", "translate("+PanZoomTool.zoomMovieTranslate+")"
+		//+"scale(" + PanZoomTool.zoomMovieScale + ")");		
 
 		//movieSelectionSVGgroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")")
 
 		for (i=0;i<AnnotatedByAreaTool.blasso.length;i++){
+			var Translate = AnnotatedByAreaTool.translate[i];
+			var Translate2 = d3.event.translate;
+			//Translate[0] = Translate[0] + d3.event.translate[0]
+			//Translate[1] = Translate[1] + d3.event.translate[1]
+			var Scale = AnnotatedByAreaTool.scale[i];
+
+			var scale2 = d3.event.scale;
+			Translate[0] = scale2/Scale*Translate[0];
+			Translate[1] = scale2/Scale*Translate[1];			
+			//AnnotatedByAreaTool.blasso[i][0][0].setAttributeNS(null,
+			//	"transform", "translate(" + (1*d3.event.translate[0] + 1*Translate[0]) + "," +
+			//	(1*d3.event.translate[1] + 1*Translate[1]) + ")scale(" + scale2/Scale+ ")");
+
+			//AnnotatedByAreaTool.blasso[i][0][0].setAttributeNS(null,
+			//	"transform", "translate(" + (0) + "," +
+			//	(0) + ")scale(" + 1+ ")");
+				
 			AnnotatedByAreaTool.blasso[i][0][0].setAttributeNS(null,
-				"transform", "translate(" + d3.event.translate + "),scale(" + d3.event.scale + ")");
+				"transform", "translate(" + (Translate2[0]) + "," +
+				(Translate2[1]) + ")scale(" + scale2/Scale+ ")");
+			//AnnotatedByAreaTool.scale[i] = scale2*Scale;				
+			//AnnotatedByAreaTool.scale[i] = d3.event.scale*scale; 
 		}
 		var Lines = document.getElementsByClassName("annotation-line")
 		for (i=0;i<Lines.length;i++){
 			Lines[i].setAttributeNS(null,
-				"transform", "translate(" + d3.event.translate + "),scale(" + d3.event.scale + ")");
+				"transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
 		} 
 
 		svgMovieGroup.attr("transform", "translate(" + d3.event.translate + "),scale(" + d3.event.scale + ")");
 		svgMovie.select(".x.axis").call(xAxis);
 		svgMovie.select(".y.axis").call(yAxis);
-		
 
 		var tool = d3.select("#legend").selectAll("g")
 
@@ -1454,12 +1622,10 @@ $('#page1').live('pageinit', function() {
 			//updateDisplay('user',)
 		}
 		
-		//alert(selectionStatesMovie);
-		//if (~isMovieSelected){
+		isPanZoom = 1;
 		updateDisplay('user', selectionStatesMovie);
-		//}		
-		
 		updateDisplay('movie', selectionStatesUser);
+		isPanZoom = 0;
 		
 	}
 
@@ -1503,18 +1669,18 @@ $('#page1').live('pageinit', function() {
 		//svgMovieSelectionGroup.attr("transform", "scale(" + d3.event.scale + ")");
 
 		//userSelectionSVGgroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")")
-	
+		d3.selectAll(".userSelectionSVGGroup").attr("transform","translate(0,0)scale("+1+")")
 		svgUserGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
 		
 		svgUser.select(".x.axis").call(xAxisUser);
-		svgUser.select(".y.axis").call(yAxisUser);
-		
+		svgUser.select(".y.axis").call(yAxisUser);	
+			
 		var tool = d3.select("#legend").selectAll("g")
 		//alert(tool)
 		var det = d3.mouse(tool[0][0])
 		if (det[0]<0){
-			
 			//updateDisplay('user', selectionStatesMovie);
+			
 			//RectangleTool.drawspace = RectangleTool.panel1;
 			//alert("user2")
 		}
@@ -1525,14 +1691,10 @@ $('#page1').live('pageinit', function() {
 			//alert("movie2")
 		}		
 		
-		//        updateDisplay('movie', selectionStatesUser);
-		//alert(selectionStatesUser);
-		//if (isMovieSelected){
+		isPanZoom = 1;
 		updateDisplay('movie', selectionStatesUser);
-		//}
 		updateDisplay('user', selectionStatesMovie);
-		
-		
+		isPanZoom = 0;		
 	}
 
 /*
@@ -1569,6 +1731,7 @@ $('#page1').live('pageinit', function() {
 	
 		var data_2D = null;
 		var SumContour = null;	
+		
 	function updateContour(Space, SelectionStates) {
 		data_2D = null;
 		SumContour = null;
@@ -2401,14 +2564,251 @@ $('#page1').live('pageinit', function() {
 	
 	d3.select("#savejson").on("click", SaveAsJson);
 		function SaveAsJson() {
-		//alert("1")
-		var test1 = document.getElementById("IDsvgMovie")
+			
+			
+			UserXvar = $('#userXAxisMenu').val();
+			json_class.UserXvar = UserXvar;
+			UserYvar = $('#userYAxisMenu').val();
+			json_class.UserYvar = UserYvar;
+			MovieXvar = $('#movieXAxisMenu').val();
+			json_class.MovieXvar = MovieXvar;
+			MovieYvar = $('#movieYAxisMenu').val();
+			json_class.MovieYvar = MovieYvar;
+
+			json_class.zoomMovieScale = PanZoomTool.zoomMovieScale; 
+			json_class.zoomMovieTranslate = PanZoomTool.zoomMovieTranslate; 
+
+			json_class.zoomUserScale = PanZoomTool.zoomUserScale;
+			json_class.zoomUserTranslate = PanZoomTool.zoomUserTranslate;	
+
+			//json_class.selectedObject = VisDock.layers;
+			//json_class.queryObject = SelectedData;
+
+			//json_class.selectedObject = SelectedData; 
+			//json_class.queryObject = VisDock.layers; 
+		
+			json_class.num = 0;
+			json_class.isUnion = isUnion;
+			
+			if (isMovieSelected) {
+				json_class.querySpace = 'movie';
+				json_class.isMovie = true;
+				for (i=0;i<VisDock.layers.length;i++){
+					json_class.selectedObject[i] = [];
+					for (j=0;j<VisDock.layers[i].length;j++){
+						json_class.selectedObject[i].push(VisDock.layers[i][j].index)
+					}
+				}
+			
+				for (i=0;i<SelectedData.length;i++){
+					json_class.queryObject[i] = [];
+					for (j=0;j<SelectedData[i].length;j++){
+						json_class.queryObject[i].push(SelectedData[i][j].num)
+					}
+				}				
+				
+			} else {
+				json_class.querySpace = 'user';
+				json_class.isMovie = false;
+				
+				for (i=0;i<VisDock.layers.length;i++){
+					json_class.selectedObject[i] = [];
+					for (j=0;j<VisDock.layers[i].length;j++){
+						json_class.selectedObject[i].push(VisDock.layers[i][j].num)
+					}
+				}
+			
+				for (i=0;i<SelectedData.length;i++){
+					json_class.queryObject[i] = [];
+					for (j=0;j<SelectedData[i].length;j++){
+						json_class.queryObject[i].push(SelectedData[i][j].index)
+					}
+				}					
+				
+			}
+			
+			for (i=0;i<AnnotatedByAreaTool.blasso.length;i++){
+				json_class.annotatedlasso[i] = AnnotatedByAreaTool.blasso[i][0][0].getAttributeNS(null,"points");
+				json_class.direction[i] = AnnotatedByAreaTool.direction[i];
+				
+			}
+			
+			for (i=0;i<AnnotatedByAreaTool.lines.length;i++){
+				json_class.annotationlines[i] = AnnotatedByAreaTool.lines[i];
+				json_class.annotationtext[i] = AnnotatedByAreaTool.text[i];
+			}
+			
+		//var test1 = document.getElementById("IDsvgMovie")
 
 		};
+		
 	d3.select("#loadjson").on("click", LoadJson);
 		function LoadJson() {
+			var selected = [];
+			var queried = [];
+			if (json_class != null){
+				
+				selectionStatesMovie = new SelectionStatesSpace();
+				QueryManager.reset();
+				UserXvar = json_class.UserXvar;
+				UserYvar = json_class.UserYvar;
+				MovieXvar = json_class.MovieXvar;
+				MovieYvar = json_class.MovieYvar;
+
+				$('#userXAxisMenu').val(UserXvar)
+				$('#userXAxisMenu').change();
+
+				$('#userYAxisMenu').val(UserYvar)
+				$('#userYAxisMenu').change();
+				
+				$('#movieXAxisMenu').val(MovieXvar)
+				$('#movieXAxisMenu').change();
+				
+				$('#movieYAxisMenu').val(MovieYvar)
+				$('#movieYAxisMenu').change();
+				
+				if (json_class.isMovie){
+					for (i=0;i<json_class.selectedObject.length;i++){
+						selected[i] = [];
+						for (j=0;j<json_class.selectedObject[i].length;j++){
+							selected[i].push(movieData[json_class.selectedObject[i][j]])
+						}
+					}
+					for (i=0;i<json_class.queryObject.length;i++){
+						queried[i] = [];
+						for (j=0;j<json_class.queryObject[i].length;j++){
+							queried[i].push(userData[json_class.queryObject[i][j]])
+						}
+					}
+					
+				} else {
+					for (i=0;i<json_class.selectedObject.length;i++){
+						selected[i] = [];
+						for (j=0;j<json_class.selectedObject[i].length;j++){
+							selected[i].push(userData[json_class.selectedObject[i][j]])
+						}
+					}
+					for (i=0;i<json_class.queryObject.length;i++){
+						queried[i] = [];
+						for (j=0;j<json_class.queryObject[i].length;j++){
+							queried[i].push(movieData[json_class.queryObject[i][j]])
+						}
+					}					
+				}
+
+				
+
+				num = json_class.num;
+				isUnion = json_class.isUnion;
+				isMovieSelected = json_class.isMovie;
+				if (isUnion){
+					for (i = 0;i < json_class.selectedObject.length; i++){
+						var tempQuerySet = new QuerySets(json_class.querySpace, selected[i],
+						 	queried[i], num, 'union', PSmin, PSmax, "",
+					  		$('input[name=contourMode]:checked').val(), isContourOn);						
+						//var tempQuerySet = new QuerySets(json_class.querySpace, json_class.selectedObject[i],
+						// 	json_class.queryObject[i], num, 'union', PSmin, PSmax, "",
+					  	//	$('input[name=contourMode]:checked').val(), isContourOn);
+						//var tempQuerySet = new QuerySets(json_class.querySpace, json_class.queryObject[i],
+						// 	json_class.selectedObject, json_class.num, 'union', PSmin, PSmax, "",
+					  	//	$('input[name=contourMode]:checked').val(), isContourOn);					  		
+						if (isMovieSelected) {
+							selectionStatesMovie.add(tempQuerySet);
+
+							x.domain(xDomainExtent);
+							y.domain(yDomainExtent);
+
+						} else {
+							selectionStatesUser.add(tempQuerySet);
+	
+							x.domain(xDomainExtent);
+							y.domain(yDomainExtent);
+
+						}
+									  		
+						updateDisplay('user', selectionStatesMovie);
+						updateDisplay('movie', selectionStatesUser);					  		
+					  	num++;	
+					  	QueryManager.addQuery();		
+					}
+				}else{
+					for (i = 0;i < json_class.selectedObject.length; i++){
+						var tempQuerySet = new QuerySets(json_class.querySpace, selected[i],
+						 	queried[i], num, 'common', PSmin, PSmax, "",
+					  		$('input[name=contourMode]:checked').val(), isContourOn);
+						//var tempQuerySet = new QuerySets(json_class.querySpace, json_class.selectedObject[i],
+						// 	json_class.queryObject[i], num, 'common', PSmin, PSmax, "",
+					  	//	$('input[name=contourMode]:checked').val(), isContourOn);					  		
+						if (isMovieSelected) {
+							selectionStatesMovie.add(tempQuerySet);
+
+							x.domain(xDomainExtent);
+							y.domain(yDomainExtent);
+
+						} else {
+							selectionStatesUser.add(tempQuerySet);
+	
+							x.domain(xDomainExtent);
+							y.domain(yDomainExtent);
+
+						}
+						updateDisplay('user', selectionStatesMovie);
+						updateDisplay('movie', selectionStatesUser);	
+								
+						num++;		
+						QueryManager.addQuery();									  		
+					}
+					
+
+
+					
+				}
+
+				PanZoomTool.zoomMovieScale = json_class.zoomMovieScale;
+				PanZoomTool.zoomMovieTranslate = json_class.zoomMovieTranslate;
+
+				PanZoomTool.zoomUserScale = json_class.zoomUserScale;
+				PanZoomTool.zoomUserTranslate = json_class.zoomUserTranslate;				
+				
+				svgUserGroup.attr("transform", "translate(" + PanZoomTool.zoomUserTranslate
+					 + ")scale(" + PanZoomTool.zoomUserScale + ")");
+				svgUser.select(".x.axis").call(xAxisUser);
+				svgUser.select(".y.axis").call(yAxisUser);
+				
+				svgMovieGroup.attr("transform", "translate(" + PanZoomTool.zoomMovieTranslate
+					 + "),scale(" + PanZoomTool.zoomMovieScale + ")");
+				svgMovie.select(".x.axis").call(xAxis);
+				svgMovie.select(".y.axis").call(yAxis);
+				
+				updateDisplay('user', selectionStatesMovie);
+				updateDisplay('movie', selectionStatesUser);					
+				
+				// Remove all pre-existing lassos
+				for (i=0;i<AnnotatedByAreaTool.blasso.length;i++){
+					AnnotatedByAreaTool.blasso[i][0][0].remove();
+				}
+				AnnotatedByAreaTool.blasso = [];
+				for (i=0;i<json_class.annotatedlasso.length;i++){
+					if (json_class.direction[i] == 'movie'){
+						AnnotatedByAreaTool.drawspace = AnnotatedByAreaTool.panel1;
+					}  else {
+						AnnotatedByAreaTool.drawspace = AnnotatedByAreaTool.panel2;
+					}
+					var points = json_class.annotatedlasso[i];
+					AnnotatedByAreaTool.blasso[i] = AnnotatedByAreaTool.drawspace.append("polygon")
+	            		.attr("id", "selection")
+	            		.attr("points", points)
+	            		.attr("fill", "yellow")
+	            		.attr("stroke","orange")
+	            		.attr("opacity","0.5")
+	            		.attr("class", "selection");
+				}
+				
+				
+			}
+
 		//alert("1")
-		var test1 = document.getElementById("IDsvgMovie")
+		//var test1 = document.getElementById("IDsvgMovie")
 
 		};	
 ///////////////////
